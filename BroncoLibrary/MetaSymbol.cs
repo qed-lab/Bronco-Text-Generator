@@ -15,14 +15,9 @@ namespace BroncoLibrary
             _metaData = new Dictionary<object, object>();
         }
 
-        public T getMetaData<T>(T key)
+        public T getMetaData<T>(object key)
         {
             return (T) _metaData[key];
-        }
-
-        public void setMetaData<T>(T key, T value)
-        {
-            _metaData[key] = value;
         }
 
         public string getMetaData(string key)
@@ -30,7 +25,7 @@ namespace BroncoLibrary
             return (string)_metaData[key];
         }
 
-        public void setMetaData(string key, string value)
+        public void setMetaData(object key, object value)
         {
             _metaData[key] = value;
         }
