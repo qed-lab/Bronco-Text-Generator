@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    internal interface IArgumentSymbol : ISymbol
+    public interface IArgumentSymbol : ISymbol
     {
         public ISymbol Evaluate(ICollection<ISymbol> arguments);
 

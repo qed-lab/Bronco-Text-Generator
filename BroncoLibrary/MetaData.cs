@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public abstract class MetaSymbol : ISymbol
+    public class MetaData
     {
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
@@ -28,32 +28,32 @@ namespace BroncoLibrary
             }
         }
 
-        public MetaSymbol()
+        public MetaData()
         {
             _metaData = new Dictionary<object, object>();
         }
 
         public T GetMetaData<T>(object key)
         {
-            return (T) _metaData[key];
+            return (T)_metaData[key];
         }
 
         public T GetMetaData<T>(object key, Func<T> fallBack)
         {
-            T value = GetMetaData<T>(key);
-            if (value != null) return value;
+            if(!_metaData.ContainsKey(key))
+            {
+                T fallBackValue = fallBack.Invoke();
+                SetMetaData(key, fallBackValue);
 
-            T fallBackValue = fallBack.Invoke();
-            SetMetaData(key, fallBackValue);
+                return fallBackValue;
+            }
 
-            return fallBackValue;
+            return GetMetaData<T>(key);
         }
 
         public void SetMetaData(object key, object value)
         {
             _metaData[key] = value;
         }
-
-        public abstract ISymbol Evaluate();
     }
 }

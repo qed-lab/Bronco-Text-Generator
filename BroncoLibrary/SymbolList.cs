@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    internal class SymbolList : MetaSymbol, IEnumerable<ISymbol>
+    public class SymbolList : IMetaSymbol
     {
         private List<ISymbol> _symbols;
+
+        public MetaData Data { get; set; }
 
         public SymbolList()
         {
             _symbols = new List<ISymbol>();
+            Data = new MetaData();
         }
 
-        public override ISymbol Evaluate()
+        public ISymbol Evaluate()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -31,16 +34,6 @@ namespace BroncoLibrary
         public void Add(ISymbol item)
         {
             _symbols.Add(item);
-        }
-
-        public IEnumerator<ISymbol> GetEnumerator()
-        {
-            return _symbols.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
