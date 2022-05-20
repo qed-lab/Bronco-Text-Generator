@@ -1,21 +1,29 @@
 ﻿using BroncoLibrary;
 
-Bag animalBag = new Bag();
-animalBag.Add(new MetaTerminal("cat"));
-animalBag.Add(new MetaTerminal("dog"));
-animalBag.Add(new MetaTerminal("rabbit"));
-animalBag.Add(new MetaTerminal("dragon"));
+Bag animalBag = new Bag()
+{
+    new MetaTerminal("dog"),
+    new MetaTerminal("cat"),
+    new MetaTerminal("rabbit"),
+    new MetaTerminal("dragon"),
+};
 
-Bag adjectiveBag = new Bag();
-adjectiveBag.Add(new MetaTerminal("small"));
-adjectiveBag.Add(new MetaTerminal("large"));
-adjectiveBag.Add(new MetaTerminal("scary"));
-adjectiveBag.Add(new MetaTerminal("cute"));
+Bag adjectiveBag = new Bag()
+{
+    new MetaTerminal("large"),
+    new MetaTerminal("small"),
+    new MetaTerminal("cute"),
+    new MetaTerminal("scary"),
+    new SymbolList(){new MetaTerminal("much like a "), animalBag},
+};
+adjectiveBag.Add(new SymbolList() { new MetaTerminal("very "), adjectiveBag });
 
-SymbolList root= new SymbolList();
-root.Add(new MetaTerminal("The "));
-root.Add(animalBag);
-root.Add(new MetaTerminal(" looked "));
-root.Add(adjectiveBag);
+SymbolList root= new SymbolList()
+{
+    new MetaTerminal("The "), animalBag, new MetaTerminal(" looked "), adjectiveBag
+};
 
-Console.WriteLine(((ISymbol) root).GetString());
+Console.WriteLine(((ISymbol)root).GetString());
+Console.WriteLine(((ISymbol)root).GetString());
+Console.WriteLine(((ISymbol)root).GetString());
+Console.WriteLine(((ISymbol)root).GetString());

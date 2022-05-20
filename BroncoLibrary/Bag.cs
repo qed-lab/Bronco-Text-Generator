@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Bag : IArgumentSymbol
+    public class Bag : IArgumentSymbol, ICollection<IMetaSymbol>
     {
         private List<IMetaSymbol> _symbols;
         private Random _random;
+
+        public int Count => _symbols.Count;
+        public bool IsReadOnly => true;
 
         public Bag()
         {
@@ -33,9 +36,18 @@ namespace BroncoLibrary
             return best.Item1.Evaluate();
         }
 
-        public void Add(IMetaSymbol item)
-        {
-            _symbols.Add(item);
-        }
+        public void Add(IMetaSymbol item) => _symbols.Add(item);
+
+        public void Clear() => _symbols.Clear();
+
+        public bool Contains(IMetaSymbol item) => _symbols.Contains(item);
+
+        public void CopyTo(IMetaSymbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+
+        public bool Remove(IMetaSymbol item) => _symbols.Remove(item);
+
+        public IEnumerator<IMetaSymbol> GetEnumerator() => GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }
 }

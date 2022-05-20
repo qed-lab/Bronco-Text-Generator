@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class SymbolList : IMetaSymbol
+    public class SymbolList : IMetaSymbol, ICollection<ISymbol>
     {
         private List<ISymbol> _symbols;
 
         public MetaData Data { get; set; }
+        public int Count => _symbols.Count;
+        public bool IsReadOnly => true;
 
         public SymbolList()
         {
@@ -31,9 +33,18 @@ namespace BroncoLibrary
             return new Terminal(sb.ToString());
         }
 
-        public void Add(ISymbol item)
-        {
-            _symbols.Add(item);
-        }
+        public void Add(ISymbol item) => _symbols.Add(item);
+
+        public void Clear() => _symbols.Clear();
+
+        public bool Contains(ISymbol item) => _symbols.Contains(item);
+
+        public void CopyTo(ISymbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+
+        public bool Remove(ISymbol item) => _symbols.Remove(item);
+
+        public IEnumerator<ISymbol> GetEnumerator() => GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }
 }
