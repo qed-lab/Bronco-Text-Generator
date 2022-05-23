@@ -5,23 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BroncoTest
+namespace BroncoLibrary
 {
     public abstract class Symbol
     {
+        public static readonly Symbol[] EmptyArgs = new Symbol[0];
+
         //I know this seems janky, and it kinda is, but Microsoft does it with Funcs so that makes it okay right?
-        protected delegate Symbol EvalArgs0();
-        protected delegate Symbol EvalArgs1<in T>(T arg) 
+        protected delegate Symbol EvalArgs();
+        protected delegate Symbol EvalArgs<in T>(T arg) 
             where T : Symbol;
-        protected delegate Symbol EvalArgs2<in T1, in T2>(T1 arg1, T2 arg2) 
+        protected delegate Symbol EvalArgs<in T1, in T2>(T1 arg1, T2 arg2) 
             where T1 : Symbol where T2 : Symbol;
-        protected delegate Symbol EvalArgs3<in T1, in T2, in T3>(T1 arg1, T2 arg2, T3 arg3)
+        protected delegate Symbol EvalArgs<in T1, in T2, in T3>(T1 arg1, T2 arg2, T3 arg3)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol;
-        protected delegate Symbol EvalArgs4<in T1, in T2, in T3, in T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+        protected delegate Symbol EvalArgs<in T1, in T2, in T3, in T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol;
-        protected delegate Symbol EvalArgs5<in T1, in T2, in T3, in T4, in T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
+        protected delegate Symbol EvalArgs<in T1, in T2, in T3, in T4, in T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol where T5 : Symbol;
-        protected delegate Symbol EvalArgs6<in T1, in T2, in T3, in T4, in T5, in T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
+        protected delegate Symbol EvalArgs<in T1, in T2, in T3, in T4, in T5, in T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol where T5 : Symbol where T6 : Symbol;
 
         private class ArgEqualityComparer : IEqualityComparer<Type[]>
@@ -46,34 +48,61 @@ namespace BroncoTest
 
         private Dictionary<Type[], Delegate> _evaluationLookup = new(new ArgEqualityComparer());
 
-        public Symbol Evaluate(ICollection<Symbol> args)
+        public Symbol Evaluate(Symbol[] args)
         {
-            addEvaluation<TestSymbol, Symbol, Symbol>(testEval);
+            var argTypes = new Type[args.Length];
 
-            throw new NotImplementedException();
+            for (int i = 0; i < args.Length; i++)
+                argTypes[i] = args[i].GetType();
+
+            if (!_evaluationLookup.ContainsKey(argTypes))
+                throw new ArgumentException("Arguments do not match any evaluation");
+
+            return (Symbol) _evaluationLookup[argTypes].DynamicInvoke(args);
         }
 
-        private TestSymbol testEval(TestSymbol a1, Symbol a2, Symbol a3)
+        public String EvaluateString(Symbol[] args)
         {
-            throw new NotImplementedException();
+            if (this is ITerminal) return ((ITerminal)this).Value;
+
+            try
+            {
+                return Evaluate(args).EvaluateString(args);
+            }
+            catch
+            {
+                throw new InvalidOperationException("This symbol does not have a string representation for those arguments");
+            }
         }
 
         protected void addEvaluationDelegate(Delegate eval)
             => _evaluationLookup.Add(eval.GetType().GenericTypeArguments, eval);
 
-        protected void addEvaluation(EvalArgs0 eval)
+        protected void addEvaluation(EvalArgs eval)
             => addEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1>(EvalArgs1<T1> eval)
+        protected void addEvaluation<T1>(EvalArgs<T1> eval)
             where T1 : Symbol
             => addEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2>(EvalArgs2<T1, T2> eval)
+        protected void addEvaluation<T1, T2>(EvalArgs<T1, T2> eval)
             where T1 : Symbol where T2 : Symbol
             => addEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2, T3>(EvalArgs3<T1, T2, T3> eval)
+        protected void addEvaluation<T1, T2, T3>(EvalArgs<T1, T2, T3> eval)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol
+            => addEvaluationDelegate(eval);
+
+        protected void addEvaluation<T1, T2, T3, T4>(EvalArgs<T1, T2, T3, T4> eval)
+            where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol
+            => addEvaluationDelegate(eval);
+
+        protected void addEvaluation<T1, T2, T3, T4, T5>(EvalArgs<T1, T2, T3, T4, T5> eval)
+            where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol where T5 : Symbol
+            => addEvaluationDelegate(eval);
+
+        protected void addEvaluation<T1, T2, T3, T4, T5, T6>(EvalArgs<T1, T2, T3, T4, T5, T6> eval)
+            where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol where T5 : Symbol where T6 : Symbol
             => addEvaluationDelegate(eval);
 
     }

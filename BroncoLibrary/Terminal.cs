@@ -6,23 +6,22 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Terminal : ISymbol
+    public class Terminal : Symbol, ITerminal
     {
-        public string Value { get; private set; }
+        private string _stringValue;
+
+        public string Value => _stringValue;
 
         public Terminal(string value)
         {
-            Value = value;
+            _stringValue = value;
+
+            addEvaluation(Evaluate);
         }
 
-        public ISymbol Evaluate()
+        public Terminal Evaluate()
         {
             return this;
-        }
-
-        public string GetString()
-        {
-            return Value;
         }
     }
 }

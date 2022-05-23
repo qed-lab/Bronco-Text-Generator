@@ -7,43 +7,43 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class SymbolList : IMetaSymbol, ICollection<ISymbol>
+    public class SymbolList : Symbol, ICollection<Symbol>
     {
-        private List<ISymbol> _symbols;
+        private List<Symbol> _symbols;
 
-        public MetaData Data { get; set; }
         public int Count => _symbols.Count;
         public bool IsReadOnly => true;
 
         public SymbolList()
         {
-            _symbols = new List<ISymbol>();
-            Data = new MetaData();
+            _symbols = new List<Symbol>();
+
+            addEvaluation(Evaluate);
         }
 
-        public ISymbol Evaluate()
+        public Symbol Evaluate()
         {
             StringBuilder sb = new StringBuilder();
 
             foreach(var symbol in _symbols)
             {
-                sb.Append(symbol.GetString());
+                sb.Append(symbol.EvaluateString(EmptyArgs));
             }
 
             return new Terminal(sb.ToString());
         }
 
-        public void Add(ISymbol item) => _symbols.Add(item);
+        public void Add(Symbol item) => _symbols.Add(item);
 
         public void Clear() => _symbols.Clear();
 
-        public bool Contains(ISymbol item) => _symbols.Contains(item);
+        public bool Contains(Symbol item) => _symbols.Contains(item);
 
-        public void CopyTo(ISymbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+        public void CopyTo(Symbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
 
-        public bool Remove(ISymbol item) => _symbols.Remove(item);
+        public bool Remove(Symbol item) => _symbols.Remove(item);
 
-        public IEnumerator<ISymbol> GetEnumerator() => GetEnumerator();
+        public IEnumerator<Symbol> GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }

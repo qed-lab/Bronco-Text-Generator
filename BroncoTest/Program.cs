@@ -2,28 +2,27 @@
 
 Bag animalBag = new Bag()
 {
-    new MetaTerminal("dog"),
-    new MetaTerminal("cat"),
-    new MetaTerminal("rabbit"),
-    new MetaTerminal("dragon"),
+    new MetaData<Symbol>(new Terminal("dog")),
+    new MetaData<Symbol>(new Terminal("cat")),
+    new MetaData<Symbol>(new Terminal("rabbit")),
+    new MetaData<Symbol>(new Terminal("dragon")),
 };
 
 Bag adjectiveBag = new Bag()
 {
-    new MetaTerminal("large"),
-    new MetaTerminal("small"),
-    new MetaTerminal("cute"),
-    new MetaTerminal("scary"),
-    new SymbolList(){new MetaTerminal("much like a "), animalBag},
+    new MetaData<Symbol>(new Terminal("small")),
+    new MetaData<Symbol>(new Terminal("large")),
+    new MetaData<Symbol>(new Terminal("cute")),
+    new MetaData<Symbol>(new Terminal("scary")),
+    new MetaData<Symbol>(new SymbolList(){new Terminal("much like a "), animalBag}),
 };
-adjectiveBag.Add(new SymbolList() { new MetaTerminal("very "), adjectiveBag });
+adjectiveBag.Add(new MetaData<Symbol>(new SymbolList() { new Terminal("very "), adjectiveBag }, 2));
 
 SymbolList root = new SymbolList()
 {
-    new MetaTerminal("The "), animalBag, new MetaTerminal(" looked "), adjectiveBag
+    new Terminal("The "), animalBag, new Terminal(" looked "), adjectiveBag
 };
 
-Console.WriteLine(((ISymbol)root).GetString());
-Console.WriteLine(((ISymbol)root).GetString());
-Console.WriteLine(((ISymbol)root).GetString());
-Console.WriteLine(((ISymbol)root).GetString());
+Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));
+Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));
+Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));

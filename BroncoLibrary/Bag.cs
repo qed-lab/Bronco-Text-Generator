@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Bag : IArgumentSymbol, ICollection<IMetaSymbol>
+    public class Bag : Symbol, ICollection<MetaData<Symbol>>
     {
-        private List<IMetaSymbol> _symbols;
+        private List<MetaData<Symbol>> _symbols;
         private Random _random;
 
         public int Count => _symbols.Count;
@@ -18,35 +18,37 @@ namespace BroncoLibrary
 
         public Bag()
         {
-            _symbols = new List<IMetaSymbol>();
+            _symbols = new List<MetaData<Symbol>>();
             _random = new Random();
+
+            addEvaluation(Evaluate);
         }
 
-        public ISymbol Evaluate(ICollection<ISymbol> arguments)
+        public Symbol Evaluate()
         {
-            (IMetaSymbol, double) best = (null, -double.MaxValue);
+            (MetaData<Symbol>, double) best = (null, -double.MaxValue);
 
             foreach(var symbol in _symbols)
             {
-                double rolledWeight = _random.NextDouble()*symbol.Data.Weight;
+                double rolledWeight = _random.NextDouble()*symbol.Weight;
                 if (rolledWeight > best.Item2)
                     best = (symbol, rolledWeight);
             }
 
-            return best.Item1.Evaluate();
+            return best.Item1.Evaluate(EmptyArgs);
         }
 
-        public void Add(IMetaSymbol item) => _symbols.Add(item);
+        public void Add(MetaData<Symbol> item) => _symbols.Add(item);
 
         public void Clear() => _symbols.Clear();
 
-        public bool Contains(IMetaSymbol item) => _symbols.Contains(item);
+        public bool Contains(MetaData<Symbol> item) => _symbols.Contains(item);
 
-        public void CopyTo(IMetaSymbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+        public void CopyTo(MetaData<Symbol>[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
 
-        public bool Remove(IMetaSymbol item) => _symbols.Remove(item);
+        public bool Remove(MetaData<Symbol> item) => _symbols.Remove(item);
 
-        public IEnumerator<IMetaSymbol> GetEnumerator() => GetEnumerator();
+        public IEnumerator<MetaData<Symbol>> GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }

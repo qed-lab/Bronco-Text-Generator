@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class MetaData
+    public class MetaData<T> where T : Symbol
     {
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
@@ -15,6 +15,7 @@ namespace BroncoLibrary
 
         private Dictionary<object, object> _metaData;
 
+        public T Symbol { get; set; }
         public double Weight
         {
             get
@@ -28,9 +29,20 @@ namespace BroncoLibrary
             }
         }
 
-        public MetaData()
+        public MetaData(T symbol) : this(symbol, 1.0)
         {
+        }
+
+        public MetaData(T symbol, double weight)
+        {
+            Symbol = symbol;
             _metaData = new Dictionary<object, object>();
+            Weight = weight;
+        }
+
+        public Symbol Evaluate(Symbol[] args)
+        {
+            return Symbol.Evaluate(args);
         }
 
         public T GetMetaData<T>(object key)

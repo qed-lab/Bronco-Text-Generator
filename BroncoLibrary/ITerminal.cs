@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public interface IMetaSymbol : ISymbol
+    public interface ITerminal
     {
-        public MetaData Data { get; set; }
-
-        public abstract ISymbol Evaluate();
+        public string Value { get; }
     }
 }
