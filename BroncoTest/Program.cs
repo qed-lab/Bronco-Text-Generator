@@ -1,26 +1,27 @@
 ﻿using BroncoLibrary;
+using BroncoTest;
 
-Bag animalBag = new Bag()
+Bag animalBag = (Bag) new P()
 {
-    new MetaData<Symbol>(new Terminal("dog")),
-    new MetaData<Symbol>(new Terminal("cat")),
-    new MetaData<Symbol>(new Terminal("rabbit")),
-    new MetaData<Symbol>(new Terminal("dragon")),
+    "dog", 
+    "cat", 
+    "rabbit", 
+    "dragon"
 };
 
-Bag adjectiveBag = new Bag()
+Bag adjectiveBag = (Bag) new P()
 {
-    new MetaData<Symbol>(new Terminal("small")),
-    new MetaData<Symbol>(new Terminal("large")),
-    new MetaData<Symbol>(new Terminal("cute")),
-    new MetaData<Symbol>(new Terminal("scary")),
-    new MetaData<Symbol>(new SymbolList(){new Terminal("much like a "), animalBag}),
+    "small",
+    "large",
+    "cute",
+    "scary",
+    (SymbolList) new P() {"much like a ", animalBag},
 };
-adjectiveBag.Add(new MetaData<Symbol>(new SymbolList() { new Terminal("very "), adjectiveBag }, 2));
+adjectiveBag.Add(new MetaData<Symbol>((SymbolList) new P() { "very ", adjectiveBag }, 1.5));
 
-SymbolList root = new SymbolList()
+SymbolList root = (SymbolList)new P()
 {
-    new Terminal("The "), animalBag, new Terminal(" looked "), adjectiveBag
+    "The", animalBag, " looked ", adjectiveBag
 };
 
 Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));

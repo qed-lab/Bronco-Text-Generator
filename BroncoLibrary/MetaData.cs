@@ -11,7 +11,7 @@ namespace BroncoLibrary
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
         private static readonly string tagsKey = "tags";
-        private static readonly Func<ICollection<string>> tagsFallBack = () => new List<string> { };
+        private static readonly Func<ISet<string>> tagsFallBack = () => new HashSet<string> { };
 
         private Dictionary<object, object> _metaData;
 
