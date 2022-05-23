@@ -18,7 +18,7 @@ Bag adjectiveBag = new Bag()
 };
 adjectiveBag.Add(new SymbolList() { new MetaTerminal("very "), adjectiveBag });
 
-SymbolList root= new SymbolList()
+SymbolList root = new SymbolList()
 {
     new MetaTerminal("The "), animalBag, new MetaTerminal(" looked "), adjectiveBag
 };
