@@ -6,18 +6,17 @@ SymbolVariable pickedAnimal = new SymbolVariable();
 
 Bag animalBag = (Bag) new P()
 {
-    "dog", 
-    "cat", 
-    "rabbit", 
     "dragon",
-    "mouse",
     "parrot",
     "lizard",
     "spider",
     "snake"
 };
-
 animalBag.Add(new MetaData<ISymbol>((SymbolList)new P() { animalBag, "-", animalBag }, 1.5));
+animalBag.Add(new MetaData<ISymbol>(new Terminal("Rabbit"), new string[] { "furry" }));
+animalBag.Add(new MetaData<ISymbol>(new Terminal("Dog"), new string[] { "furry" }));
+animalBag.Add(new MetaData<ISymbol>(new Terminal("Cat"), new string[] { "furry" }));
+animalBag.Add(new MetaData<ISymbol>(new Terminal("Mouse"), new string[] { "furry" }));
 
 Bag adjectiveBag = (Bag) new P()
 {
@@ -29,9 +28,15 @@ Bag adjectiveBag = (Bag) new P()
 };
 adjectiveBag.Add(new MetaData<ISymbol>((SymbolList) new P() { "very ", adjectiveBag }, 1.5));
 
+ISymbol[] tag = new ISymbol[]
+{
+        new MetaData<ISymbol>(new Terminal("Does not matter"), new string[] { "furry" })
+};
+
+
 ISymbol root = (SymbolList)new P()
 {
-    "This is a story about a ", setter.Argue(new ISymbol[]{pickedAnimal, animalBag}), 
+    "This is a story about a ", setter.Argue(new ISymbol[]{pickedAnimal, animalBag.Argue(tag) }), 
     ". This particular ", pickedAnimal, " looked ", adjectiveBag
 };
 

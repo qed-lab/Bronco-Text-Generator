@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BroncoLibrary", "BroncoLibrary\BroncoLibrary.csproj", "{F53F0CAE-F0F0-471B-9B98-8AC8A85B51D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BroncoTest", "BroncoTest\BroncoTest.csproj", "{0340353A-0AAB-4433-97E0-43B8971FD3A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BroncoTest", "BroncoTest\BroncoTest.csproj", "{0340353A-0AAB-4433-97E0-43B8971FD3A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONTestParser", "JSONTestParser\JSONTestParser.csproj", "{4F0FC455-A2D0-438A-ABB6-2C771B323943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0FC455-A2D0-438A-ABB6-2C771B323943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0FC455-A2D0-438A-ABB6-2C771B323943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0FC455-A2D0-438A-ABB6-2C771B323943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0FC455-A2D0-438A-ABB6-2C771B323943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

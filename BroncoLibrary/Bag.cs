@@ -22,20 +22,45 @@ namespace BroncoLibrary
             _random = new Random();
 
             addEvaluation(Pick);
+            addEvaluation<MetaData<ISymbol>>(Pick);
         }
 
         public ISymbol Pick()
         {
             (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
 
-            foreach(var symbol in _symbols)
+            foreach (var symbol in _symbols)
             {
-                double rolledWeight = _random.NextDouble()*symbol.Weight;
+                double rolledWeight = _random.NextDouble() * symbol.Weight;
                 if (rolledWeight > best.Item2)
                     best = (symbol, rolledWeight);
             }
 
             return best.Item1.Evaluate();
+        }
+
+        public ISymbol Pick(MetaData<ISymbol> tagSymbol)
+        {
+            (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
+
+            foreach(var symbol in _symbols)
+            {
+                double rolledWeight = _random.NextDouble()*symbol.Weight;
+                if (rolledWeight > best.Item2 && TagMatch(tagSymbol.Tags, symbol.Tags))
+                    best = (symbol, rolledWeight);
+            }
+
+            return best.Item1;
+        }
+
+        private bool TagMatch(ISet<string> tags1, ISet<string> tags2)
+        {
+            foreach(string tag1 in tags1)
+            {
+                if (tags2.Contains(tag1)) return true;
+            }
+
+            return false;
         }
 
         public void Add(MetaData<ISymbol> item) => _symbols.Add(item);

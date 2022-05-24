@@ -29,15 +29,34 @@ namespace BroncoLibrary
             }
         }
 
-        public MetaData(T symbol) : this(symbol, 1.0)
+        public ISet<string> Tags
         {
+            get
+            {
+                return GetMetaData<ISet<string>>(tagsKey, tagsFallBack);
+            }
+
+            private set
+            {
+                SetMetaData(tagsKey, value);
+            }
         }
 
-        public MetaData(T symbol, double weight)
+        public MetaData(T symbol, ICollection<string> tags) : this(symbol)
+        {
+            foreach (var tag in tags)
+                Tags.Add(tag);
+        }
+
+        public MetaData(T symbol, double weight) : this(symbol)
+        {
+            Weight = weight;
+        }
+
+        public MetaData(T symbol)
         {
             Symbol = symbol;
             _metaData = new Dictionary<object, object>();
-            Weight = weight;
 
             addEvaluation(GetSymbol);
         }

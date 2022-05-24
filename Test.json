@@ -1,0 +1,12 @@
+animals : [
+	"dog", 
+    "cat", 
+    "rabbit", 
+    "dragon",
+    "mouse",
+    "parrot",
+    "lizard",
+    "spider",
+    "snake",
+	"{animals:[]}-{animals:[]}"
+]
