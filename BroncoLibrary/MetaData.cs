@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class MetaData<T> where T : Symbol
+    public class MetaData<T> : DynamicSymbol where T : ISymbol
     {
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
         private static readonly string tagsKey = "tags";
-        private static readonly Func<ISet<string>> tagsFallBack = () => new HashSet<string> { };
+        private static readonly Func<ISet<string>> tagsFallBack = () => new HashSet<string>();
 
         private Dictionary<object, object> _metaData;
 
@@ -38,11 +38,13 @@ namespace BroncoLibrary
             Symbol = symbol;
             _metaData = new Dictionary<object, object>();
             Weight = weight;
+
+            addEvaluation(GetSymbol);
         }
 
-        public Symbol Evaluate(Symbol[] args)
+        public ISymbol GetSymbol()
         {
-            return Symbol.Evaluate(args);
+            return Symbol;
         }
 
         public T GetMetaData<T>(object key)

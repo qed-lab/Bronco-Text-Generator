@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Bag : Symbol, ICollection<MetaData<Symbol>>
+    public class Bag : DynamicSymbol, ICollection<MetaData<ISymbol>>
     {
-        private List<MetaData<Symbol>> _symbols;
+        private List<MetaData<ISymbol>> _symbols;
         private Random _random;
 
         public int Count => _symbols.Count;
@@ -18,15 +18,15 @@ namespace BroncoLibrary
 
         public Bag()
         {
-            _symbols = new List<MetaData<Symbol>>();
+            _symbols = new List<MetaData<ISymbol>>();
             _random = new Random();
 
-            addEvaluation(Evaluate);
+            addEvaluation(Pick);
         }
 
-        public Symbol Evaluate()
+        public ISymbol Pick()
         {
-            (MetaData<Symbol>, double) best = (null, -double.MaxValue);
+            (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
 
             foreach(var symbol in _symbols)
             {
@@ -35,20 +35,20 @@ namespace BroncoLibrary
                     best = (symbol, rolledWeight);
             }
 
-            return best.Item1.Evaluate(EmptyArgs);
+            return best.Item1.Evaluate();
         }
 
-        public void Add(MetaData<Symbol> item) => _symbols.Add(item);
+        public void Add(MetaData<ISymbol> item) => _symbols.Add(item);
 
         public void Clear() => _symbols.Clear();
 
-        public bool Contains(MetaData<Symbol> item) => _symbols.Contains(item);
+        public bool Contains(MetaData<ISymbol> item) => _symbols.Contains(item);
 
-        public void CopyTo(MetaData<Symbol>[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+        public void CopyTo(MetaData<ISymbol>[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
 
-        public bool Remove(MetaData<Symbol> item) => _symbols.Remove(item);
+        public bool Remove(MetaData<ISymbol> item) => _symbols.Remove(item);
 
-        public IEnumerator<MetaData<Symbol>> GetEnumerator() => GetEnumerator();
+        public IEnumerator<MetaData<ISymbol>> GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }

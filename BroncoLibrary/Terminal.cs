@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Terminal : Symbol, ITerminal
+    public class Terminal : ITerminal
     {
         private string _stringValue;
 
@@ -15,13 +15,6 @@ namespace BroncoLibrary
         public Terminal(string value)
         {
             _stringValue = value;
-
-            addEvaluation(Evaluate);
-        }
-
-        public Terminal Evaluate()
-        {
-            return this;
         }
     }
 }

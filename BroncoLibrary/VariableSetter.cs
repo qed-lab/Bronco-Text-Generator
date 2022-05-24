@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class VariableSetter : Symbol
+    public class VariableSetter : DynamicSymbol
     {
         public VariableSetter() 
         {
-            addEvaluation<SymbolVariable, Symbol>(Set);
+            addEvaluation<SymbolVariable, DynamicSymbol>(SetToFlatten);
         }
 
-        public Symbol Set(SymbolVariable var, Symbol value)
+        public ISymbol SetToFlatten(SymbolVariable var, DynamicSymbol value)
         {
-            var.Set(value);
+            var.SetToFlatten(value);
 
             return var;
         }

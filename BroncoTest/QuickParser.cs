@@ -34,19 +34,19 @@ namespace BroncoTest
                 switch(item)
                 {
                     case "THIS":
-                        bag.Add(new MetaData<Symbol>(bag));
+                        bag.Add(new MetaData<ISymbol>(bag));
                         break;
                     case String s:
-                        bag.Add(new MetaData<Symbol>(new Terminal(s)));
+                        bag.Add(new MetaData<ISymbol>(new Terminal(s)));
                         break;
-                    case Symbol s:
-                        bag.Add(new MetaData<Symbol>(s));
+                    case DynamicSymbol s:
+                        bag.Add(new MetaData<ISymbol>(s));
                         break;
                     case Tuple<String, double> t:
-                        bag.Add(new MetaData<Symbol>(new Terminal(t.Item1), t.Item2));
+                        bag.Add(new MetaData<ISymbol>(new Terminal(t.Item1), t.Item2));
                         break;
-                    case Tuple<Symbol, double> t:
-                        bag.Add(new MetaData<Symbol>(t.Item1, t.Item2));
+                    case Tuple<DynamicSymbol, double> t:
+                        bag.Add(new MetaData<ISymbol>(t.Item1, t.Item2));
                         break;
                 }
             }
@@ -68,7 +68,7 @@ namespace BroncoTest
                     case String s:
                         bag.Add(new Terminal(s));
                         break;
-                    case Symbol s:
+                    case ISymbol s:
                         bag.Add(s);
                         break;
                 }

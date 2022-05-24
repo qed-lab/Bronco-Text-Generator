@@ -6,27 +6,32 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class SymbolVariable : Symbol
+    public class SymbolVariable : ISymbol
     {
-        private Symbol _currentSymbol;
+        private ISymbol _currentSymbol = null;
 
-        public SymbolVariable() : this(null)
+        public SymbolVariable()
         {
         }
 
-        public SymbolVariable(Symbol symbol)
+        public SymbolVariable(ISymbol symbol)
         {
-            _currentSymbol = symbol;
+            SetToFlatten(symbol);
         }
 
-        public new Symbol Evaluate(Symbol[] args)
+        public ISymbol Evaluate()
         {
-            return _currentSymbol.Evaluate(args);
+            return _currentSymbol.Evaluate();
         }
 
-        public void Set(Symbol value)
+        public ISymbol Argue(ISymbol[]  args)
         {
-            _currentSymbol = value;
+            return _currentSymbol.Argue(args);
+        } 
+
+        public void SetToFlatten(ISymbol value)
+        {
+            _currentSymbol = value.Flatten();
         }
     }
 }

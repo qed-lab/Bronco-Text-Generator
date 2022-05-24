@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public interface ITerminal
+    public interface ITerminal : ISymbol
     {
         public string Value { get; }
+
+        ISymbol ISymbol.Evaluate()
+        {
+            return this;
+        }
     }
 }
