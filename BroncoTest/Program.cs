@@ -1,6 +1,9 @@
 ﻿using BroncoLibrary;
 using BroncoTest;
 
+VariableSetter setter = new VariableSetter();
+SymbolVariable pickedAnimal = new SymbolVariable();
+
 Bag animalBag = (Bag) new P()
 {
     "dog", 
@@ -21,9 +24,10 @@ adjectiveBag.Add(new MetaData<Symbol>((SymbolList) new P() { "very ", adjectiveB
 
 SymbolList root = (SymbolList)new P()
 {
-    "The", animalBag, " looked ", adjectiveBag
+    "This is a story about a ", new ArgumentHolder(setter, new Symbol[]{pickedAnimal, animalBag}), 
+    ". This particular ", pickedAnimal, " looked ", adjectiveBag
 };
 
-Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));
-Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));
-Console.WriteLine(root.EvaluateString(Symbol.EmptyArgs));
+Console.WriteLine(root.Flatten(Symbol.EmptyArgs));
+Console.WriteLine(root.Flatten(Symbol.EmptyArgs));
+Console.WriteLine(root.Flatten(Symbol.EmptyArgs));

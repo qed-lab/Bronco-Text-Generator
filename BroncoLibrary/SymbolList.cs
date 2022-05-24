@@ -27,7 +27,7 @@ namespace BroncoLibrary
 
             foreach(var symbol in _symbols)
             {
-                sb.Append(symbol.EvaluateString(EmptyArgs));
+                sb.Append(symbol.Flatten(EmptyArgs));
             }
 
             return new Terminal(sb.ToString());

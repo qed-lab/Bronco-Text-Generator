@@ -10,24 +10,23 @@ namespace BroncoLibrary
     {
         private Symbol _currentSymbol;
 
+        public SymbolVariable() : this(null)
+        {
+        }
+
         public SymbolVariable(Symbol symbol)
         {
             _currentSymbol = symbol;
-
-            addEvaluation(Get);
-            addEvaluation<Symbol>(Set);
         }
 
-        public Symbol Get()
+        public new Symbol Evaluate(Symbol[] args)
         {
-            return _currentSymbol;
+            return _currentSymbol.Evaluate(args);
         }
 
-        public Symbol Set(Symbol value)
+        public void Set(Symbol value)
         {
             _currentSymbol = value;
-
-            return _currentSymbol;
         }
     }
 }

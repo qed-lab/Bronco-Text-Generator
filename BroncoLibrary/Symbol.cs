@@ -26,57 +26,53 @@ namespace BroncoLibrary
         protected delegate Symbol EvalArgs<in T1, in T2, in T3, in T4, in T5, in T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
             where T1 : Symbol where T2 : Symbol where T3 : Symbol where T4 : Symbol where T5 : Symbol where T6 : Symbol;
 
-        private class ArgEqualityComparer : IEqualityComparer<Type[]>
-        {
-            public bool Equals(Type[]? x, Type[]? y)
-            {
-                if (x.Length != y.Length) return false;
-
-                for (int i = 0; i < x.Length; i++)
-                {
-                    if (x[i] != y[i]) return false;
-                }
-
-                return true;
-            }
-
-            public int GetHashCode([DisallowNull] Type[] obj)
-            {
-                return obj.Length.GetHashCode() + obj.Length != 0 ? obj[0].GetHashCode() : 0;
-            }
-        }
-
-        private Dictionary<Type[], Delegate> _evaluationLookup = new(new ArgEqualityComparer());
+        private List<(Type[], Delegate)> _evaluationList = new();
 
         public Symbol Evaluate(Symbol[] args)
         {
-            var argTypes = new Type[args.Length];
+            Delegate eval;
 
-            for (int i = 0; i < args.Length; i++)
-                argTypes[i] = args[i].GetType();
 
-            if (!_evaluationLookup.ContainsKey(argTypes))
+            if (!FindEvaluation(args, out eval))
                 throw new ArgumentException("Arguments do not match any evaluation");
 
-            return (Symbol) _evaluationLookup[argTypes].DynamicInvoke(args);
+            return (Symbol) eval.DynamicInvoke(args);
         }
 
-        public String EvaluateString(Symbol[] args)
+        public static String Flatten(Symbol[] args)
         {
             if (this is ITerminal) return ((ITerminal)this).Value;
 
-            try
+            return Evaluate(args).Flatten(args);
+        }
+
+        protected bool FindEvaluation(Symbol[] args, out Delegate outEval)
+        {
+            foreach(var eval in _evaluationList)
             {
-                return Evaluate(args).EvaluateString(args);
+                if (eval.Item1.Length != args.Length) continue;
+
+                bool failed = false;
+                for(int i = 0; i < args.Length; i++)
+                {
+                    if (!eval.Item1[i].IsAssignableFrom(args[i].GetType()))
+                    {
+                        failed = true; break;
+                    }
+                }
+
+                if (failed) continue;
+
+                outEval = eval.Item2;
+                return true;
             }
-            catch
-            {
-                throw new InvalidOperationException("This symbol does not have a string representation for those arguments");
-            }
+
+            outEval = null;
+            return false;
         }
 
         protected void addEvaluationDelegate(Delegate eval)
-            => _evaluationLookup.Add(eval.GetType().GenericTypeArguments, eval);
+            => _evaluationList.Add((eval.GetType().GenericTypeArguments, eval));
 
         protected void addEvaluation(EvalArgs eval)
             => addEvaluationDelegate(eval);
