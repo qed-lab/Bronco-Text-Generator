@@ -44,9 +44,7 @@ namespace BroncoLibrary
         private List<(Type[], Delegate)> _evaluationList = new();
 
         public ISymbol Evaluate()
-        {
-            return Argue(EmptyArgs);
-        }
+            => Argue(EmptyArgs);
 
         public ISymbol Argue(ISymbol[] args)
         {
@@ -83,35 +81,35 @@ namespace BroncoLibrary
             return false;
         }
 
-        protected void addEvaluationDelegate(Delegate eval)
+        protected void AddEvaluationDelegate(Delegate eval)
             => _evaluationList.Add((eval.GetType().GenericTypeArguments, eval));
 
-        protected void addEvaluation(EvalArgs eval)
-            => addEvaluationDelegate(eval);
+        protected void AddEvaluation(EvalArgs eval)
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1>(EvalArgs<T1> eval)
+        protected void AddEvaluation<T1>(EvalArgs<T1> eval)
             where T1 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2>(EvalArgs<T1, T2> eval)
+        protected void AddEvaluation<T1, T2>(EvalArgs<T1, T2> eval)
             where T1 : ISymbol where T2 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2, T3>(EvalArgs<T1, T2, T3> eval)
+        protected void AddEvaluation<T1, T2, T3>(EvalArgs<T1, T2, T3> eval)
             where T1 : ISymbol where T2 : ISymbol where T3 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2, T3, T4>(EvalArgs<T1, T2, T3, T4> eval)
+        protected void AddEvaluation<T1, T2, T3, T4>(EvalArgs<T1, T2, T3, T4> eval)
             where T1 : ISymbol where T2 : ISymbol where T3 : ISymbol where T4 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2, T3, T4, T5>(EvalArgs<T1, T2, T3, T4, T5> eval)
+        protected void AddEvaluation<T1, T2, T3, T4, T5>(EvalArgs<T1, T2, T3, T4, T5> eval)
             where T1 : ISymbol where T2 : ISymbol where T3 : ISymbol where T4 : ISymbol where T5 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
-        protected void addEvaluation<T1, T2, T3, T4, T5, T6>(EvalArgs<T1, T2, T3, T4, T5, T6> eval)
+        protected void AddEvaluation<T1, T2, T3, T4, T5, T6>(EvalArgs<T1, T2, T3, T4, T5, T6> eval)
             where T1 : ISymbol where T2 : ISymbol where T3 : ISymbol where T4 : ISymbol where T5 : ISymbol where T6 : ISymbol
-            => addEvaluationDelegate(eval);
+            => AddEvaluationDelegate(eval);
 
     }
 }

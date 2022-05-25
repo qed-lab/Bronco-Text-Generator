@@ -21,7 +21,7 @@ namespace BroncoLibrary
 
         public ISymbol Evaluate()
         {
-            return _currentSymbol.Evaluate();
+            return _currentSymbol;
         }
 
         public ISymbol Argue(ISymbol[]  args)

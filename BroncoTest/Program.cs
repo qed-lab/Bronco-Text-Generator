@@ -73,7 +73,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[]
  */
 
 MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
-    new MetaData<ISymbol>(new Terminal(""), new string[] {"procGen", "security"}) };
+    new MetaData<ISymbol>(new Terminal(""), new string[] {"graphics", "ethics"}) };
 
 Bag adjNoun = new Bag();
 Bag paper = new Bag();

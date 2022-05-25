@@ -58,7 +58,7 @@ namespace BroncoLibrary
             Symbol = symbol;
             _metaData = new Dictionary<object, object>();
 
-            addEvaluation(GetSymbol);
+            AddEvaluation(GetSymbol);
         }
 
         public ISymbol GetSymbol()

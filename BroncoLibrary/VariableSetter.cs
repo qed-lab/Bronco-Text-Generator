@@ -10,7 +10,7 @@ namespace BroncoLibrary
     {
         public VariableSetter() 
         {
-            addEvaluation<SymbolVariable, ISymbol>(SetToFlatten);
+            AddEvaluation<SymbolVariable, ISymbol>(SetToFlatten);
         }
 
         public ISymbol SetToFlatten(SymbolVariable var, ISymbol value)

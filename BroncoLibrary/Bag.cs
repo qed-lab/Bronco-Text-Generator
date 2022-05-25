@@ -21,8 +21,8 @@ namespace BroncoLibrary
             _symbols = new List<MetaData<ISymbol>>();
             _random = new Random();
 
-            addEvaluation(Pick);
-            addEvaluation<MetaData<ISymbol>>(Pick);
+            AddEvaluation(Pick);
+            AddEvaluation<MetaData<ISymbol>>(Pick);
         }
 
         public ISymbol Pick()
