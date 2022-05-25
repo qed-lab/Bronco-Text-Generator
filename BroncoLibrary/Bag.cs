@@ -36,7 +36,7 @@ namespace BroncoLibrary
                     best = (symbol, rolledWeight);
             }
 
-            return best.Item1.Evaluate();
+            return best.Item1;
         }
 
         public ISymbol Pick(MetaData<ISymbol> tagSymbol)
@@ -46,7 +46,7 @@ namespace BroncoLibrary
             foreach(var symbol in _symbols)
             {
                 double rolledWeight = _random.NextDouble()*symbol.Weight;
-                if (rolledWeight > best.Item2 && TagMatch(tagSymbol.Tags, symbol.Tags))
+                if (rolledWeight > best.Item2 && (symbol.Tags.Count == 0 || TagMatch(tagSymbol.Tags, symbol.Tags)))
                     best = (symbol, rolledWeight);
             }
 

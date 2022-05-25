@@ -4,40 +4,91 @@ using BroncoTest;
 VariableSetter setter = new VariableSetter();
 SymbolVariable pickedAnimal = new SymbolVariable();
 
-Bag animalBag = (Bag) new P()
-{
-    "dragon",
-    "parrot",
-    "lizard",
-    "spider",
-    "snake"
-};
-animalBag.Add(new MetaData<ISymbol>((SymbolList)new P() { animalBag, "-", animalBag }, 1.5));
-animalBag.Add(new MetaData<ISymbol>(new Terminal("Rabbit"), new string[] { "furry" }));
-animalBag.Add(new MetaData<ISymbol>(new Terminal("Dog"), new string[] { "furry" }));
-animalBag.Add(new MetaData<ISymbol>(new Terminal("Cat"), new string[] { "furry" }));
-animalBag.Add(new MetaData<ISymbol>(new Terminal("Mouse"), new string[] { "furry" }));
+Bag adjectives = new Bag();
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Theoretical"), new string[] { "theory" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Applied"), new string[] { "applied" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Procedural"), new string[] { "procGen" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Abstract"), new string[] { "theory", "math" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Ethical"), new string[] { "ethics" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Moral"), new string[] { "ethics" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Modeled"), new string[] { "applied", "theory" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Heuristic"), new string[] { "algs" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Algorithmic"), new string[] { "algs" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Algebraic"), new string[] { "math" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Combinitoric"), new string[] { "math" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Secure"), new string[] { "security" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Encrypted"), new string[] { "security" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Intellegent"), new string[] { "ai" }));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Theoretical"), 0.4));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Applied"), 0.4));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Modeled"), 0.4));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Intellegent"), 0.4));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Abstract"), 0.4));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Intentional")));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Serious"), 0.75));
+adjectives.Add(new MetaData<ISymbol>(new Terminal("Modern")));
+adjectives.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Highly "), adjectives }, 0.75));
 
-Bag adjectiveBag = (Bag) new P()
-{
-    "small",
-    "large",
-    "cute",
-    "scary",
-    (SymbolList) new P() {"much like a ", animalBag},
-};
-adjectiveBag.Add(new MetaData<ISymbol>((SymbolList) new P() { "very ", adjectiveBag }, 1.5));
+Bag researchNouns = new Bag();
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Artificial Intelligence"), new string[] { "ai" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Neural Networks"), new string[] { "ai", "algs" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Machine Learning"), new string[] { "ai" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Algorithms"), new string[] { "algs" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Binary Trees"), new string[] { "algs" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Graphics"), new string[] { "graphics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Data Structures"), new string[] { "algs" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Lighting Simulations"), new string[] { "graphics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Raytracing"), new string[] { "graphics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Procedural Textures"), new string[] { "graphics", "procGen" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Ethics"), new string[] { "ethics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Morality"), new string[] { "ethics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Programming Languages")));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Software")));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Procedural Generation"), new string[] { "procGen" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Proceduralism"), new string[] { "procGen" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Perlin Noise"), new string[] { "procGen" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Grammars"), new string[] { "procGen", "math", "algs" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Hardware"), new string[] { "hardware" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Processors"), new string[] { "hardware" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Graphics Cards"), new string[] { "hardware", "graphics" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Mathimatics"), new string[] { "math", "theory" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Calculus"), new string[] { "math" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Matricies"), new string[] { "math" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Cyper Security"), new string[] { "security" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Encryption"), new string[] { "security", "algs", "math" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Cryptography"), new string[] { "security" }));
+researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[] { "security" }));
 
-ISymbol[] tag = new ISymbol[]
-{
-        new MetaData<ISymbol>(new Terminal("Does not matter"), new string[] { "furry" })
-};
+/*
+ * ai
+ * procGen
+ * algs
+ * graphics
+ * hardware
+ * ethics
+ * theory
+ * applied
+ * security
+ * math
+ */
+
+MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
+    new MetaData<ISymbol>(new Terminal(""), new string[] {"procGen", "security"}) };
+
+Bag adjNoun = new Bag();
+Bag paper = new Bag();
+
+adjNoun.Add(new MetaData<ISymbol>(new SymbolList() { adjectives.Argue(tags), new Terminal(" "), researchNouns.Argue(tags) }));
+adjNoun.Add(new MetaData<ISymbol>(researchNouns.Argue(tags), 0.5));
+adjNoun.Add(new MetaData<ISymbol>(paper, 0.25));
 
 
-ISymbol root = (SymbolList)new P()
-{
-    "This is a story about a ", setter.Argue(new ISymbol[]{pickedAnimal, animalBag.Argue(tag) }), 
-    ". This particular ", pickedAnimal, " looked ", adjectiveBag
-};
+paper.Add(new MetaData<ISymbol>(new SymbolList() { adjNoun, new Terminal(" for "), adjNoun }));
+paper.Add(new MetaData<ISymbol>(new SymbolList() { adjNoun, new Terminal(" in "), adjNoun }));
+paper.Add(new MetaData<ISymbol>(new SymbolList() { adjNoun, new Terminal(" and "), adjNoun }));
+paper.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("The Relation Between "), adjNoun, new Terminal(" and "), adjNoun }));
 
-Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(((ISymbol)paper).Flatten().Value);
+Console.WriteLine(((ISymbol)paper).Flatten().Value);
+Console.WriteLine(((ISymbol)paper).Flatten().Value);
+Console.WriteLine(((ISymbol)paper).Flatten().Value);
