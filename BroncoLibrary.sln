@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BroncoLibrary", "BroncoLibr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BroncoTest", "BroncoTest\BroncoTest.csproj", "{0340353A-0AAB-4433-97E0-43B8971FD3A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSONTestParser", "JSONTestParser\JSONTestParser.csproj", "{4F0FC455-A2D0-438A-ABB6-2C771B323943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSONTestParser", "JSONTestParser\JSONTestParser.csproj", "{4F0FC455-A2D0-438A-ABB6-2C771B323943}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A3A31E1-B8E9-49A3-9A6E-0989C4E55A41}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

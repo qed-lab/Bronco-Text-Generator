@@ -66,22 +66,22 @@ namespace BroncoLibrary
             return Symbol;
         }
 
-        public T GetMetaData<T>(object key)
+        public TData GetMetaData<TData>(object key)
         {
-            return (T)_metaData[key];
+            return (TData)_metaData[key];
         }
 
-        public T GetMetaData<T>(object key, Func<T> fallBack)
+        public TData GetMetaData<TData>(object key, Func<TData> fallBack)
         {
             if(!_metaData.ContainsKey(key))
             {
-                T fallBackValue = fallBack.Invoke();
+                TData fallBackValue = fallBack.Invoke();
                 SetMetaData(key, fallBackValue);
 
                 return fallBackValue;
             }
 
-            return GetMetaData<T>(key);
+            return GetMetaData<TData>(key);
         }
 
         public void SetMetaData(object key, object value)

@@ -33,5 +33,10 @@ namespace BroncoLibrary
         {
             _currentSymbol = value.Flatten();
         }
+
+        public void Set(ISymbol value)
+        {
+            _currentSymbol = value;
+        }
     }
 }
