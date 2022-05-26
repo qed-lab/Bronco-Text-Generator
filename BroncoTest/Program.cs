@@ -73,7 +73,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[]
  */
 
 MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
-    new MetaData<ISymbol>(new Terminal(""), new string[] {"graphics", "ethics"}) };
+    new MetaData<ISymbol>(new Terminal(""), new string[] {"ethics", "procGen"}) };
 
 Bag adjNoun = new Bag();
 Bag paper = new Bag();
@@ -81,7 +81,6 @@ Bag paper = new Bag();
 adjNoun.Add(new MetaData<ISymbol>(new SymbolList() { adjectives.Argue(tags), new Terminal(" "), researchNouns.Argue(tags) }));
 adjNoun.Add(new MetaData<ISymbol>(researchNouns.Argue(tags), 0.5));
 adjNoun.Add(new MetaData<ISymbol>(paper, 0.25));
-
 
 paper.Add(new MetaData<ISymbol>(new SymbolList() { adjNoun, new Terminal(" for "), adjNoun }));
 paper.Add(new MetaData<ISymbol>(new SymbolList() { adjNoun, new Terminal(" in "), adjNoun }));

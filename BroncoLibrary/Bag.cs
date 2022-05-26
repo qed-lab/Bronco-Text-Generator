@@ -25,6 +25,7 @@ namespace BroncoLibrary
             AddEvaluation<MetaData<ISymbol>>(Pick);
         }
 
+        //TODO make picking better: more robust tag filtering system
         public ISymbol Pick()
         {
             (MetaData<ISymbol>, double) best = (null, -double.MaxValue);

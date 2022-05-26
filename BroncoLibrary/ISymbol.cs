@@ -15,16 +15,37 @@ namespace BroncoLibrary
             throw new ArgumentException("This symbol does not accept any arguments");
         }
 
-        public ITerminal Flatten()
+        public T FlattenTo<T>() where T : ISymbol
         {
             ISymbol current = this;
 
-            while(!(current is ITerminal))
+            while (!(current is T))
             {
+                if (current is ITerminal) return default(T);
+
                 current = current.Evaluate();
             }
 
-            return (ITerminal) current;
+            return (T)current;
+        }
+
+        public ISymbol FlattenTo(Type type)
+        {
+            ISymbol current = this;
+
+            while (!type.IsAssignableFrom(current.GetType()))
+            {
+                if (current is ITerminal) return null;
+
+                current = current.Evaluate();
+            }
+
+            return current;
+        }
+
+        public ITerminal Flatten()
+        {
+            return FlattenTo<ITerminal>();
         }
     }
 }

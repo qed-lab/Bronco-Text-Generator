@@ -1,0 +1,22 @@
+= animal =
+cat #furry %1.25
+dog #furry #canine
+rabbit #furry
+dragon %0.6
+lizard
+<animal | animalVar>-<animal | animalVar>
+
+= adjective =
+cute
+scary
+large
+small
+very <adjectives | animalVar> %0.75
+
+<adjectives | animalVar> and <adjectives | animalVar> %0.75
+fuzzy #furry
+mongrel #canine
+
+= story =
+This is a story about a <animalVar = animal>, this particular <animalvar> was <adjective | animalVar>
+

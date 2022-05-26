@@ -50,28 +50,17 @@ namespace BroncoLibrary
         {
             Delegate eval;
 
-            if (!FindEvaluation(args, out eval))
+            if (!FindEvaluation(ref args, out eval))
                 throw new ArgumentException("Arguments do not match any evaluation");
 
             return new ArgumentHolder(eval, args);
         }
 
-        protected bool FindEvaluation(ISymbol[] args, out Delegate outEval)
+        protected bool FindEvaluation(ref ISymbol[] args, out Delegate outEval)
         {
             foreach(var eval in _evaluationList)
             {
-                if (eval.Item1.Length != args.Length) continue;
-
-                bool failed = false;
-                for(int i = 0; i < args.Length; i++)
-                {
-                    if (!eval.Item1[i].IsAssignableFrom(args[i].GetType()))
-                    {
-                        failed = true; break;
-                    }
-                }
-
-                if (failed) continue;
+                if (!EvalMatches(eval.Item1, ref args)) continue;
 
                 outEval = eval.Item2;
                 return true;
@@ -79,6 +68,28 @@ namespace BroncoLibrary
 
             outEval = null;
             return false;
+        }
+
+        private bool EvalMatches(Type[] eval, ref ISymbol[] args)
+        {
+            if (eval.Length != args.Length) return false;
+
+            ISymbol[] flatArgs = new ISymbol[args.Length];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                ISymbol flat = args[i].FlattenTo(eval[i]);
+                if (flat == null)
+                    return false;
+                flatArgs[i] = flat;
+            }
+
+            for(int i = 0; i < args.Length; i++)
+            {
+                args[i] = flatArgs[i];
+            }
+
+            return true;
         }
 
         protected void AddEvaluationDelegate(Delegate eval)
