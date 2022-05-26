@@ -8,6 +8,11 @@ namespace BroncoLibrary
 {
     public interface ISymbol
     {
+        public static readonly ISymbol[] EmptyArgs = new ISymbol[0];
+        public static readonly SymbolVariable[] EmptyArgVars = new SymbolVariable[0];
+
+        public SymbolVariable[] Arguments { get => EmptyArgVars; }
+
         public ISymbol Evaluate();
 
         public ISymbol Argue(ISymbol[] args)

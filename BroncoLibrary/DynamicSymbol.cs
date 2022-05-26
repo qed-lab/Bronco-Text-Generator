@@ -9,9 +9,8 @@ namespace BroncoLibrary
 {
     public abstract class DynamicSymbol : ISymbol
     {
-        public static readonly ISymbol[] EmptyArgs = new ISymbol[0];
-
         //I know this seems janky, and it kinda is, but Microsoft does it with Funcs so that makes it okay right?
+        protected delegate ISymbol EvalVarArgs(ISymbol[] args);
         protected delegate ISymbol EvalArgs();
         protected delegate ISymbol EvalArgs<in T>(T arg) 
             where T : ISymbol;
@@ -28,8 +27,10 @@ namespace BroncoLibrary
 
         private class ArgumentHolder : ISymbol
         {
-            private Delegate _eval;
-            private ISymbol[] _arguments;
+            protected Delegate _eval;
+            protected ISymbol[] _arguments;
+
+            public ISymbol[] Arguments { get => _arguments; }
 
             public ArgumentHolder(Delegate eval, ISymbol[] args)
             {
@@ -41,19 +42,34 @@ namespace BroncoLibrary
                 => (ISymbol)_eval.DynamicInvoke(_arguments);
         }
 
+        private class VarArgHolder : ArgumentHolder
+        {
+            public VarArgHolder(EvalVarArgs eval, ISymbol[] args) : base(eval, args)
+            {
+
+            }
+
+            public new ISymbol Evaluate()
+                => (ISymbol) ((EvalVarArgs) _eval)(_arguments);
+        }
+
         private List<(Type[], Delegate)> _evaluationList = new();
+        private EvalVarArgs _varArgs = null;
 
         public ISymbol Evaluate()
-            => Argue(EmptyArgs);
+            => Argue(ISymbol.EmptyArgs);
 
         public ISymbol Argue(ISymbol[] args)
         {
             Delegate eval;
 
-            if (!FindEvaluation(ref args, out eval))
-                throw new ArgumentException("Arguments do not match any evaluation");
+            if (FindEvaluation(ref args, out eval))
+                return new ArgumentHolder(eval, args);
 
-            return new ArgumentHolder(eval, args);
+            if (_varArgs != null)
+                return new VarArgHolder(_varArgs, args);
+
+            throw new ArgumentException("Arguments do not match any evaluation");
         }
 
         protected bool FindEvaluation(ref ISymbol[] args, out Delegate outEval)
@@ -94,6 +110,9 @@ namespace BroncoLibrary
 
         protected void AddEvaluationDelegate(Delegate eval)
             => _evaluationList.Add((eval.GetType().GenericTypeArguments, eval));
+
+        protected void AddEvaluation(EvalVarArgs eval)
+            => _varArgs = eval;
 
         protected void AddEvaluation(EvalArgs eval)
             => AddEvaluationDelegate(eval);
