@@ -22,11 +22,11 @@ namespace BroncoLibrary
             _random = new Random();
 
             AddEvaluation(Pick);
-            AddEvaluation<MetaData<ISymbol>>(Pick);
+            //AddEvaluation<MetaData<ISymbol>>(Pick);
         }
 
         //TODO make picking better: more robust tag filtering system
-        public ISymbol Pick()
+        public ISymbol Pick(ISymbol[] args)
         {
             (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
 
@@ -34,20 +34,6 @@ namespace BroncoLibrary
             {
                 double rolledWeight = _random.NextDouble() * symbol.Weight;
                 if (rolledWeight > best.Item2)
-                    best = (symbol, rolledWeight);
-            }
-
-            return best.Item1;
-        }
-
-        public ISymbol Pick(MetaData<ISymbol> tagSymbol)
-        {
-            (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
-
-            foreach(var symbol in _symbols)
-            {
-                double rolledWeight = _random.NextDouble()*symbol.Weight;
-                if (rolledWeight > best.Item2 && (symbol.Tags.Count == 0 || TagMatch(tagSymbol.Tags, symbol.Tags)))
                     best = (symbol, rolledWeight);
             }
 

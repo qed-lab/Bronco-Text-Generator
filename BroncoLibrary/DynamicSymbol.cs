@@ -63,7 +63,7 @@ namespace BroncoLibrary
                 SetArgs();
                 return (ISymbol) ((EvalVarArgs) _eval) (_arguments);
             }
-    }
+        }
 
         private List<(Type[], Delegate)> _evaluationList = new();
         private Dictionary<int, SymbolVariable> _argumentLookup = new();
@@ -88,15 +88,12 @@ namespace BroncoLibrary
         {
             Delegate eval;
 
-            bool normalEval = FindEvaluation(ref args, out eval);
-            bool varEval = _varArgEvaluation != null;
-
-            if(!(normalEval || varEval)) throw new ArgumentException("Arguments do not match any evaluation");
-
-            if (normalEval)
+            if (FindEvaluation(ref args, out eval))
                 return new ArgumentHolder(eval, args, this);
-            else
+            if(_varArgEvaluation != null)
                 return new VarArgHolder(_varArgEvaluation, args, this);
+
+            throw new ArgumentException("Arguments do not match any evaluation");
         }
 
         protected bool FindEvaluation(ref ISymbol[] args, out Delegate outEval)
