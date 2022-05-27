@@ -39,7 +39,7 @@ namespace BroncoLibrary
                 _callee = callee;
             }
 
-            public ISymbol Evaluate()
+            public virtual ISymbol Evaluate()
             {
                 SetArgs();
                 return (ISymbol) _eval.DynamicInvoke(_arguments);
@@ -58,7 +58,7 @@ namespace BroncoLibrary
         {
             public VarArgHolder(EvalVarArgs eval, ISymbol[] args, DynamicSymbol callee) : base(eval, args, callee) { }
 
-            public new ISymbol Evaluate()
+            public override ISymbol Evaluate()
             {
                 SetArgs();
                 return (ISymbol) ((EvalVarArgs) _eval) (_arguments);

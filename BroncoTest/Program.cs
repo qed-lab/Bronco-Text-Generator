@@ -4,6 +4,7 @@ using BroncoTest;
 VariableSetter setter = new VariableSetter();
 SymbolVariable pickedAnimal = new SymbolVariable();
 
+/*
 Bag adjectives = new Bag();
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Theoretical"), new string[] { "theory" }));
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Applied"), new string[] { "applied" }));
@@ -71,7 +72,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[]
  * security
  * math
  */
-
+/*
 MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
     new MetaData<ISymbol>(new Terminal(""), new string[] {"ai", "algs", "ethics", "procGen", "hardware", "theory", "applied", "security", "math"}) };
 
@@ -91,3 +92,9 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
+*/
+
+Bag test = new();
+test.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Tell me about "), test.GetArgument(0) }));
+
+Console.WriteLine(test.Argue(new ISymbol[] { new Terminal("a succesful test") }).Flatten().Value);
