@@ -10,33 +10,21 @@ namespace BroncoLibrary
     {
         private ISymbol _currentSymbol = null;
 
-        public SymbolVariable()
-        {
-        }
+        public SymbolVariable() { }
 
         public SymbolVariable(ISymbol symbol)
-        {
-            SetToFlatten(symbol);
-        }
+            => SetToFlatten(symbol);
 
         public ISymbol Evaluate()
-        {
-            return _currentSymbol;
-        }
+            => _currentSymbol;
 
         public ISymbol Argue(ISymbol[]  args)
-        {
-            return _currentSymbol.Argue(args);
-        } 
+            => _currentSymbol.Argue(args);
 
         public void SetToFlatten(ISymbol value)
-        {
-            _currentSymbol = value.Flatten();
-        }
+            => _currentSymbol = value.Flatten();
 
         public void Set(ISymbol value)
-        {
-            _currentSymbol = value;
-        }
+            => _currentSymbol = value;
     }
 }

@@ -12,7 +12,7 @@ namespace BroncoLibrary
 
         public ISymbol Evaluate();
 
-        public ISymbol GetArgument(int index) 
+        public SymbolVariable GetArgument(int index) 
             => throw new ArgumentException("This symbol does not have any arguments");
 
         public ISymbol Argue(ISymbol[] args)

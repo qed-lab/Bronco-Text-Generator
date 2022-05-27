@@ -30,26 +30,40 @@ namespace BroncoLibrary
         {
             protected Delegate _eval;
             protected ISymbol[] _arguments;
+            protected DynamicSymbol _callee;
 
-            public ArgumentHolder(Delegate eval, ISymbol[] args)
+            public ArgumentHolder(Delegate eval, ISymbol[] args, DynamicSymbol callee)
             {
                 _eval = eval;
                 _arguments = args;
+                _callee = callee;
             }
 
             public ISymbol Evaluate()
-                => (ISymbol)_eval.DynamicInvoke(_arguments);
+            {
+                SetArgs();
+                return (ISymbol) _eval.DynamicInvoke(_arguments);
+            }
 
             public ISymbol GetArgument(int index) => _arguments[index];
+
+            protected void SetArgs()
+            {
+                foreach (int i in _callee._argumentLookup.Keys)
+                    _callee._argumentLookup[i].Set(_arguments[i]);
+            }
         }
 
         private class VarArgHolder : ArgumentHolder
         {
-            public VarArgHolder(EvalVarArgs eval, ISymbol[] args) : base(eval, args) { }
+            public VarArgHolder(EvalVarArgs eval, ISymbol[] args, DynamicSymbol callee) : base(eval, args, callee) { }
 
             public new ISymbol Evaluate()
-                => (ISymbol) ((EvalVarArgs) _eval)(_arguments);
-        }
+            {
+                SetArgs();
+                return (ISymbol) ((EvalVarArgs) _eval) (_arguments);
+            }
+    }
 
         private List<(Type[], Delegate)> _evaluationList = new();
         private Dictionary<int, SymbolVariable> _argumentLookup = new();
@@ -79,15 +93,10 @@ namespace BroncoLibrary
 
             if(!(normalEval || varEval)) throw new ArgumentException("Arguments do not match any evaluation");
 
-            foreach(int i in _argumentLookup.Keys)
-                _argumentLookup[i].Set(args[i]);
-
-            _argumentLookup.Clear();
-
             if (normalEval)
-                return new ArgumentHolder(eval, args);
+                return new ArgumentHolder(eval, args, this);
             else
-                return new VarArgHolder(_varArgEvaluation, args);
+                return new VarArgHolder(_varArgEvaluation, args, this);
         }
 
         protected bool FindEvaluation(ref ISymbol[] args, out Delegate outEval)
