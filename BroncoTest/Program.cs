@@ -1,4 +1,5 @@
 ﻿using BroncoLibrary;
+using BroncoParser;
 using BroncoTest;
 
 VariableSetter setter = new VariableSetter();
@@ -94,7 +95,13 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
 
-Bag test = new();
-test.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Tell me about "), test.GetArgument(0) }));
 
-Console.WriteLine(test.Argue(new ISymbol[] { new Terminal("a succesful test") }).Flatten().Value);
+ISymbol root = GeneratorParser.ParseString(@"
+=start=
+Dog
+Cat
+Bird
+");
+
+Console.WriteLine(root.Flatten().Value);
+

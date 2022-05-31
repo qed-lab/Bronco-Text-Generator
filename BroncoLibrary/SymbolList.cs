@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class SymbolList : ISymbol, ICollection<ISymbol>
+    public class SymbolList : ISymbol
     {
         private List<ISymbol> _symbols;
 
@@ -17,6 +17,11 @@ namespace BroncoLibrary
         public SymbolList()
         {
             _symbols = new List<ISymbol>();
+        }
+
+        public SymbolList(IEnumerable<ISymbol> symbols)
+        {
+            _symbols = new List<ISymbol>(symbols);
         }
 
         public ISymbol Evaluate()
@@ -32,17 +37,5 @@ namespace BroncoLibrary
         }
 
         public void Add(ISymbol item) => _symbols.Add(item);
-
-        public void Clear() => _symbols.Clear();
-
-        public bool Contains(ISymbol item) => _symbols.Contains(item);
-
-        public void CopyTo(ISymbol[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
-
-        public bool Remove(ISymbol item) => _symbols.Remove(item);
-
-        public IEnumerator<ISymbol> GetEnumerator() => GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }
 }

@@ -18,11 +18,17 @@ namespace BroncoLibrary
 
         public Bag()
         {
+        }
+
+        public Bag(IEnumerable<MetaData<ISymbol>> items)
+        {
             _symbols = new();
             _random = new();
 
+            foreach (var item in items)
+                _symbols.Add((item, new BoolSymbol(true)));
+
             AddEvaluation(Pick);
-            //AddEvaluation<MetaData<ISymbol>>(Pick);
         }
 
         //TODO make arguments actually do something
