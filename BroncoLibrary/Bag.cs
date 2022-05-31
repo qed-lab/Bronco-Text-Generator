@@ -10,7 +10,7 @@ namespace BroncoLibrary
 {
     public class Bag : DynamicSymbol, ICollection<MetaData<ISymbol>>
     {
-        private List<MetaData<ISymbol>> _symbols;
+        private List<(MetaData<ISymbol>, BoolSymbol)> _symbols;
         private Random _random;
 
         public int Count => _symbols.Count;
@@ -18,8 +18,8 @@ namespace BroncoLibrary
 
         public Bag()
         {
-            _symbols = new List<MetaData<ISymbol>>();
-            _random = new Random();
+            _symbols = new();
+            _random = new();
 
             AddEvaluation(Pick);
             //AddEvaluation<MetaData<ISymbol>>(Pick);
@@ -32,9 +32,9 @@ namespace BroncoLibrary
 
             foreach (var symbol in _symbols)
             {
-                double rolledWeight = _random.NextDouble() * symbol.Weight;
+                double rolledWeight = _random.NextDouble() * symbol.Item1.Weight;
                 if (rolledWeight > best.Item2)
-                    best = (symbol, rolledWeight);
+                    best = (symbol.Item1, rolledWeight);
             }
 
             return best.Item1;

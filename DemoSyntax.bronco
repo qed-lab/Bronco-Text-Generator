@@ -1,22 +1,48 @@
-= animal =
+//Syntax
+
+
+//Bag
+= bagName =
+item 1 ...
+item 2 ...
+
+//Bag w/ argument
+= bagName: arg1, arg2 =
+items ...
+
+//Nonterminals
+Terminal, normal text <nonTerminal> more regular text <anotherNonTerminal>.
+
+//Nonterminal w/ argument
+Regular text <nonTerminal: arg1, arg2, arg3> text.
+
+//Metadata
+Symbols <nonTerminal> text #tag1 #tag2 %0.5 #otherMetaData:Value
+
+//Variables
+Just text <varName = value> more text
+//Same as
+Just text <setter: varName, value> more text
+
+//Demo
+= animal: tag =
 cat #furry %1.25
 dog #furry #canine
 rabbit #furry
 dragon %0.6
 lizard
-<animal | animalVar>-<animal | animalVar>
+<animal: tag>-<animal: tag>
 
-= adjective =
+= adjective | tag =
 cute
 scary
 large
 small
-very <adjectives | animalVar> %0.75
-
-<adjectives | animalVar> and <adjectives | animalVar> %0.75
+very <adjectives: tag> %0.75
+<adjectives: tag> and <adjectives: tag> %0.75
 fuzzy #furry
 mongrel #canine
 
 = story =
-This is a story about a <animalVar = animal>, this particular <animalvar> was <adjective | animalVar>
+This is a story about a <animalVar = animal>, this particular <animalvar> was <adjective: animalVar>
 
