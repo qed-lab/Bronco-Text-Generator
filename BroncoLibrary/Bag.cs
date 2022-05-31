@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Bag : DynamicSymbol, ICollection<MetaData<ISymbol>>
+    public class Bag : DynamicSymbol, ICollection<(MetaData<ISymbol>, BoolSymbol)>
     {
         private List<(MetaData<ISymbol>, BoolSymbol)> _symbols;
         private Random _random;
@@ -50,17 +50,17 @@ namespace BroncoLibrary
             return false;
         }
 
-        public void Add(MetaData<ISymbol> item) => _symbols.Add(item);
+        public void Add((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Add(item);
 
         public void Clear() => _symbols.Clear();
 
-        public bool Contains(MetaData<ISymbol> item) => _symbols.Contains(item);
+        public bool Contains((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Contains(item);
 
-        public void CopyTo(MetaData<ISymbol>[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
+        public void CopyTo((MetaData<ISymbol>, BoolSymbol)[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
 
-        public bool Remove(MetaData<ISymbol> item) => _symbols.Remove(item);
+        public bool Remove((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Remove(item);
 
-        public IEnumerator<MetaData<ISymbol>> GetEnumerator() => GetEnumerator();
+        public IEnumerator<(MetaData<ISymbol>, BoolSymbol)> GetEnumerator() => GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
     }
