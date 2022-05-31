@@ -95,6 +95,6 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
 
 Bag test = new();
-test.Add((new MetaData<ISymbol>(new SymbolList() { new Terminal("Tell me about "), test.GetArgument(0) }), new BoolSymbol(true)));
+test.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Tell me about "), test.GetArgument(0) }));
 
 Console.WriteLine(test.Argue(new ISymbol[] { new Terminal("a succesful test") }).Flatten().Value);

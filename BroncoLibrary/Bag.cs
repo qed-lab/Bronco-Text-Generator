@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class Bag : DynamicSymbol, ICollection<(MetaData<ISymbol>, BoolSymbol)>
+    public class Bag : DynamicSymbol
     {
-        private List<(MetaData<ISymbol>, BoolSymbol)> _symbols;
+        private List<(MetaData<ISymbol>, ISymbol)> _symbols;
         private Random _random;
 
         public int Count => _symbols.Count;
@@ -50,18 +50,8 @@ namespace BroncoLibrary
             return false;
         }
 
-        public void Add((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Add(item);
+        public void Add(MetaData<ISymbol> symbol, ISymbol condition) => _symbols.Add((symbol, condition));
 
-        public void Clear() => _symbols.Clear();
-
-        public bool Contains((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Contains(item);
-
-        public void CopyTo((MetaData<ISymbol>, BoolSymbol)[] array, int arrayIndex) => _symbols.CopyTo(array, arrayIndex);
-
-        public bool Remove((MetaData<ISymbol>, BoolSymbol) item) => _symbols.Remove(item);
-
-        public IEnumerator<(MetaData<ISymbol>, BoolSymbol)> GetEnumerator() => GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => _symbols.GetEnumerator();
+        public void Add(MetaData<ISymbol> symbol) => Add(symbol, new BoolSymbol(true));
     }
 }
