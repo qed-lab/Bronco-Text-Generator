@@ -15,7 +15,7 @@ namespace BroncoParser
 
         public static ISymbol ParseString(string input)
         {
-            return Generator.Parse(input);
+            return Bag.Parse(input);
         }
 
         public static SymbolVariable GetReference(string key)
@@ -30,10 +30,10 @@ namespace BroncoParser
             return reference;
         }
 
-        public static SymbolVariable AddReference(string key, ISymbol reference)
+        public static SymbolVariable SetReference(string key, ISymbol reference)
         {
-            var item = new SymbolVariable(reference);
-            SymbolReferences[key] = item;
+            SymbolVariable item = GetReference(key);
+            item.Set(reference);
 
             return item;
         }
@@ -45,10 +45,7 @@ namespace BroncoParser
             select GetReference(reference);
 
         public static readonly Parser<Terminal> Terminal =
-            from text in
-            (from not in Parse.Not(NonTerminal)
-             from c in Parse.CharExcept('\r')
-             select c).Many().Text()
+            from text in Parse.AnyChar.Until(NonTerminal).Text()
             select new Terminal(text);
 
         public static readonly Parser<string> BagTitle =
@@ -58,13 +55,14 @@ namespace BroncoParser
             select title;
 
         public static readonly Parser<SymbolList> SymbolList =
-            from symbols in Parse.Or(Terminal, NonTerminal).Many()
+            from symbols in Parse.Or(Terminal, NonTerminal).Until(Parse.String(Environment.NewLine))
             select new SymbolList(symbols);
 
         public static readonly Parser<ISymbol> Bag =
-            from title in BagTitle.Select(s => s)
+            from title in BagTitle
+            from br in Parse.String(Environment.NewLine)
             from items in SymbolList.Select(s => new MetaData<ISymbol>(s)).Many()
-            select AddReference(title, new Bag(items));
+            select SetReference(title, new Bag(items));
 
         public static readonly Parser<ISymbol> Generator =
             from bags in Bag.Many()

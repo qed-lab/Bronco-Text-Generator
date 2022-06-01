@@ -96,12 +96,10 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
 
 
-ISymbol root = GeneratorParser.ParseString(@"
-=start=
+ISymbol root = GeneratorParser.ParseString(@"=start=
 Dog
 Cat
-Bird
-");
+Bird");
 
 Console.WriteLine(root.Flatten().Value);
 
