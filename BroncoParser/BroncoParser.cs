@@ -4,18 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BroncoLibrary;
-using Sprache;
 
 namespace BroncoParser
 {
-    public static class GeneratorParser
+    public class GeneratorParser : BParse
     {
         private static string nameChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
 
         public static ISymbol ParseString(string input)
         {
-            return Bag.Parse(input);
+            return Parse(Bag, ref input);
+        }
+
+        public static void Test()
+        {
+            string input = 
+@"this is line 1
+the other line
+";
+            var output = Parse(Or(NonTerminal, Terminal)
+                .Until(String(Environment.NewLine)), ref input);
+
+            Console.WriteLine(output);
         }
 
         public static SymbolVariable GetReference(string key)
@@ -37,35 +48,53 @@ namespace BroncoParser
 
             return item;
         }
- 
-        public static readonly Parser<ISymbol> NonTerminal =
-            from openBrace in Parse.Char('<').Once()
-            from reference in Parse.Chars(nameChars).Many().Text()
-            from closeBrace in Parse.Char('>').Once()
-            select GetReference(reference);
 
-        public static readonly Parser<Terminal> Terminal =
-            from text in Parse.AnyChar.Until(NonTerminal).Text()
-            select new Terminal(text);
+        public static Parser<ISymbol> NonTerminal = (string input) =>
+        {
+            Parse(Char('<'), ref input);
+            string reference = Parse(Char(nameChars).Many().String(), ref input);
+            Parse(Char('>'), ref input);
 
-        public static readonly Parser<string> BagTitle =
-            from openBrace in Parse.Char('=').Once()
-            from title in Parse.Chars(nameChars).Many().Text()
-            from closeBrace in Parse.Char('=').Once()
-            select title;
+            return GetReference(reference).Result<ISymbol>(input);
+        };
 
-        public static readonly Parser<SymbolList> SymbolList =
-            from symbols in Parse.Or(Terminal, NonTerminal).Until(Parse.String(Environment.NewLine))
-            select new SymbolList(symbols);
+        public static Parser<ISymbol> Terminal = (string input) =>
+        {
+            string text = Parse(AnyChar().Until(NonTerminal).String(), ref input);
 
-        public static readonly Parser<ISymbol> Bag =
-            from title in BagTitle
-            from br in Parse.String(Environment.NewLine)
-            from items in SymbolList.Select(s => new MetaData<ISymbol>(s)).Many()
-            select SetReference(title, new Bag(items));
+            return new Terminal(text).Result<ISymbol>(input);
+        };
 
-        public static readonly Parser<ISymbol> Generator =
-            from bags in Bag.Many()
-            select GetReference("start");
+
+        public static Parser<ISymbol> SymbolList = (string input) =>
+        {
+            return new SymbolList(Parse(Or(NonTerminal, Terminal)
+                .Until(String(Environment.NewLine)), ref input)).Result<ISymbol>(input);
+        };
+
+        public static Parser<string> BagTitle = (string input) =>
+        {
+            Parse(Char('='), ref input);
+            string title = Parse(Char(nameChars).Many().String(), ref input);
+            Parse(Char('='), ref input);
+
+            return title.Result(input);
+        };
+
+        public static Parser<ISymbol> Bag = (string input) =>
+        {
+            string title = Parse(BagTitle, ref input);
+            Parse(String(Environment.NewLine), ref input);
+            IEnumerable<MetaData<ISymbol>> items = Parse(SymbolList.Map(s => new MetaData<ISymbol>(s)).Many(), ref input);
+
+            return SetReference(title, new Bag(items)).Result<ISymbol>(input);
+        };
+
+        public static Parser<ISymbol> Generator = (string input) =>
+        {
+            Parse(Bag.Many(), ref input);
+
+            return GetReference("start").Result<ISymbol>(input);
+        };
     }
 }
