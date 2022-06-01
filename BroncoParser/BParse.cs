@@ -71,8 +71,16 @@ namespace BroncoParser
                 return new Result<string>();
             };
         }
+    }
 
-        public static Parser<T> Or<T>(Parser<T> parser1, Parser<T> parser2)
+    public static class ParseExtensions
+    {
+        public static Result<T> Result<T>(this T value, string remainder)
+        {
+            return new Result<T>(value, remainder);
+        }
+
+        public static Parser<T> Or<T>(this Parser<T> parser1, Parser<T> parser2)
         {
             return (input) =>
             {
@@ -83,14 +91,6 @@ namespace BroncoParser
 
                 return result;
             };
-        }
-    }
-
-    public static class ParseExtensions
-    {
-        public static Result<T> Result<T>(this T value, string remainder)
-        {
-            return new Result<T>(value, remainder);
         }
 
         public static Parser<IEnumerable<T>> Many<T>(this Parser<T> parser)

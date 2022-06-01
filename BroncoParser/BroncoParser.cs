@@ -23,8 +23,10 @@ namespace BroncoParser
 @"this is line 1
 the other line
 ";
-            var output = Parse(Or(NonTerminal, Terminal)
-                .Until(String(Environment.NewLine)), ref input);
+            //var output = Parse(AnyChar()
+            //    .Until(String(Environment.NewLine)), ref input);
+
+            var output = Parse(Terminal, ref input);
 
             Console.WriteLine(output);
         }
@@ -60,7 +62,7 @@ the other line
 
         public static Parser<ISymbol> Terminal = (string input) =>
         {
-            string text = Parse(AnyChar().Until(NonTerminal).String(), ref input);
+            string text = Parse(AnyChar().Until(NonTerminal.Or(Char(Environment.NewLine))).String(), ref input);
 
             return new Terminal(text).Result<ISymbol>(input);
         };
@@ -68,7 +70,7 @@ the other line
 
         public static Parser<ISymbol> SymbolList = (string input) =>
         {
-            return new SymbolList(Parse(Or(NonTerminal, Terminal)
+            return new SymbolList(Parse(NonTerminal.Or(Terminal)
                 .Until(String(Environment.NewLine)), ref input)).Result<ISymbol>(input);
         };
 
