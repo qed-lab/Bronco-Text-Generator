@@ -11,11 +11,12 @@ namespace BroncoParser
     {
         private static string nameChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
-
+        /*
         public static ISymbol ParseString(string input)
         {
             return Parse(Bag, ref input);
         }
+        */
 
         public static void Test()
         {
@@ -23,12 +24,13 @@ namespace BroncoParser
 @"this is line 1
 the other line
 ";
-            //var output = Parse(AnyChar()
-            //    .Until(String(Environment.NewLine)), ref input);
 
-            var output = Parse(Terminal, ref input);
+            ISymbol root = null;
 
-            Console.WriteLine(output);
+            Terminal.Put(root)
+            (input);
+
+            Console.WriteLine(root.Flatten().Value);
         }
 
         public static SymbolVariable GetReference(string key)
@@ -51,52 +53,78 @@ the other line
             return item;
         }
 
+        /*
+         * Actual parser from here on.
+         */
+
         public static Parser<ISymbol> NonTerminal = (string input) =>
         {
-            Parse(Char('<'), ref input);
-            string reference = Parse(Char(nameChars).Many().String(), ref input);
-            Parse(Char('>'), ref input);
+            string reference = null;
 
-            return GetReference(reference).Result<ISymbol>(input);
+            var result =
+            Char('<')
+            .Then(Char(nameChars).Many().String().Put(reference))
+            .Then(Char('>'))
+            (input);
+
+            return Result<ISymbol>(() => GetReference(reference), result);
         };
 
         public static Parser<ISymbol> Terminal = (string input) =>
         {
-            string text = Parse(AnyChar().Until(NonTerminal.Or(Char(Environment.NewLine))).String(), ref input);
+            string text = null;
 
-            return new Terminal(text).Result<ISymbol>(input);
+            var result =
+            AnyChar
+            .Until(NonTerminal.Or(NewLine))
+            .String().Put(text)
+            (input);
+
+            return Result<ISymbol>(() => new Terminal(text), result);
         };
 
 
         public static Parser<ISymbol> SymbolList = (string input) =>
         {
-            return new SymbolList(Parse(NonTerminal.Or(Terminal)
-                .Until(String(Environment.NewLine)), ref input)).Result<ISymbol>(input);
+            var result =
+            NonTerminal.Or<ISymbol>(Terminal)
+            .Until(NewLine)
+            (input);
+
+            return Result<ISymbol>(() => new SymbolList(result.Value), result);
         };
 
         public static Parser<string> BagTitle = (string input) =>
         {
-            Parse(Char('='), ref input);
-            string title = Parse(Char(nameChars).Many().String(), ref input);
-            Parse(Char('='), ref input);
+            string title = null;
 
-            return title.Result(input);
+            var result = 
+            Char('=')
+            .Then(Char(nameChars).Many().String().Put(title))
+            .Then(Char('='))
+            (input);
+
+            return Result(() => title, result);
         };
 
         public static Parser<ISymbol> Bag = (string input) =>
         {
-            string title = Parse(BagTitle, ref input);
-            Parse(String(Environment.NewLine), ref input);
-            IEnumerable<MetaData<ISymbol>> items = Parse(SymbolList.Map(s => new MetaData<ISymbol>(s)).Many(), ref input);
+            string title = null;
+            IEnumerable<MetaData<ISymbol>> items = null;
 
-            return SetReference(title, new Bag(items)).Result<ISymbol>(input);
+            var result =
+            BagTitle.Put(title)
+            .Then(NewLine)
+            .Then(
+                SymbolList.Map(s => new MetaData<ISymbol>(s)).Many().Put(items))
+            (input);
+
+            return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);
         };
 
-        public static Parser<ISymbol> Generator = (string input) =>
+        public static Parser<IEnumerable<ISymbol>> Generator = (string input) =>
         {
-            Parse(Bag.Many(), ref input);
-
-            return GetReference("start").Result<ISymbol>(input);
+            return Bag.Many()(input);
         };
     }
 }
