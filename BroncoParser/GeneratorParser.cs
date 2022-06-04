@@ -11,28 +11,28 @@ namespace BroncoParser
     {
         private static string nameChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
-        
+
+        public static void Test()
+        {
+            string input =
+@"thing1
+thing2
+thing3";
+
+            IList<string> output = null;
+            var result = AnyChar.Until(NewLine).String().Split(NewLine)
+            .Do(s => output = s)
+            (input);
+
+            Console.WriteLine("Final: " + output);
+        }
+
         public static ISymbol ParseString(string input)
         {
             Generator(input);
             var local = SymbolReferences;
 
             return GetReference("start");
-        }
-
-        public static void Test()
-        {
-            string input =
-@"Dog
-Cat
-Bird";
-
-            IEnumerable<ISymbol> output = null;
-            var result = Terminal.ThenConsume(NewLine.Optional())
-            .Many().Do(s => output = s)
-            (input);
-
-            Console.WriteLine("Final: " + output);
         }
 
         public static SymbolVariable GetReference(string key)
@@ -78,7 +78,7 @@ Bird";
 
             var result =
             AnyChar
-            .Until(NonTerminal.Or(NewLine).Or(EndOfInput))
+            .Until(NonTerminal.Or(NewLine))
             .String().Do((s) => text = s)
             (input);
 
@@ -125,7 +125,7 @@ Bird";
             return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);
         };
 
-        public static Parser<IEnumerable<ISymbol>> Generator = (string input) =>
+        public static Parser<IList<ISymbol>> Generator = (string input) =>
         {
             return Bag.Many()(input);
         };

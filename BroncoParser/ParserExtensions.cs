@@ -15,7 +15,8 @@ namespace BroncoParser
             {
                 var result = parser(input);
 
-                action(result.Value);
+                if(result.Success)
+                    action(result.Value);
 
                 return result;
             };
@@ -74,7 +75,7 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<IEnumerable<T>> Until<T, U>(this Parser<T> parser, Parser<U> until)
+        public static Parser<IList<T>> Until<T, U>(this Parser<T> parser, Parser<U> until)
         {
             return (input) =>
             {
@@ -93,13 +94,32 @@ namespace BroncoParser
                 }
 
                 return results.Count == 0 ? 
-                new Result<IEnumerable<T>>() : new Result<IEnumerable<T>>(results, parsed);
+                new Result<IList<T>>() : new Result<IList<T>>(results, parsed);
             };
         }
 
-        public static Parser<IEnumerable<T>> Many<T>(this Parser<T> parser)
+        public static Parser<IList<T>> Many<T>(this Parser<T> parser)
         {
             return Until(parser, parser.Not());
+        }
+
+        public static Parser<IList<T>> Add<T>(this Parser<IList<T>> parser1, Parser<T> parser2)
+        {
+            return (input) =>
+            {
+                var result1 = parser1(input);
+
+                if(result1.Success)
+                {
+                    var result2 = parser2(result1.Remainder);
+                    return BParse.Result<IList<T>>(() => {
+                        result1.Value.Add(result2.Value);
+                        return result1.Value;
+                        }, result2);
+                }
+
+                return new Result<IList<T>>();
+            };
         }
 
         public static Parser<T> Optional<T>(this Parser<T> parser)
@@ -126,7 +146,7 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<string> String<T>(this Parser<IEnumerable<T>> parser)
+        public static Parser<string> String<T>(this Parser<IList<T>> parser)
         {
             return (input) =>
             {
@@ -162,6 +182,11 @@ namespace BroncoParser
 
                 return result.Success ? new Result<bool>() : new Result<bool>(true, input);
             };
+        }
+
+        public static Parser<IList<T>> Split<T, U>(this Parser<T> parser, Parser<U> split)
+        {
+            return parser.ThenConsume(split).Many().Add(parser);
         }
     }
 }
