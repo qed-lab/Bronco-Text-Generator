@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sprache;
 
 namespace BroncoParser
 {
     public static class ParseExtensions
     {
-        public static Parser<T> Put<T>(this Parser<T> parser, T ?output)
+        public static Parser<T> Do<T>(this Parser<T> parser, Action<T> action)
         {
             return (input) =>
             {
                 var result = parser(input);
 
-                output = result.Value;
+                action(result.Value);
 
                 return result;
             };
@@ -42,7 +43,8 @@ namespace BroncoParser
                 if (!result.Success)
                     result = parser2(input);
 
-                return new Result<Object>();
+
+                return BParse.Result<object>(() => result.Value, result);
             };
         }
 
@@ -63,22 +65,13 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<IEnumerable<T>> Many<T>(this Parser<T> parser)
+        public static Parser<T> ThenConsume<T, U>(this Parser<T> parser1, Parser<U> parser2)
         {
             return (input) =>
             {
-                List<T> results = new List<T>();
-                var output = parser(input);
-                var parsed = input;
-
-                while (output.Success)
-                {
-                    results.Add(output.Value);
-                    parsed = output.Remainder;
-                    output = parser(parsed);
-                }
-
-                return new Result<IEnumerable<T>>(results, parsed);
+                var result = parser1.Then(parser2)(input);
+                Console.WriteLine("Then Consume: " + result.Success);
+                return BParse.Result(() => result.Value.Item1, result);
             };
         }
 
@@ -88,19 +81,26 @@ namespace BroncoParser
             {
                 List<T> results = new List<T>();
 
-                var parse = parser(input);
-                var terminate = until(input);
+                var parsed = input;
+                var parse = parser(parsed);
+                var terminate = until(parsed);
 
                 while (!terminate.Success && parse.Success)
                 {
                     results.Add(parse.Value);
-                    input = parse.Remainder;
-                    parse = parser(input);
-                    terminate = until(input);
+                    parsed = parse.Remainder;
+                    parse = parser(parsed);
+                    terminate = until(parsed);
                 }
 
-                return new Result<IEnumerable<T>>(results, input);
+                return results.Count == 0 ? 
+                new Result<IEnumerable<T>>() : new Result<IEnumerable<T>>(results, parsed);
             };
+        }
+
+        public static Parser<IEnumerable<T>> Many<T>(this Parser<T> parser)
+        {
+            return Until(parser, parser.Not());
         }
 
         public static Parser<T> Optional<T>(this Parser<T> parser)
@@ -147,11 +147,21 @@ namespace BroncoParser
         {
             return (input) =>
             {
-                var output = parser(input);
+                var result = parser(input);
 
-                if (output.Success) return new Result<U>(map(output.Value), output.Remainder);
+                if (result.Success) return new Result<U>(map(result.Value), result.Remainder);
 
                 return new Result<U>();
+            };
+        }
+
+        public static Parser<bool> Not<T>(this Parser<T> parser)
+        {
+            return (input) =>
+            {
+                var result = parser(input);
+
+                return result.Success ? new Result<bool>() : new Result<bool>(true, input);
             };
         }
     }

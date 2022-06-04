@@ -11,26 +11,27 @@ namespace BroncoParser
     {
         private static string nameChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
-        /*
+        
         public static ISymbol ParseString(string input)
         {
-            return Parse(Bag, ref input);
+            Generator(input);
+            var local = SymbolReferences;
+
+            return GetReference("start");
         }
-        */
 
         public static void Test()
         {
-            string input = 
-@"this is line 1
-the other line
-";
+            string input =
+@"Dog
+Cat
+Bird";
 
-            ISymbol root = null;
-
-            Terminal.Put(root)
+            ISymbol output = null;
+            var result = Terminal.Many()
             (input);
 
-            Console.WriteLine(root.Flatten().Value);
+            Console.WriteLine("Final: " + output);
         }
 
         public static SymbolVariable GetReference(string key)
@@ -63,7 +64,7 @@ the other line
 
             var result =
             Char('<')
-            .Then(Char(nameChars).Many().String().Put(reference))
+            .Then(Char(nameChars).Many().String().Do((s) => reference = s))
             .Then(Char('>'))
             (input);
 
@@ -76,8 +77,8 @@ the other line
 
             var result =
             AnyChar
-            .Until(NonTerminal.Or(NewLine))
-            .String().Put(text)
+            .Until(NonTerminal.Or(NewLine).Or(EndOfInput))
+            .String().Do((s) => text = s)
             (input);
 
             return Result<ISymbol>(() => new Terminal(text), result);
@@ -87,7 +88,7 @@ the other line
         public static Parser<ISymbol> SymbolList = (string input) =>
         {
             var result =
-            NonTerminal.Or<ISymbol>(Terminal)
+            (NonTerminal.Or<ISymbol>(Terminal))
             .Until(NewLine)
             (input);
 
@@ -100,7 +101,7 @@ the other line
 
             var result = 
             Char('=')
-            .Then(Char(nameChars).Many().String().Put(title))
+            .Then(Char(nameChars).Many().String().Do((s) => title = s))
             .Then(Char('='))
             (input);
 
@@ -113,10 +114,10 @@ the other line
             IEnumerable<MetaData<ISymbol>> items = null;
 
             var result =
-            BagTitle.Put(title)
+            BagTitle.Do((s) => title = s)
             .Then(NewLine)
             .Then(
-                SymbolList.Map(s => new MetaData<ISymbol>(s)).Many().Put(items))
+                SymbolList.Map(s => new MetaData<ISymbol>(s)).Many().Do((s) => items = s))
             (input);
 
             return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);

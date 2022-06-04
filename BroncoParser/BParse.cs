@@ -57,5 +57,8 @@ namespace BroncoParser
         }
 
         public static Parser<string> NewLine = String(Environment.NewLine);
+
+        public static Parser<string> EndOfInput = (string input) 
+            => input.Length == 0 ? new Result<string>("", "") : new Result<string>();
     }
 }
