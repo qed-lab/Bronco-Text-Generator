@@ -70,7 +70,6 @@ namespace BroncoParser
             return (input) =>
             {
                 var result = parser1.Then(parser2)(input);
-                Console.WriteLine("Then Consume: " + result.Success);
                 return BParse.Result(() => result.Value.Item1, result);
             };
         }

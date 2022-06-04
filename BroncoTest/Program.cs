@@ -95,14 +95,18 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
 
-/*
+
 ISymbol root = GeneratorParser.ParseString(@"=start=
 Dog
 Cat
 Bird");
 
 Console.WriteLine(root.Flatten().Value);
-*/
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
 
-GeneratorParser.Test();
+
+//GeneratorParser.Test();
 

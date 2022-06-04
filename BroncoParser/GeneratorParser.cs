@@ -27,8 +27,9 @@ namespace BroncoParser
 Cat
 Bird";
 
-            ISymbol output = null;
-            var result = Terminal.Many()
+            IEnumerable<ISymbol> output = null;
+            var result = Terminal.ThenConsume(NewLine.Optional())
+            .Many().Do(s => output = s)
             (input);
 
             Console.WriteLine("Final: " + output);
@@ -117,7 +118,8 @@ Bird";
             BagTitle.Do((s) => title = s)
             .Then(NewLine)
             .Then(
-                SymbolList.Map(s => new MetaData<ISymbol>(s)).Many().Do((s) => items = s))
+                SymbolList.Map(s => new MetaData<ISymbol>(s)).ThenConsume(NewLine.Optional())
+                .Many().Do((s) => items = s))
             (input);
 
             return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);
