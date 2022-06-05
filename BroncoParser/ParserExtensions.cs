@@ -83,9 +83,9 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<U> Next<T, U>(this Parser<T> parser1, Parser<U> parser2)
+        public static Parser<T> Trim<T>(this Parser<T> parser)
         {
-            return parser1.ThenConsume(BParse.InlineWhiteSpace.Many()).Then(parser2);
+            return BParse.WhiteSpace.Many().Then(parser).ThenConsume(BParse.InlineWhiteSpace.Many());
         }
 
         public static Parser<IList<T>> Until<T, U>(this Parser<T> parser, Parser<U> until)

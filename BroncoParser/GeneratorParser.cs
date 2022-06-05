@@ -67,13 +67,15 @@ namespace BroncoParser
         public static Parser<ISymbol> NonTerminal = (string input) =>
         {
             string reference = null;
+            IList<string> argReferences = null;
 
             var result =
             Char('<')
-            .Next(
+            .Then(
                 VarName
-                .Do((s) => reference = s))
-            .Next(Char('>'))
+                .Do(s => reference = s)
+                .Trim())
+            .Then(Char('>'))
             (input);
 
             return Result<ISymbol>(() => GetReference(reference), result);
@@ -111,10 +113,11 @@ namespace BroncoParser
 
             var result = 
             Char('=')
-            .Next(
+            .Then(
                 VarName
-                .Do((s) => title = s))
-            .Next(Char('='))
+                .Do((s) => title = s)
+                .Trim())
+            .Then(Char('='))
             (input);
 
             return Result(() => title, result);
@@ -127,7 +130,8 @@ namespace BroncoParser
 
             var result =
             BagTitle.Do((s) => title = s)
-            .Next(NewLine)
+            .Trim()
+            .Then(NewLine)
             .Then(
                 SymbolList
                 .Map(s => new MetaData<ISymbol>(s))
