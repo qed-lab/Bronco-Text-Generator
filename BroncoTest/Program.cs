@@ -94,14 +94,33 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
-
+/*
+ISymbol root = GeneratorParser.ParseString(
+@"=start=
+test
+");
+*/
 
 ISymbol root = GeneratorParser.ParseString(
 @"=start=
-Dog
-Cat
-Bird
-<start>-<start>");
+The <animal> looked <adjective>
+
+=animal=
+dog
+cat
+bird
+rat
+<animal>-<animal>
+
+=adjective=
+big
+small
+scary
+cute
+very <adjective>
+<adjective> and <adjective>
+much like a <animal>");
+
 
 Console.WriteLine(root.Flatten().Value);
 Console.WriteLine(root.Flatten().Value);

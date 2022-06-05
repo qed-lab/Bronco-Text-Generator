@@ -15,12 +15,10 @@ namespace BroncoParser
         public static void Test()
         {
             string input =
-@"thing1
-thing2
-thing3";
+@"a,b,c,";
 
             IList<string> output = null;
-            var result = AnyChar.Until(NewLine).String().Split(NewLine)
+            var result = AnyChar.String().Split(Char(','))
             .Do(s => output = s)
             (input);
 
@@ -29,7 +27,7 @@ thing3";
 
         public static ISymbol ParseString(string input)
         {
-            Bag(input);
+            Generator(input);
             var local = SymbolReferences;
 
             return GetReference("start");
@@ -65,7 +63,12 @@ thing3";
 
             var result =
             Char('<')
-            .Then(Char(nameChars).Many().String().Do((s) => reference = s))
+            .Then(
+                Char(nameChars)
+                .Many()
+                .AtLeastOne()
+                .String()
+                .Do((s) => reference = s))
             .Then(Char('>'))
             (input);
 
@@ -79,6 +82,7 @@ thing3";
             var result =
             AnyChar
             .Until(NonTerminal.Or(NewLine))
+            .AtLeastOne()
             .String().Do((s) => text = s)
             (input);
 
@@ -91,6 +95,7 @@ thing3";
             var result =
             (NonTerminal.Or<ISymbol>(Terminal))
             .Until(NewLine)
+            .AtLeastOne()
             (input);
 
             return Result<ISymbol>(() => new SymbolList(result.Value), result);
@@ -129,7 +134,9 @@ thing3";
 
         public static Parser<IList<ISymbol>> Generator = (string input) =>
         {
-            return Bag.Many()(input);
+            return Bag.Split(
+                NewLine)
+            (input);
         };
     }
 }

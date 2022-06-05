@@ -93,14 +93,25 @@ namespace BroncoParser
                     terminate = until(parsed);
                 }
 
-                return results.Count == 0 ? 
-                new Result<IList<T>>() : new Result<IList<T>>(results, parsed);
+                return new Result<IList<T>>(results, parsed);
             };
         }
 
         public static Parser<IList<T>> Many<T>(this Parser<T> parser)
         {
             return Until(parser, parser.Not());
+        }
+
+        public static Parser<IList<T>> AtLeastOne<T>(this Parser<IList<T>> parser)
+        {
+            return (input) =>
+            {
+                var result = parser(input);
+
+                if (result.Success && result.Value.Count == 0) return new Result<IList<T>>();
+
+                return result;
+            };
         }
 
         public static Parser<IList<T>> Add<T>(this Parser<IList<T>> parser1, Parser<T> parser2)
@@ -119,6 +130,18 @@ namespace BroncoParser
                 }
 
                 return new Result<IList<T>>();
+            };
+        }
+
+        public static Parser<IList<T>> AddOptional<T>(this Parser<IList<T>> parser1, Parser<T> parser2)
+        {
+            return (input) =>
+            {
+                var result1 = parser1.Add(parser2)(input);
+
+                if (result1.Success) return result1;
+
+                return parser1(input);
             };
         }
 
@@ -188,7 +211,7 @@ namespace BroncoParser
         {
             return (input) =>
             {
-                var result = parser.ThenConsume(split).Many().Add(parser)(input);
+                var result = parser.ThenConsume(split).Many().AddOptional(parser)(input);
 
                 return result;
             };
