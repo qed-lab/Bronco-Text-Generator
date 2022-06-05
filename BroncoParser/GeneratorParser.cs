@@ -135,7 +135,10 @@ namespace BroncoParser
         public static Parser<IList<ISymbol>> Generator = (string input) =>
         {
             return Bag.Split(
-                NewLine)
+                NewLine
+                .ThenConsume(
+                    WhiteSpace
+                    .Many()))
             (input);
         };
     }

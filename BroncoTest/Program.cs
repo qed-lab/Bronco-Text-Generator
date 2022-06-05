@@ -112,6 +112,9 @@ bird
 rat
 <animal>-<animal>
 
+
+
+
 =adjective=
 big
 small
