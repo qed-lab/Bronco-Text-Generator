@@ -29,7 +29,7 @@ thing3";
 
         public static ISymbol ParseString(string input)
         {
-            Generator(input);
+            Bag(input);
             var local = SymbolReferences;
 
             return GetReference("start");
@@ -112,14 +112,16 @@ thing3";
         public static Parser<ISymbol> Bag = (string input) =>
         {
             string title = null;
-            IEnumerable<MetaData<ISymbol>> items = null;
+            IList<MetaData<ISymbol>> items = null;
 
             var result =
             BagTitle.Do((s) => title = s)
             .Then(NewLine)
             .Then(
-                SymbolList.Map(s => new MetaData<ISymbol>(s)).ThenConsume(NewLine.Optional())
-                .Many().Do((s) => items = s))
+                SymbolList
+                .Map(s => new MetaData<ISymbol>(s))
+                .Split(NewLine)
+                .Do(s => items = s))
             (input);
 
             return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);

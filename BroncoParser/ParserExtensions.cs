@@ -186,7 +186,12 @@ namespace BroncoParser
 
         public static Parser<IList<T>> Split<T, U>(this Parser<T> parser, Parser<U> split)
         {
-            return parser.ThenConsume(split).Many().Add(parser);
+            return (input) =>
+            {
+                var result = parser.ThenConsume(split).Many().Add(parser)(input);
+
+                return result;
+            };
         }
     }
 }
