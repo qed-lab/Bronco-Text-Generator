@@ -59,10 +59,10 @@ namespace BroncoParser
         public static Parser<string> NewLine = String(Environment.NewLine);
 
         public static Parser<string> WhiteSpace =
-            (input) => char.IsWhiteSpace(input[0]) ? AnyChar(input) : new Result<string>();
+            (input) => input.Length != 0 && char.IsWhiteSpace(input[0]) ? AnyChar(input) : new Result<string>();
 
         public static Parser<string> InlineWhiteSpace =
-            WhiteSpace.ThenConsume(NewLine.Not());
+            NewLine.Not().ThenConsume(WhiteSpace).Map(s => " ");
 
         public static Parser<string> EndOfInput = (string input) 
             => input.Length == 0 ? new Result<string>("", "") : new Result<string>();

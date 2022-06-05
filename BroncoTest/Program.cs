@@ -102,18 +102,17 @@ test
 */
 
 ISymbol root = GeneratorParser.ParseString(
-@"=start=
+@"
+
+= start =   
 The <animal> looked <adjective>
 
-=animal=
+= animal =
 dog
 cat
 bird
 rat
-<animal>-<animal>
-
-
-
+< animal >-<animal>
 
 =adjective=
 big
@@ -122,8 +121,9 @@ scary
 cute
 very <adjective>
 <adjective> and <adjective>
-much like a <animal>");
+much like a <animal>
 
+");
 
 Console.WriteLine(root.Flatten().Value);
 Console.WriteLine(root.Flatten().Value);

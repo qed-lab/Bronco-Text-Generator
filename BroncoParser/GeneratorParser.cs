@@ -9,16 +9,17 @@ namespace BroncoParser
 {
     public class GeneratorParser : BParse
     {
-        private static string nameChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+        private static string varChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
 
         public static void Test()
         {
             string input =
-@"a,b,c,";
+@"
+";
 
-            IList<string> output = null;
-            var result = AnyChar.String().Split(Char(','))
+            string output = null;
+            var result = InlineWhiteSpace
             .Do(s => output = s)
             (input);
 
@@ -57,19 +58,22 @@ namespace BroncoParser
          * Actual parser from here on.
          */
 
+        public static Parser<string> VarName =
+            Char(varChars)
+            .Many()
+            .AtLeastOne()
+            .String();
+
         public static Parser<ISymbol> NonTerminal = (string input) =>
         {
             string reference = null;
 
             var result =
             Char('<')
-            .Then(
-                Char(nameChars)
-                .Many()
-                .AtLeastOne()
-                .String()
+            .Next(
+                VarName
                 .Do((s) => reference = s))
-            .Then(Char('>'))
+            .Next(Char('>'))
             (input);
 
             return Result<ISymbol>(() => GetReference(reference), result);
@@ -107,8 +111,10 @@ namespace BroncoParser
 
             var result = 
             Char('=')
-            .Then(Char(nameChars).Many().String().Do((s) => title = s))
-            .Then(Char('='))
+            .Next(
+                VarName
+                .Do((s) => title = s))
+            .Next(Char('='))
             (input);
 
             return Result(() => title, result);
@@ -121,7 +127,7 @@ namespace BroncoParser
 
             var result =
             BagTitle.Do((s) => title = s)
-            .Then(NewLine)
+            .Next(NewLine)
             .Then(
                 SymbolList
                 .Map(s => new MetaData<ISymbol>(s))
@@ -134,11 +140,11 @@ namespace BroncoParser
 
         public static Parser<IList<ISymbol>> Generator = (string input) =>
         {
-            return Bag.Split(
+            return WhiteSpace.Many().Then(Bag.Split(
                 NewLine
                 .ThenConsume(
                     WhiteSpace
-                    .Many()))
+                    .Many())))
             (input);
         };
     }

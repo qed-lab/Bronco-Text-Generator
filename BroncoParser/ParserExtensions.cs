@@ -49,7 +49,7 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<(T, U)> Then<T, U>(this Parser<T> parser1, Parser<U> parser2)
+        public static Parser<U> Then<T, U>(this Parser<T> parser1, Parser<U> parser2)
         {
             return (input) =>
             {
@@ -59,10 +59,10 @@ namespace BroncoParser
                 {
                     var result2 = parser2(result1.Remainder);
 
-                    if (result2.Success) return new Result<(T, U)>((result1.Value, result2.Value), result2.Remainder);
+                    if (result2.Success) return new Result<U>(result2.Value, result2.Remainder);
                 }
 
-                return new Result<(T, U)>();
+                return new Result<U>();
             };
         }
 
@@ -70,9 +70,22 @@ namespace BroncoParser
         {
             return (input) =>
             {
-                var result = parser1.Then(parser2)(input);
-                return BParse.Result(() => result.Value.Item1, result);
+                var result1 = parser1(input);
+
+                if (result1.Success)
+                {
+                    var result2 = parser2(result1.Remainder);
+
+                    if (result2.Success) return new Result<T>(result1.Value, result2.Remainder);
+                }
+
+                return new Result<T>();
             };
+        }
+
+        public static Parser<U> Next<T, U>(this Parser<T> parser1, Parser<U> parser2)
+        {
+            return parser1.ThenConsume(BParse.InlineWhiteSpace.Many()).Then(parser2);
         }
 
         public static Parser<IList<T>> Until<T, U>(this Parser<T> parser, Parser<U> until)
@@ -197,13 +210,13 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<bool> Not<T>(this Parser<T> parser)
+        public static Parser<T> Not<T>(this Parser<T> parser)
         {
             return (input) =>
             {
                 var result = parser(input);
 
-                return result.Success ? new Result<bool>() : new Result<bool>(true, input);
+                return result.Success ? new Result<T>() : new Result<T>(default(T), input);
             };
         }
 
