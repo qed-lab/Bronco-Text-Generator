@@ -129,6 +129,27 @@ namespace BroncoParser
             return Result(() => title, result);
         };
 
+        public static Parser<string> TagMetaData 
+            => Char('#').Then(Char(varChars).Many().AtLeastOne()).String();
+
+        public static Parser<MetaData<ISymbol>> BagItem = (string input) =>
+        {
+            MetaData<ISymbol> item = null;
+
+            var result =
+            SymbolList
+            .Do(s => item = new MetaData<ISymbol>(s))
+            .ThenConsume(
+                TagMetaData
+                .Trim()
+                .Do(s => item.Tags.Add(s))
+                .Many()
+                )
+            (input);
+
+            return Result(() => item, result);
+        };
+
         public static Parser<ISymbol> Bag = (string input) =>
         {
             string title = null;
@@ -139,10 +160,10 @@ namespace BroncoParser
             .Trim()
             .Then(NewLine)
             .Then(
-                SymbolList
-                .Map(s => new MetaData<ISymbol>(s))
+                BagItem
                 .Split(NewLine)
-                .Do(s => items = s))
+                .Do(s => items = s)
+                )
             (input);
 
             return Result<ISymbol>(() => SetReference(title, new Bag(items)), result);
