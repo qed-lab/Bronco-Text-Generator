@@ -221,9 +221,9 @@ namespace BroncoParser
             {
                 var result = parser.Map(map)(input);
 
-                if(!result.Success) return new Result<U>();
+                if(!result.Success || !result.Value.Success) return new Result<U>();
 
-                return result.Value;
+                return new Result<U>(result.Value.Value, result.Remainder);
             };
         }
 
@@ -239,15 +239,10 @@ namespace BroncoParser
 
         public static Parser<IList<T>> Split<T, U>(this Parser<T> parser, Parser<U> split)
         {
-            return (input) =>
-            {
-                var result = parser.ThenConsume(split).Many().AddOptional(parser)(input);
-
-                return result;
-            };
+            return parser.ThenConsume(split).Many().AddOptional(parser);
         }
 
-        public static Parser<IList<T>> SplitParse<T, U>(this Parser<T?> parser, Parser<U> split)
+        public static Parser<IList<T>> SplitParse<T, U>(this Parser<T> parser, Parser<U> split)
         {
             return
                 BParse.AnyChar

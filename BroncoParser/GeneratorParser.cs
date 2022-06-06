@@ -14,6 +14,9 @@ namespace BroncoParser
 
         public static ISymbol ParseString(string input)
         {
+            var result = AnyChar.Many().String()
+                .SplitParse(Char(","))("thing1,thing2,thing3");
+
             SetReference("setter", new VariableSetter());
 
             Generator(input);
