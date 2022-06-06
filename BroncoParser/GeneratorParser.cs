@@ -139,12 +139,6 @@ namespace BroncoParser
             var result =
             SymbolList
             .Do(s => item = new MetaData<ISymbol>(s))
-            .ThenConsume(
-                TagMetaData
-                .Trim()
-                .Do(s => item.Tags.Add(s))
-                .Many()
-                )
             (input);
 
             return Result(() => item, result);

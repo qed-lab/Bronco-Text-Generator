@@ -115,6 +115,11 @@ namespace BroncoParser
             return Until(parser, parser.Not());
         }
 
+        public static Parser<U> UntilParse<T, U>(this Parser<T> parser, Parser<U> until)
+        {
+            return parser.Until(until).Then(until);
+        }
+
         public static Parser<IList<T>> AtLeastOne<T>(this Parser<IList<T>> parser)
         {
             return (input) =>
@@ -204,9 +209,21 @@ namespace BroncoParser
             {
                 var result = parser(input);
 
-                if (result.Success) return new Result<U>(map(result.Value), result.Remainder);
+                if (!result.Success) return new Result<U>();
 
-                return new Result<U>();
+                return new Result<U>(map(result.Value), result.Remainder);
+            };
+        }
+
+        public static Parser<U> MapParse<T, U>(this Parser<T> parser, Func<T, Result<U>> map)
+        {
+            return (input) =>
+            {
+                var result = parser.Map(map)(input);
+
+                if(!result.Success) return new Result<U>();
+
+                return result.Value;
             };
         }
 
@@ -228,6 +245,16 @@ namespace BroncoParser
 
                 return result;
             };
+        }
+
+        public static Parser<IList<T>> SplitParse<T, U>(this Parser<T?> parser, Parser<U> split)
+        {
+            return
+                BParse.AnyChar
+                .Until(split)
+                .String()
+                .MapParse(s => parser(s))
+                .Split(split);
         }
     }
 }
