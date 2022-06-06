@@ -13,7 +13,7 @@ namespace BroncoLibrary
         public SymbolVariable() { }
 
         public SymbolVariable(ISymbol symbol)
-            => Set(symbol);
+            => SetPointer(symbol);
 
         public ISymbol Evaluate()
             => _currentSymbol;
@@ -21,10 +21,10 @@ namespace BroncoLibrary
         public ISymbol Argue(ISymbol[]  args)
             => _currentSymbol.Argue(args);
 
-        public void SetToFlatten(ISymbol value)
+        public void Set(ISymbol value)
             => _currentSymbol = value.Flatten();
 
-        public void Set(ISymbol value)
+        public void SetPointer(ISymbol value)
             => _currentSymbol = value;
     }
 }

@@ -38,7 +38,7 @@ namespace BroncoParser
         public static SymbolVariable SetReference(string key, ISymbol reference)
         {
             SymbolVariable item = GetReference(key);
-            item.Set(reference);
+            item.SetPointer(reference);
 
             return item;
         }
