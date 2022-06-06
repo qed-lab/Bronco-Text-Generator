@@ -13,7 +13,7 @@ namespace BroncoLibrary
         public SymbolVariable() { }
 
         public SymbolVariable(ISymbol symbol)
-            => SetToFlatten(symbol);
+            => Set(symbol);
 
         public ISymbol Evaluate()
             => _currentSymbol;

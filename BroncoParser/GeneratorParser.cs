@@ -10,7 +10,7 @@ namespace BroncoParser
     public class GeneratorParser : BParse
     {
         private static string varChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
-        private static readonly Dictionary<string, SymbolVariable> SymbolReferences = new Dictionary<string, SymbolVariable>();
+        private static readonly Dictionary<string, SymbolVariable> _symbolReferences = new Dictionary<string, SymbolVariable>();
 
         public static void Test()
         {
@@ -28,8 +28,9 @@ namespace BroncoParser
 
         public static ISymbol ParseString(string input)
         {
+            //SetReference("setter", new VariableSetter());
+
             Generator(input);
-            var local = SymbolReferences;
 
             return GetReference("start");
         }
@@ -37,10 +38,10 @@ namespace BroncoParser
         public static SymbolVariable GetReference(string key)
         {
             SymbolVariable reference;
-            if(!SymbolReferences.TryGetValue(key, out reference))
+            if(!_symbolReferences.TryGetValue(key, out reference))
             {
                 reference = new SymbolVariable();
-                SymbolReferences.Add(key, reference);
+                _symbolReferences.Add(key, reference);
             }
 
             return reference;
@@ -67,18 +68,35 @@ namespace BroncoParser
         public static Parser<ISymbol> NonTerminal = (string input) =>
         {
             string reference = null;
-            IList<string> argReferences = null;
+            SymbolVariable[] args = null;
 
             var result =
             Char('<')
             .Then(
                 VarName
                 .Do(s => reference = s)
-                .Trim())
+                .Trim()
+                .Then(
+                    Char('|')
+                    .Then(
+                        VarName
+                        .Trim()
+                        .Map(s => GetReference(s))
+                        .Split(
+                            Char(',')
+                        )
+                        .Do(s => args = s.ToArray())
+                    )
+                    .Optional()
+                )
+            )
             .Then(Char('>'))
             (input);
 
-            return Result<ISymbol>(() => GetReference(reference), result);
+            if(args == null)
+                return Result<ISymbol>(() => GetReference(reference), result);
+            else
+                return Result<ISymbol>(() => GetReference(reference).Argue(args), result);
         };
 
         public static Parser<ISymbol> Terminal = (string input) =>
