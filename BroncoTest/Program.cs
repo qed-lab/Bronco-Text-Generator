@@ -105,7 +105,7 @@ ISymbol root = GeneratorParser.ParseString(
 @"
 
 = start =   
-The <animal> looked <adjective>
+This is a story about a <setter | protagonist, animal> this particular <protagonist> looked <adjective>
 
 = animal =
 dog

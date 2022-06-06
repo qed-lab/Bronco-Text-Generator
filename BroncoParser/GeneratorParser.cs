@@ -12,25 +12,13 @@ namespace BroncoParser
         private static string varChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> _symbolReferences = new Dictionary<string, SymbolVariable>();
 
-        public static void Test()
-        {
-            string input =
-@"
-";
-
-            string output = null;
-            var result = InlineWhiteSpace
-            .Do(s => output = s)
-            (input);
-
-            Console.WriteLine("Final: " + output);
-        }
-
         public static ISymbol ParseString(string input)
         {
-            //SetReference("setter", new VariableSetter());
+            SetReference("setter", new VariableSetter());
 
             Generator(input);
+
+            var local = _symbolReferences;
 
             return GetReference("start");
         }
