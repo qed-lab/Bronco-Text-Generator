@@ -1,4 +1,5 @@
 ﻿using BroncoLibrary;
+using BroncoParser;
 using BroncoTest;
 
 VariableSetter setter = new VariableSetter();
@@ -93,8 +94,43 @@ Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 Console.WriteLine(((ISymbol)paper).Flatten().Value);
 */
+/*
+ISymbol root = GeneratorParser.ParseString(
+@"=start=
+test
+");
+*/
 
-Bag test = new();
-test.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Tell me about "), test.GetArgument(0) }));
+ISymbol root = GeneratorParser.ParseString(
+@"
 
-Console.WriteLine(test.Argue(new ISymbol[] { new Terminal("a succesful test") }).Flatten().Value);
+= start =   
+This is a story about a <setter | protagonist, animal> this particular <protagonist> looked <adjective> #tag1 #tag2  #tag3
+
+= animal =
+dog %100
+cat #furry
+bird #feathered
+lizard
+< animal >-<animal>
+
+=adjective=
+big
+small
+scary
+cute
+very <adjective>
+<adjective> and <adjective>
+much like a <animal>
+
+");
+
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+Console.WriteLine(root.Flatten().Value);
+
+
+//GeneratorParser.Test();
+

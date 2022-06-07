@@ -21,8 +21,20 @@ Symbols <nonTerminal> text #tag1 #tag2 %0.5 #otherMetaData:Value
 
 //Variables
 Just text <varName = value> more text
-//Same as
+//Shortcut for 
 Just text <setter: varName, value> more text
+
+//Invisible
+Jus text {evalSomeSymbol} more text.
+
+
+//Grammar
+Generator -> Bag*
+Bag -> BagTitle, BagItem*
+BagTitle -> =title=\n
+BagItem -> Symbol\n | Symbol, Condition\n
+Symbol -> Terminal | <NonTerminal> | {NonTerminal}
+NonTerminal -> Symbol* | 
 
 //Demo
 = animal: tag =
