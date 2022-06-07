@@ -93,7 +93,7 @@ namespace BroncoParser
 
             var result =
             AnyChar
-            .Until(NewLine.Or(NonTerminal))
+            .Until(TerminalTerminator)
             .AtLeastOne()
             .String().Do((s) => text = s)
             (input);
@@ -141,8 +141,14 @@ namespace BroncoParser
 
             var result =
             SymbolList
-            .SubParseUntil(NewLine)
+            .SubParseUntil(NewLine.Or<string>(TagMetaData))
             .Do(s => item = new MetaData<ISymbol>(s))
+            .Then(
+                TagMetaData
+                .Trim()
+                .Do(s => item.Tags.Add(s))
+                .Many()
+                )
             (input);
 
             return Result(() => item, result);
@@ -176,5 +182,8 @@ namespace BroncoParser
                     .Many())))
             (input);
         };
+
+        public static Parser<object> TerminalTerminator =
+            NonTerminal.Or(TagMetaData.Trim());
     }
 }
