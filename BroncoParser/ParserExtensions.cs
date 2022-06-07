@@ -110,14 +110,18 @@ namespace BroncoParser
             };
         }
 
+        public static Parser<T> SubParseUntil<T, U>(this Parser<T> parser, Parser<U> until)
+        {
+            return
+                BParse.AnyChar.
+                Until(until)
+                .String()
+                .ParseResult(parser);
+        }
+
         public static Parser<IList<T>> Many<T>(this Parser<T> parser)
         {
             return Until(parser, parser.Not());
-        }
-
-        public static Parser<U> UntilParse<T, U>(this Parser<T> parser, Parser<U> until)
-        {
-            return parser.Until(until).Then(until);
         }
 
         public static Parser<IList<T>> AtLeastOne<T>(this Parser<IList<T>> parser)
@@ -215,15 +219,21 @@ namespace BroncoParser
             };
         }
 
-        public static Parser<U> MapParse<T, U>(this Parser<T> parser, Func<T, Result<U>> map)
+        public static Parser<U> ParseResult<U>(this Parser<string> parser, Parser<U> resultParse)
         {
             return (input) =>
             {
-                var result = parser.Map(map)(input);
+                var result1 = parser(input);
 
-                if(!result.Success || !result.Value.Success) return new Result<U>();
+                if (result1.Success)
+                {
+                    var result2 = resultParse(result1.Value);
 
-                return new Result<U>(result.Value.Value, result.Remainder);
+                    if (result2.Success)
+                        return new Result<U>(result2.Value, result1.Remainder);
+                }
+
+                return new Result<U>();
             };
         }
 

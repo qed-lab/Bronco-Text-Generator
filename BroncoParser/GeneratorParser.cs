@@ -104,13 +104,16 @@ namespace BroncoParser
 
         public static Parser<ISymbol> SymbolList = (string input) =>
         {
+            IList<ISymbol> symbols = new List<ISymbol>();
+
             var result =
             Terminal.Or<ISymbol>(NonTerminal)
-            .Until(NewLine)
+            .Many()
+            .Do(s => symbols = s)
             .AtLeastOne()
             (input);
 
-            return Result<ISymbol>(() => new SymbolList(result.Value), result);
+            return Result<ISymbol>(() => new SymbolList(symbols), result);
         };
 
         public static Parser<string> BagTitle = (string input) =>
@@ -138,6 +141,7 @@ namespace BroncoParser
 
             var result =
             SymbolList
+            .SubParseUntil(NewLine)
             .Do(s => item = new MetaData<ISymbol>(s))
             (input);
 
