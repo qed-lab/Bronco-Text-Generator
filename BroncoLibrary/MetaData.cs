@@ -23,7 +23,7 @@ namespace BroncoLibrary
                 return GetMetaData<double>(weightKey, weightFallBack);
             }
 
-            private set
+            set
             {
                 SetMetaData(weightKey, value);
             }

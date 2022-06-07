@@ -58,6 +58,17 @@ namespace BroncoParser
 
         public static Parser<string> NewLine = String(Environment.NewLine);
 
+        public static Parser<string> Digit = Char("1234567890");
+
+        public static Parser<string> Float =
+            Digit.Many().AtLeastOne()
+            .Or<IList<string>>(
+                Digit.Many().AtLeastOne()
+                .Add(Char("."))
+                .AddAll(Digit.Many().AtLeastOne())
+                )
+            .String();
+
         public static Parser<string> WhiteSpace =
             (input) => input.Length != 0 && char.IsWhiteSpace(input[0]) ? AnyChar(input) : new Result<string>();
 

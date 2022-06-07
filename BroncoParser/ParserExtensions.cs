@@ -155,6 +155,26 @@ namespace BroncoParser
             };
         }
 
+        public static Parser<IList<T>> AddAll<T>(this Parser<IList<T>> parser1, Parser<IList<T>> parser2)
+        {
+            return (input) =>
+            {
+                var result1 = parser1(input);
+
+                if (result1.Success)
+                {
+                    var result2 = parser2(result1.Remainder);
+                    return BParse.Result<IList<T>>(() => {
+                        foreach (var item in result2.Value)
+                            result1.Value.Add(item);
+                        return result1.Value;
+                    }, result2);
+                }
+
+                return new Result<IList<T>>();
+            };
+        }
+
         public static Parser<IList<T>> AddOptional<T>(this Parser<IList<T>> parser1, Parser<T> parser2)
         {
             return (input) =>

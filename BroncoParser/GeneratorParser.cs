@@ -135,18 +135,29 @@ namespace BroncoParser
         public static Parser<string> TagMetaData 
             => Char('#').Then(Char(varChars).Many().AtLeastOne()).String();
 
+        public static Parser<string> WeightMetaData
+            => Char('%').Then(Float);
+
+        public static Parser<string> MetaData
+            => WeightMetaData.Or<string>(TagMetaData);
+
         public static Parser<MetaData<ISymbol>> BagItem = (string input) =>
         {
             MetaData<ISymbol> item = null;
 
             var result =
             SymbolList
-            .SubParseUntil(NewLine.Or<string>(TagMetaData))
+            .SubParseUntil(NewLine.Or<string>(MetaData.Trim()))
             .Do(s => item = new MetaData<ISymbol>(s))
             .Then(
                 TagMetaData
                 .Trim()
                 .Do(s => item.Tags.Add(s))
+                .Or<string>(
+                    WeightMetaData
+                    .Trim()
+                    .Do(s => item.Weight = float.Parse(s))
+                    )
                 .Many()
                 )
             (input);
@@ -184,6 +195,6 @@ namespace BroncoParser
         };
 
         public static Parser<object> TerminalTerminator =
-            NonTerminal.Or(TagMetaData.Trim());
+            NonTerminal.Or(MetaData.Trim());
     }
 }
