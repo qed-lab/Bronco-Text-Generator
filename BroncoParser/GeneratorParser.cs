@@ -9,14 +9,11 @@ namespace BroncoParser
 {
     public class GeneratorParser : BParse
     {
-        private static string varChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+        private static readonly string varChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
         private static readonly Dictionary<string, SymbolVariable> _symbolReferences = new Dictionary<string, SymbolVariable>();
 
         public static ISymbol ParseString(string input)
         {
-            var result = AnyChar.Many().String()
-                .SplitParse(Char(","))("thing1,thing2,thing3");
-
             SetReference("setter", new VariableSetter());
 
             Generator(input);
@@ -96,7 +93,7 @@ namespace BroncoParser
 
             var result =
             AnyChar
-            .Until(NonTerminal.Or(NewLine))
+            .Until(NewLine.Or(NonTerminal))
             .AtLeastOne()
             .String().Do((s) => text = s)
             (input);
@@ -108,7 +105,7 @@ namespace BroncoParser
         public static Parser<ISymbol> SymbolList = (string input) =>
         {
             var result =
-            (NonTerminal.Or<ISymbol>(Terminal))
+            Terminal.Or<ISymbol>(NonTerminal)
             .Until(NewLine)
             .AtLeastOne()
             (input);
