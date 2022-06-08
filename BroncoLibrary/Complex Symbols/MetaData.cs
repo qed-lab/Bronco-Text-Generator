@@ -11,7 +11,7 @@ namespace BroncoLibrary
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
         private static readonly string tagsKey = "tags";
-        private static readonly Func<ISet<string>> tagsFallBack = () => new HashSet<string>();
+        private static readonly Func<TagSet> tagsFallBack = () => new TagSet();
 
         private Dictionary<object, object> _metaData;
 
@@ -29,11 +29,11 @@ namespace BroncoLibrary
             }
         }
 
-        public ISet<string> Tags
+        public TagSet Tags
         {
             get
             {
-                return GetMetaData<ISet<string>>(tagsKey, tagsFallBack);
+                return GetMetaData<TagSet>(tagsKey, tagsFallBack);
             }
 
             private set
@@ -45,7 +45,7 @@ namespace BroncoLibrary
         public MetaData(T symbol, ICollection<string> tags) : this(symbol)
         {
             foreach (var tag in tags)
-                Tags.Add(tag);
+                Tags.AddTag(tag);
         }
 
         public MetaData(T symbol, double weight) : this(symbol)

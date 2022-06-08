@@ -105,11 +105,11 @@ ISymbol root = GeneratorParser.ParseString(
 @"
 
 = start =   
-This is a story about a <setter | protagonist, animal> this particular <protagonist> looked <adjective> #tag1 #tag2  #tag3
+This is a story about a <setter | protagonist, animal> this particular <protagonist> looked <adjective>#tag1
 
 = animal =
 dog %100
-cat #furry
+cat#furry
 bird #feathered
 lizard
 < animal >-<animal>

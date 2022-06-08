@@ -151,8 +151,7 @@ namespace BroncoParser
             .Do(s => item = new MetaData<ISymbol>(s))
             .Then(
                 TagMetaData
-                .Trim()
-                .Do(s => item.Tags.Add(s))
+                .Do(s => { Console.WriteLine("Added tag " + s); })
                 .Or<string>(
                     WeightMetaData
                     .Trim()

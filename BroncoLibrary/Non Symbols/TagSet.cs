@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BroncoLibrary.Non_Symbols
+namespace BroncoLibrary
 {
-    internal class TagSet
+    public class TagSet
     {
         private Dictionary<string, float> _tags = new Dictionary<string, float>();
 
