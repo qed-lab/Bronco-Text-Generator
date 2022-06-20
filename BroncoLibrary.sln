@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BroncoParser", "BroncoParser\BroncoParser.csproj", "{AF0F77A7-70FD-440A-BD7D-B3D2AB0F71B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BroncoParser", "BroncoParser\BroncoParser.csproj", "{69225204-26BE-4F3B-87B0-5652F2AA2878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,10 @@ Global
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0340353A-0AAB-4433-97E0-43B8971FD3A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF0F77A7-70FD-440A-BD7D-B3D2AB0F71B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF0F77A7-70FD-440A-BD7D-B3D2AB0F71B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF0F77A7-70FD-440A-BD7D-B3D2AB0F71B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF0F77A7-70FD-440A-BD7D-B3D2AB0F71B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69225204-26BE-4F3B-87B0-5652F2AA2878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69225204-26BE-4F3B-87B0-5652F2AA2878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69225204-26BE-4F3B-87B0-5652F2AA2878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69225204-26BE-4F3B-87B0-5652F2AA2878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
