@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\Speak.g4 by ANTLR 4.8
+// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\broncoGrammar.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -25,34 +25,34 @@ using IToken = Antlr4.Runtime.IToken;
 
 /// <summary>
 /// This interface defines a complete generic visitor for a parse tree produced
-/// by <see cref="SpeakParser"/>.
+/// by <see cref="broncoGrammarParser"/>.
 /// </summary>
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
 [System.CLSCompliant(false)]
-public interface ISpeakVisitor<Result> : IParseTreeVisitor<Result> {
+public interface IbroncoGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.chat"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.start"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitChat([NotNull] SpeakParser.ChatContext context);
+	Result VisitStart([NotNull] broncoGrammarParser.StartContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.line"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLine([NotNull] SpeakParser.LineContext context);
+	Result VisitLine([NotNull] broncoGrammarParser.LineContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.name"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitName([NotNull] SpeakParser.NameContext context);
+	Result VisitName([NotNull] broncoGrammarParser.NameContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.opinion"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.opinion"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOpinion([NotNull] SpeakParser.OpinionContext context);
+	Result VisitOpinion([NotNull] broncoGrammarParser.OpinionContext context);
 }

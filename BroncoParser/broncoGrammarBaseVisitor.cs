@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\Speak.g4 by ANTLR 4.8
+// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\broncoGrammar.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -25,16 +25,16 @@ using IToken = Antlr4.Runtime.IToken;
 using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 /// <summary>
-/// This class provides an empty implementation of <see cref="ISpeakVisitor{Result}"/>,
+/// This class provides an empty implementation of <see cref="IbroncoGrammarVisitor{Result}"/>,
 /// which can be extended to create a visitor which only needs to handle a subset
 /// of the available methods.
 /// </summary>
 /// <typeparam name="Result">The return type of the visit operation.</typeparam>
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
 [System.CLSCompliant(false)]
-public partial class SpeakBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, ISpeakVisitor<Result> {
+public partial class broncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IbroncoGrammarVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.chat"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.start"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -42,9 +42,9 @@ public partial class SpeakBaseVisitor<Result> : AbstractParseTreeVisitor<Result>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitChat([NotNull] SpeakParser.ChatContext context) { return VisitChildren(context); }
+	public virtual Result VisitStart([NotNull] broncoGrammarParser.StartContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.line"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.line"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -52,9 +52,9 @@ public partial class SpeakBaseVisitor<Result> : AbstractParseTreeVisitor<Result>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLine([NotNull] SpeakParser.LineContext context) { return VisitChildren(context); }
+	public virtual Result VisitLine([NotNull] broncoGrammarParser.LineContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.name"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.name"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -62,9 +62,9 @@ public partial class SpeakBaseVisitor<Result> : AbstractParseTreeVisitor<Result>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitName([NotNull] SpeakParser.NameContext context) { return VisitChildren(context); }
+	public virtual Result VisitName([NotNull] broncoGrammarParser.NameContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="SpeakParser.opinion"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.opinion"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -72,5 +72,5 @@ public partial class SpeakBaseVisitor<Result> : AbstractParseTreeVisitor<Result>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOpinion([NotNull] SpeakParser.OpinionContext context) { return VisitChildren(context); }
+	public virtual Result VisitOpinion([NotNull] broncoGrammarParser.OpinionContext context) { return VisitChildren(context); }
 }

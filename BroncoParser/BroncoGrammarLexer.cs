@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\Speak.g4 by ANTLR 4.8
+// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\broncoGrammar.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -29,7 +29,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
 [System.CLSCompliant(false)]
-public partial class SpeakLexer : Lexer {
+public partial class broncoGrammarLexer : Lexer {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
@@ -48,10 +48,10 @@ public partial class SpeakLexer : Lexer {
 	};
 
 
-	public SpeakLexer(ICharStream input)
+	public broncoGrammarLexer(ICharStream input)
 	: this(input, Console.Out, Console.Error) { }
 
-	public SpeakLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
+	public broncoGrammarLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
 	: base(input, output, errorOutput)
 	{
 		Interpreter = new LexerATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
@@ -73,7 +73,7 @@ public partial class SpeakLexer : Lexer {
 		}
 	}
 
-	public override string GrammarFileName { get { return "Speak.g4"; } }
+	public override string GrammarFileName { get { return "broncoGrammar.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
@@ -83,7 +83,7 @@ public partial class SpeakLexer : Lexer {
 
 	public override string SerializedAtn { get { return new string(_serializedATN); } }
 
-	static SpeakLexer() {
+	static broncoGrammarLexer() {
 		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
 		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
 			decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);

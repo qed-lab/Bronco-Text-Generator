@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\Speak.g4 by ANTLR 4.8
+// Generated from c:\Users\angry\source\repos\BroncoLibrary\BroncoParser\broncoGrammar.g4 by ANTLR 4.8
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -32,15 +32,15 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
 [System.CLSCompliant(false)]
-public partial class SpeakParser : Parser {
+public partial class broncoGrammarParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		SAYS=1, WORD=2, TEXT=3, WHITESPACE=4, NEWLINE=5;
 	public const int
-		RULE_chat = 0, RULE_line = 1, RULE_name = 2, RULE_opinion = 3;
+		RULE_start = 0, RULE_line = 1, RULE_name = 2, RULE_opinion = 3;
 	public static readonly string[] ruleNames = {
-		"chat", "line", "name", "opinion"
+		"start", "line", "name", "opinion"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -59,51 +59,51 @@ public partial class SpeakParser : Parser {
 		}
 	}
 
-	public override string GrammarFileName { get { return "Speak.g4"; } }
+	public override string GrammarFileName { get { return "broncoGrammar.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
 	public override string SerializedAtn { get { return new string(_serializedATN); } }
 
-	static SpeakParser() {
+	static broncoGrammarParser() {
 		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
 		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
 			decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);
 		}
 	}
 
-		public SpeakParser(ITokenStream input) : this(input, Console.Out, Console.Error) { }
+		public broncoGrammarParser(ITokenStream input) : this(input, Console.Out, Console.Error) { }
 
-		public SpeakParser(ITokenStream input, TextWriter output, TextWriter errorOutput)
+		public broncoGrammarParser(ITokenStream input, TextWriter output, TextWriter errorOutput)
 		: base(input, output, errorOutput)
 	{
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class ChatContext : ParserRuleContext {
+	public partial class StartContext : ParserRuleContext {
 		public LineContext[] line() {
 			return GetRuleContexts<LineContext>();
 		}
 		public LineContext line(int i) {
 			return GetRuleContext<LineContext>(i);
 		}
-		public ITerminalNode Eof() { return GetToken(SpeakParser.Eof, 0); }
-		public ChatContext(ParserRuleContext parent, int invokingState)
+		public ITerminalNode Eof() { return GetToken(broncoGrammarParser.Eof, 0); }
+		public StartContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_chat; } }
+		public override int RuleIndex { get { return RULE_start; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISpeakVisitor<TResult> typedVisitor = visitor as ISpeakVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitChat(this);
+			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitStart(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public ChatContext chat() {
-		ChatContext _localctx = new ChatContext(Context, State);
-		EnterRule(_localctx, 0, RULE_chat);
+	public StartContext start() {
+		StartContext _localctx = new StartContext(Context, State);
+		EnterRule(_localctx, 0, RULE_start);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
@@ -127,18 +127,18 @@ public partial class SpeakParser : Parser {
 		public NameContext name() {
 			return GetRuleContext<NameContext>(0);
 		}
-		public ITerminalNode SAYS() { return GetToken(SpeakParser.SAYS, 0); }
+		public ITerminalNode SAYS() { return GetToken(broncoGrammarParser.SAYS, 0); }
 		public OpinionContext opinion() {
 			return GetRuleContext<OpinionContext>(0);
 		}
-		public ITerminalNode NEWLINE() { return GetToken(SpeakParser.NEWLINE, 0); }
+		public ITerminalNode NEWLINE() { return GetToken(broncoGrammarParser.NEWLINE, 0); }
 		public LineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_line; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISpeakVisitor<TResult> typedVisitor = visitor as ISpeakVisitor<TResult>;
+			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitLine(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -169,14 +169,14 @@ public partial class SpeakParser : Parser {
 	}
 
 	public partial class NameContext : ParserRuleContext {
-		public ITerminalNode WORD() { return GetToken(SpeakParser.WORD, 0); }
+		public ITerminalNode WORD() { return GetToken(broncoGrammarParser.WORD, 0); }
 		public NameContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_name; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISpeakVisitor<TResult> typedVisitor = visitor as ISpeakVisitor<TResult>;
+			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitName(this);
 			else return visitor.VisitChildren(this);
 		}
@@ -204,14 +204,14 @@ public partial class SpeakParser : Parser {
 	}
 
 	public partial class OpinionContext : ParserRuleContext {
-		public ITerminalNode TEXT() { return GetToken(SpeakParser.TEXT, 0); }
+		public ITerminalNode TEXT() { return GetToken(broncoGrammarParser.TEXT, 0); }
 		public OpinionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
 		public override int RuleIndex { get { return RULE_opinion; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			ISpeakVisitor<TResult> typedVisitor = visitor as ISpeakVisitor<TResult>;
+			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitOpinion(this);
 			else return visitor.VisitChildren(this);
 		}

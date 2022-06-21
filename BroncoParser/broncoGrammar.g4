@@ -1,10 +1,10 @@
-grammar Speak;
+grammar broncoGrammar;
 
 /*
  * Parser Rules
  */
 
-chat                : line line EOF ;
+start                : line line EOF ;
 line                : name SAYS opinion NEWLINE;
 name                : WORD ;
 opinion             : TEXT ;
