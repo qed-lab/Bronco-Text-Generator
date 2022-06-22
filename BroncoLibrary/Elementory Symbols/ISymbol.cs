@@ -27,7 +27,7 @@ namespace BroncoLibrary
 
             while (!type.IsAssignableFrom(current.GetType()))
             {
-                if (current is ITerminal) return null;
+                if (current is ITerminal) throw new Exception("Symbol cannot be flattened to desired type");
 
                 current = current.Evaluate();
             }

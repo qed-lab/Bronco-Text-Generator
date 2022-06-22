@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    internal class FloatSymbol : ITerminal
+    public class FloatSymbol : ITerminal
     {
-        public float FloatValue { get; set; }
+        public virtual float FloatValue { get; set; }
 
-        public string Value { get => FloatValue.ToString(); }
+        public virtual string Value { get => FloatValue.ToString(); }
+
+        public FloatSymbol()
+            => FloatValue = 0.0f;
 
         public FloatSymbol(float value)
-        {
-            FloatValue = value;
-        }
+            => FloatValue = value;
     }
 }
