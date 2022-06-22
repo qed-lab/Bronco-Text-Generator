@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BroncoLibrary.Operator_Symbols;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,18 +11,22 @@ namespace BroncoLibrary
 {
     public class Bag : DynamicSymbol
     {
+        private static readonly TagMatcher tagMatcher = new TagMatcher();
+
         private List<(MetaData<ISymbol> symbol, ISymbol condition)> _items;
         private Random _random;
 
-        public int Count => _items.Count;
-        public bool IsReadOnly => true;
+        public int ArgumentCount { get; private set; }
 
-        public Bag() : this(new List<MetaData<ISymbol>>())
-        {
-        }
+        public Bag() : this(0) { }
 
-        public Bag(IEnumerable<MetaData<ISymbol>> items)
+        public Bag(IEnumerable<MetaData<ISymbol>> items) : this(0, items) { }
+
+        public Bag(int argCount) : this(argCount, new List<MetaData<ISymbol>>()) { }
+
+        public Bag(int argCount, IEnumerable<MetaData<ISymbol>> items)
         {
+            ArgumentCount = argCount;
             _items = new();
             _random = new();
 
@@ -31,7 +36,6 @@ namespace BroncoLibrary
             AddEvaluation(Pick);
         }
 
-        //TODO make arguments actually do something
         public ISymbol Pick(ISymbol[] args)
         {
             (MetaData<ISymbol> symbol, double weight) best = (null, -double.MaxValue);
@@ -48,18 +52,15 @@ namespace BroncoLibrary
             return best.Item1;
         }
 
-        private bool TagMatch(ISet<string> tags1, ISet<string> tags2)
+        public void Add(MetaData<ISymbol> symbol, ISymbol condition) 
+            => _items.Add((symbol, condition));
+
+        public void Add(MetaData<ISymbol> symbol)
         {
-            foreach(string tag1 in tags1)
-            {
-                if (tags2.Contains(tag1)) return true;
-            }
+            var condition = ArgumentCount == 0 ? 
+                new BoolSymbol(true) : tagMatcher.Argue(new ISymbol[]{ symbol, GetArgument(0)});
 
-            return false;
+            _items.Add((symbol, condition));
         }
-
-        public void Add(MetaData<ISymbol> symbol, ISymbol condition) => _items.Add((symbol, condition));
-
-        public void Add(MetaData<ISymbol> symbol) => Add(symbol, new BoolSymbol(true));
     }
 }

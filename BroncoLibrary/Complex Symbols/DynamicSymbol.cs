@@ -64,7 +64,7 @@ namespace BroncoLibrary
             protected void SetArgs()
             {
                 foreach (int i in _callee._argumentLookup.Keys)
-                    _callee._argumentLookup[i].Set(_arguments[i]);
+                    _callee._argumentLookup[i].SetPointer(_arguments[i]);
             }
         }
 

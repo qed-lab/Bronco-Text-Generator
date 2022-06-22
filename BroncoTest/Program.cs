@@ -1,11 +1,10 @@
 ﻿using BroncoLibrary;
-using BroncoParser;
 using BroncoTest;
 
 VariableSetter setter = new VariableSetter();
 SymbolVariable pickedAnimal = new SymbolVariable();
 
-Bag adjectives = new Bag();
+Bag adjectives = new Bag(1);
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Theoretical"), new string[] { "theory" }));
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Applied"), new string[] { "applied" }));
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Procedural"), new string[] { "procGen" }));
@@ -30,7 +29,7 @@ adjectives.Add(new MetaData<ISymbol>(new Terminal("Serious"), 0.75));
 adjectives.Add(new MetaData<ISymbol>(new Terminal("Modern")));
 adjectives.Add(new MetaData<ISymbol>(new SymbolList() { new Terminal("Highly "), adjectives }, 0.75));
 
-Bag researchNouns = new Bag();
+Bag researchNouns = new Bag(1);
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Artificial Intelligence"), new string[] { "ai" }));
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Neural Networks"), new string[] { "ai", "algs" }));
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Machine Learning"), new string[] { "ai" }));
@@ -74,7 +73,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[]
  */
 
 MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
-    new MetaData<ISymbol>(new Terminal(""), new string[] {"ai"}) };
+    new MetaData<ISymbol>(new Terminal("Big old noticable name"), new string[] {"ai"}) };
 
 Bag adjNoun = new Bag();
 Bag paper = new Bag();
