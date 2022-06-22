@@ -14,7 +14,7 @@ namespace BroncoLibrary
 
         public FloatSymbol(float value)
         {
-            FloatValue= value;
+            FloatValue = value;
         }
     }
 }

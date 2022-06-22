@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BroncoLibrary.Elementory_Symbols;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -88,7 +89,7 @@ namespace BroncoLibrary
         {
             Delegate eval;
 
-            if (FindEvaluation(ref args, out eval))
+            if (FindEvaluation(args, out eval))
                 return new ArgumentHolder(eval, args, this);
             if(_varArgEvaluation != null)
                 return new VarArgHolder(_varArgEvaluation, args, this);
@@ -96,11 +97,11 @@ namespace BroncoLibrary
             throw new ArgumentException("Arguments do not match any evaluation");
         }
 
-        protected bool FindEvaluation(ref ISymbol[] args, out Delegate outEval)
+        protected bool FindEvaluation(ISymbol[] args, out Delegate outEval)
         {
             foreach(var eval in _evaluationList)
             {
-                if (!EvalMatches(eval.Item1, ref args)) continue;
+                if (!EvalMatches(eval.Item1, args)) continue;
 
                 outEval = eval.Item2;
                 return true;
@@ -110,23 +111,15 @@ namespace BroncoLibrary
             return false;
         }
 
-        private bool EvalMatches(Type[] eval, ref ISymbol[] args)
+        private bool EvalMatches(Type[] eval, ISymbol[] args)
         {
             if (eval.Length != args.Length) return false;
 
-            ISymbol[] flatArgs = new ISymbol[args.Length];
-
             for (int i = 0; i < args.Length; i++)
             {
-                ISymbol flat = args[i].FlattenTo(eval[i]);
-                if (flat == null)
+                Type argType = args[i].GetType();
+                if (args[i].FlattensTo(eval[i]))
                     return false;
-                flatArgs[i] = flat;
-            }
-
-            for(int i = 0; i < args.Length; i++)
-            {
-                args[i] = flatArgs[i];
             }
 
             return true;
