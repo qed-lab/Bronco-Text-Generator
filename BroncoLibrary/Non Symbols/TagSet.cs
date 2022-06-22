@@ -17,10 +17,13 @@ namespace BroncoLibrary
 
         public float CompareTags(TagSet other)
         {
-            float weight = 1.0f;
+            if(this._tags.Count == 0 &&
+                other._tags.Count == 0) return 1;
 
+            float weight = 1.0f;
+            bool matched = false;
             Dictionary<string, float> shorter 
-                = other._tags.Count < this._tags.Count ? other._tags : this._tags;
+                = other._tags.Count <= this._tags.Count ? other._tags : this._tags;
             Dictionary<string, float> longer
                 = other._tags.Count > this._tags.Count ? other._tags : this._tags;
 
@@ -28,10 +31,13 @@ namespace BroncoLibrary
             {
                 float otherWeight;
                 if(longer.TryGetValue(tag.Key, out otherWeight))
+                {
                     weight *= tag.Value * otherWeight;
+                    matched = true;
+                }
             }
 
-            return weight;
+            return matched ? weight : 0;
         }
     }
 }
