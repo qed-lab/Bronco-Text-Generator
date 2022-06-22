@@ -1,2 +1,6 @@
-jonas says "yes please"
-antlr says "let's get started"
+=animal=
+dog %100
+cat#furry
+bird #feathered
+lizard
+< animal >-<animal>

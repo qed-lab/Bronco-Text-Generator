@@ -44,7 +44,7 @@ public partial class broncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// <return>The visitor result.</return>
 	public virtual Result VisitStart([NotNull] broncoGrammarParser.StartContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.line"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.bag"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -52,9 +52,9 @@ public partial class broncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitLine([NotNull] broncoGrammarParser.LineContext context) { return VisitChildren(context); }
+	public virtual Result VisitBag([NotNull] broncoGrammarParser.BagContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.name"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.symbol_call"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -62,9 +62,9 @@ public partial class broncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitName([NotNull] broncoGrammarParser.NameContext context) { return VisitChildren(context); }
+	public virtual Result VisitSymbol_call([NotNull] broncoGrammarParser.Symbol_callContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.opinion"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.bag_item"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -72,5 +72,15 @@ public partial class broncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOpinion([NotNull] broncoGrammarParser.OpinionContext context) { return VisitChildren(context); }
+	public virtual Result VisitBag_item([NotNull] broncoGrammarParser.Bag_itemContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.title"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitTitle([NotNull] broncoGrammarParser.TitleContext context) { return VisitChildren(context); }
 }

@@ -38,21 +38,27 @@ public interface IbroncoGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStart([NotNull] broncoGrammarParser.StartContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.line"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.bag"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLine([NotNull] broncoGrammarParser.LineContext context);
+	Result VisitBag([NotNull] broncoGrammarParser.BagContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.name"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.symbol_call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitName([NotNull] broncoGrammarParser.NameContext context);
+	Result VisitSymbol_call([NotNull] broncoGrammarParser.Symbol_callContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="broncoGrammarParser.opinion"/>.
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.bag_item"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOpinion([NotNull] broncoGrammarParser.OpinionContext context);
+	Result VisitBag_item([NotNull] broncoGrammarParser.Bag_itemContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="broncoGrammarParser.title"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTitle([NotNull] broncoGrammarParser.TitleContext context);
 }

@@ -36,17 +36,20 @@ public partial class broncoGrammarParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		SAYS=1, WORD=2, TEXT=3, WHITESPACE=4, NEWLINE=5;
+		NEWLINE=1, CALL_OPEN=2, CALL_INNER=3, CALL_CLOSE=4, TERMINAL=5, TITLE_OPEN=6, 
+		TITLE_TEXT=7, TITLE_CLOSE=8;
 	public const int
-		RULE_start = 0, RULE_line = 1, RULE_name = 2, RULE_opinion = 3;
+		RULE_start = 0, RULE_bag = 1, RULE_symbol_call = 2, RULE_bag_item = 3, 
+		RULE_title = 4;
 	public static readonly string[] ruleNames = {
-		"start", "line", "name", "opinion"
+		"start", "bag", "symbol_call", "bag_item", "title"
 	};
 
 	private static readonly string[] _LiteralNames = {
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "SAYS", "WORD", "TEXT", "WHITESPACE", "NEWLINE"
+		null, "NEWLINE", "CALL_OPEN", "CALL_INNER", "CALL_CLOSE", "TERMINAL", 
+		"TITLE_OPEN", "TITLE_TEXT", "TITLE_CLOSE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -81,13 +84,9 @@ public partial class broncoGrammarParser : Parser {
 	}
 
 	public partial class StartContext : ParserRuleContext {
-		public LineContext[] line() {
-			return GetRuleContexts<LineContext>();
+		public BagContext bag() {
+			return GetRuleContext<BagContext>(0);
 		}
-		public LineContext line(int i) {
-			return GetRuleContext<LineContext>(i);
-		}
-		public ITerminalNode Eof() { return GetToken(broncoGrammarParser.Eof, 0); }
 		public StartContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -107,9 +106,7 @@ public partial class broncoGrammarParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 8; line();
-			State = 9; line();
-			State = 10; Match(Eof);
+			State = 10; bag();
 			}
 		}
 		catch (RecognitionException re) {
@@ -123,38 +120,52 @@ public partial class broncoGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class LineContext : ParserRuleContext {
-		public NameContext name() {
-			return GetRuleContext<NameContext>(0);
-		}
-		public ITerminalNode SAYS() { return GetToken(broncoGrammarParser.SAYS, 0); }
-		public OpinionContext opinion() {
-			return GetRuleContext<OpinionContext>(0);
+	public partial class BagContext : ParserRuleContext {
+		public TitleContext title() {
+			return GetRuleContext<TitleContext>(0);
 		}
 		public ITerminalNode NEWLINE() { return GetToken(broncoGrammarParser.NEWLINE, 0); }
-		public LineContext(ParserRuleContext parent, int invokingState)
+		public Bag_itemContext[] bag_item() {
+			return GetRuleContexts<Bag_itemContext>();
+		}
+		public Bag_itemContext bag_item(int i) {
+			return GetRuleContext<Bag_itemContext>(i);
+		}
+		public BagContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_line; } }
+		public override int RuleIndex { get { return RULE_bag; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitLine(this);
+			if (typedVisitor != null) return typedVisitor.VisitBag(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public LineContext line() {
-		LineContext _localctx = new LineContext(Context, State);
-		EnterRule(_localctx, 2, RULE_line);
+	public BagContext bag() {
+		BagContext _localctx = new BagContext(Context, State);
+		EnterRule(_localctx, 2, RULE_bag);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 12; name();
-			State = 13; Match(SAYS);
-			State = 14; opinion();
-			State = 15; Match(NEWLINE);
+			State = 12; title();
+			State = 13; Match(NEWLINE);
+			State = 15;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				{
+				State = 14; bag_item();
+				}
+				}
+				State = 17;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( _la==CALL_OPEN || _la==TERMINAL );
 			}
 		}
 		catch (RecognitionException re) {
@@ -168,28 +179,32 @@ public partial class broncoGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class NameContext : ParserRuleContext {
-		public ITerminalNode WORD() { return GetToken(broncoGrammarParser.WORD, 0); }
-		public NameContext(ParserRuleContext parent, int invokingState)
+	public partial class Symbol_callContext : ParserRuleContext {
+		public ITerminalNode CALL_OPEN() { return GetToken(broncoGrammarParser.CALL_OPEN, 0); }
+		public ITerminalNode CALL_INNER() { return GetToken(broncoGrammarParser.CALL_INNER, 0); }
+		public ITerminalNode CALL_CLOSE() { return GetToken(broncoGrammarParser.CALL_CLOSE, 0); }
+		public Symbol_callContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_name; } }
+		public override int RuleIndex { get { return RULE_symbol_call; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitName(this);
+			if (typedVisitor != null) return typedVisitor.VisitSymbol_call(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public NameContext name() {
-		NameContext _localctx = new NameContext(Context, State);
-		EnterRule(_localctx, 4, RULE_name);
+	public Symbol_callContext symbol_call() {
+		Symbol_callContext _localctx = new Symbol_callContext(Context, State);
+		EnterRule(_localctx, 4, RULE_symbol_call);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 17; Match(WORD);
+			State = 19; Match(CALL_OPEN);
+			State = 20; Match(CALL_INNER);
+			State = 21; Match(CALL_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -203,28 +218,104 @@ public partial class broncoGrammarParser : Parser {
 		return _localctx;
 	}
 
-	public partial class OpinionContext : ParserRuleContext {
-		public ITerminalNode TEXT() { return GetToken(broncoGrammarParser.TEXT, 0); }
-		public OpinionContext(ParserRuleContext parent, int invokingState)
+	public partial class Bag_itemContext : ParserRuleContext {
+		public ITerminalNode NEWLINE() { return GetToken(broncoGrammarParser.NEWLINE, 0); }
+		public Symbol_callContext[] symbol_call() {
+			return GetRuleContexts<Symbol_callContext>();
+		}
+		public Symbol_callContext symbol_call(int i) {
+			return GetRuleContext<Symbol_callContext>(i);
+		}
+		public ITerminalNode[] TERMINAL() { return GetTokens(broncoGrammarParser.TERMINAL); }
+		public ITerminalNode TERMINAL(int i) {
+			return GetToken(broncoGrammarParser.TERMINAL, i);
+		}
+		public Bag_itemContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_opinion; } }
+		public override int RuleIndex { get { return RULE_bag_item; } }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitOpinion(this);
+			if (typedVisitor != null) return typedVisitor.VisitBag_item(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public OpinionContext opinion() {
-		OpinionContext _localctx = new OpinionContext(Context, State);
-		EnterRule(_localctx, 6, RULE_opinion);
+	public Bag_itemContext bag_item() {
+		Bag_itemContext _localctx = new Bag_itemContext(Context, State);
+		EnterRule(_localctx, 6, RULE_bag_item);
+		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 19; Match(TEXT);
+			State = 25;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			do {
+				{
+				State = 25;
+				ErrorHandler.Sync(this);
+				switch (TokenStream.LA(1)) {
+				case CALL_OPEN:
+					{
+					State = 23; symbol_call();
+					}
+					break;
+				case TERMINAL:
+					{
+					State = 24; Match(TERMINAL);
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				}
+				State = 27;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			} while ( _la==CALL_OPEN || _la==TERMINAL );
+			State = 29; Match(NEWLINE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class TitleContext : ParserRuleContext {
+		public ITerminalNode TITLE_OPEN() { return GetToken(broncoGrammarParser.TITLE_OPEN, 0); }
+		public ITerminalNode TITLE_TEXT() { return GetToken(broncoGrammarParser.TITLE_TEXT, 0); }
+		public ITerminalNode TITLE_CLOSE() { return GetToken(broncoGrammarParser.TITLE_CLOSE, 0); }
+		public TitleContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_title; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IbroncoGrammarVisitor<TResult> typedVisitor = visitor as IbroncoGrammarVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTitle(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public TitleContext title() {
+		TitleContext _localctx = new TitleContext(Context, State);
+		EnterRule(_localctx, 8, RULE_title);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 31; Match(TITLE_OPEN);
+			State = 32; Match(TITLE_TEXT);
+			State = 33; Match(TITLE_CLOSE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -240,22 +331,34 @@ public partial class broncoGrammarParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\a', '\x18', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
-		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x3', 
-		'\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', 
-		'\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x4', '\x3', 
-		'\x4', '\x3', '\x5', '\x3', '\x5', '\x3', '\x5', '\x2', '\x2', '\x6', 
-		'\x2', '\x4', '\x6', '\b', '\x2', '\x2', '\x2', '\x13', '\x2', '\n', '\x3', 
-		'\x2', '\x2', '\x2', '\x4', '\xE', '\x3', '\x2', '\x2', '\x2', '\x6', 
-		'\x13', '\x3', '\x2', '\x2', '\x2', '\b', '\x15', '\x3', '\x2', '\x2', 
-		'\x2', '\n', '\v', '\x5', '\x4', '\x3', '\x2', '\v', '\f', '\x5', '\x4', 
-		'\x3', '\x2', '\f', '\r', '\a', '\x2', '\x2', '\x3', '\r', '\x3', '\x3', 
-		'\x2', '\x2', '\x2', '\xE', '\xF', '\x5', '\x6', '\x4', '\x2', '\xF', 
-		'\x10', '\a', '\x3', '\x2', '\x2', '\x10', '\x11', '\x5', '\b', '\x5', 
-		'\x2', '\x11', '\x12', '\a', '\a', '\x2', '\x2', '\x12', '\x5', '\x3', 
-		'\x2', '\x2', '\x2', '\x13', '\x14', '\a', '\x4', '\x2', '\x2', '\x14', 
-		'\a', '\x3', '\x2', '\x2', '\x2', '\x15', '\x16', '\a', '\x5', '\x2', 
-		'\x2', '\x16', '\t', '\x3', '\x2', '\x2', '\x2', '\x2',
+		'\x5964', '\x3', '\n', '&', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', '\t', 
+		'\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', '\x6', 
+		'\t', '\x6', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', 
+		'\x3', '\x6', '\x3', '\x12', '\n', '\x3', '\r', '\x3', '\xE', '\x3', '\x13', 
+		'\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', '\x3', '\x5', 
+		'\x3', '\x5', '\x6', '\x5', '\x1C', '\n', '\x5', '\r', '\x5', '\xE', '\x5', 
+		'\x1D', '\x3', '\x5', '\x3', '\x5', '\x3', '\x6', '\x3', '\x6', '\x3', 
+		'\x6', '\x3', '\x6', '\x3', '\x6', '\x2', '\x2', '\a', '\x2', '\x4', '\x6', 
+		'\b', '\n', '\x2', '\x2', '\x2', '#', '\x2', '\f', '\x3', '\x2', '\x2', 
+		'\x2', '\x4', '\xE', '\x3', '\x2', '\x2', '\x2', '\x6', '\x15', '\x3', 
+		'\x2', '\x2', '\x2', '\b', '\x1B', '\x3', '\x2', '\x2', '\x2', '\n', '!', 
+		'\x3', '\x2', '\x2', '\x2', '\f', '\r', '\x5', '\x4', '\x3', '\x2', '\r', 
+		'\x3', '\x3', '\x2', '\x2', '\x2', '\xE', '\xF', '\x5', '\n', '\x6', '\x2', 
+		'\xF', '\x11', '\a', '\x3', '\x2', '\x2', '\x10', '\x12', '\x5', '\b', 
+		'\x5', '\x2', '\x11', '\x10', '\x3', '\x2', '\x2', '\x2', '\x12', '\x13', 
+		'\x3', '\x2', '\x2', '\x2', '\x13', '\x11', '\x3', '\x2', '\x2', '\x2', 
+		'\x13', '\x14', '\x3', '\x2', '\x2', '\x2', '\x14', '\x5', '\x3', '\x2', 
+		'\x2', '\x2', '\x15', '\x16', '\a', '\x4', '\x2', '\x2', '\x16', '\x17', 
+		'\a', '\x5', '\x2', '\x2', '\x17', '\x18', '\a', '\x6', '\x2', '\x2', 
+		'\x18', '\a', '\x3', '\x2', '\x2', '\x2', '\x19', '\x1C', '\x5', '\x6', 
+		'\x4', '\x2', '\x1A', '\x1C', '\a', '\a', '\x2', '\x2', '\x1B', '\x19', 
+		'\x3', '\x2', '\x2', '\x2', '\x1B', '\x1A', '\x3', '\x2', '\x2', '\x2', 
+		'\x1C', '\x1D', '\x3', '\x2', '\x2', '\x2', '\x1D', '\x1B', '\x3', '\x2', 
+		'\x2', '\x2', '\x1D', '\x1E', '\x3', '\x2', '\x2', '\x2', '\x1E', '\x1F', 
+		'\x3', '\x2', '\x2', '\x2', '\x1F', ' ', '\a', '\x3', '\x2', '\x2', ' ', 
+		'\t', '\x3', '\x2', '\x2', '\x2', '!', '\"', '\a', '\b', '\x2', '\x2', 
+		'\"', '#', '\a', '\t', '\x2', '\x2', '#', '$', '\a', '\n', '\x2', '\x2', 
+		'$', '\v', '\x3', '\x2', '\x2', '\x2', '\x5', '\x13', '\x1B', '\x1D',
 	};
 
 	public static readonly ATN _ATN =
