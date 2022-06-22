@@ -16,7 +16,7 @@ namespace BroncoLibrary
         public int Count => _symbols.Count;
         public bool IsReadOnly => true;
 
-        public Bag()
+        public Bag() : this(new List<MetaData<ISymbol>>())
         {
         }
 

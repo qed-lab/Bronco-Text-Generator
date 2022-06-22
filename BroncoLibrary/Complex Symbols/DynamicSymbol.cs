@@ -1,5 +1,4 @@
-﻿using BroncoLibrary.Elementory_Symbols;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -29,13 +28,15 @@ namespace BroncoLibrary
 
         private class ArgumentHolder : ISymbol
         {
-            protected Delegate _eval;
+            protected Type[] _argTypes;
+            protected Delegate _evalDelegate;
             protected ISymbol[] _arguments;
             protected DynamicSymbol _callee;
 
-            public ArgumentHolder(Delegate eval, ISymbol[] args, DynamicSymbol callee)
+            public ArgumentHolder(Delegate evalDelegate, Type[] argTypes, ISymbol[] args, DynamicSymbol callee)
             {
-                _eval = eval;
+                _argTypes = argTypes;
+                _evalDelegate = evalDelegate;
                 _arguments = args;
                 _callee = callee;
             }
@@ -43,7 +44,19 @@ namespace BroncoLibrary
             public virtual ISymbol Evaluate()
             {
                 SetArgs();
-                return (ISymbol) _eval.DynamicInvoke(_arguments);
+
+                var flatArgs = new ISymbol[_argTypes.Length];
+
+                for(int i = 0; i < flatArgs.Length; i++)
+                {
+                    ISymbol flat = _arguments[i].FlattenTo(_argTypes[i]);
+
+                    if (flat == null) throw new ArgumentException($"Provided argument did not flatten to required {_argTypes[i]}");
+                    
+                    flatArgs[i] = flat;
+                }
+
+                return (ISymbol) _evalDelegate.DynamicInvoke(flatArgs);
             }
 
             public ISymbol GetArgument(int index) => _arguments[index];
@@ -57,12 +70,15 @@ namespace BroncoLibrary
 
         private class VarArgHolder : ArgumentHolder
         {
-            public VarArgHolder(EvalVarArgs eval, ISymbol[] args, DynamicSymbol callee) : base(eval, args, callee) { }
+            public VarArgHolder(EvalVarArgs eval, ISymbol[] args, DynamicSymbol callee) : base(eval, new Type[args.Length], args, callee) 
+            {
+                Array.Fill(_argTypes, typeof(ISymbol));
+            }
 
             public override ISymbol Evaluate()
             {
                 SetArgs();
-                return (ISymbol) ((EvalVarArgs) _eval) (_arguments);
+                return (ISymbol) ((EvalVarArgs) _evalDelegate)(_arguments);
             }
         }
 
@@ -87,42 +103,28 @@ namespace BroncoLibrary
 
         public ISymbol Argue(ISymbol[] args)
         {
-            Delegate eval;
+            (Type[], Delegate) eval;
 
             if (FindEvaluation(args, out eval))
-                return new ArgumentHolder(eval, args, this);
+                return new ArgumentHolder(eval.Item2, eval.Item1, args, this);
             if(_varArgEvaluation != null)
                 return new VarArgHolder(_varArgEvaluation, args, this);
 
             throw new ArgumentException("Arguments do not match any evaluation");
         }
 
-        protected bool FindEvaluation(ISymbol[] args, out Delegate outEval)
+        protected bool FindEvaluation(ISymbol[] args, out (Type[], Delegate) outEval)
         {
             foreach(var eval in _evaluationList)
             {
-                if (!EvalMatches(eval.Item1, args)) continue;
+                if (eval.Item1.Length != args.Length) continue;
 
-                outEval = eval.Item2;
+                outEval = eval;
                 return true;
             }
 
-            outEval = null;
+            outEval = (null, null);
             return false;
-        }
-
-        private bool EvalMatches(Type[] eval, ISymbol[] args)
-        {
-            if (eval.Length != args.Length) return false;
-
-            for (int i = 0; i < args.Length; i++)
-            {
-                Type argType = args[i].GetType();
-                if (args[i].FlattensTo(eval[i]))
-                    return false;
-            }
-
-            return true;
         }
 
         protected void AddEvaluationDelegate(Delegate eval)

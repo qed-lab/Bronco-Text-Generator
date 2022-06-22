@@ -12,9 +12,6 @@ namespace BroncoLibrary
 
         public ISymbol Evaluate();
 
-        public bool FlattensTo(Type type)
-            => type == typeof(ITerminal);
-
         public SymbolVariable GetArgument(int index) 
             => throw new ArgumentException("This symbol does not have any arguments");
 
@@ -22,12 +19,10 @@ namespace BroncoLibrary
             => throw new ArgumentException("This symbol does not accept any arguments");
 
         public T FlattenTo<T>() where T : ISymbol
-         => (T) FlattenTo(typeof(T));
+            => (T) FlattenTo(typeof(T));
         
         public ISymbol FlattenTo(Type type)
         {
-            if (!FlattensTo(type)) return null;
-
             ISymbol current = this;
 
             while (!type.IsAssignableFrom(current.GetType()))
