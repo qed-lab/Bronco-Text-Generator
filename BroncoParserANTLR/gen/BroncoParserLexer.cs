@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:/Users/angry/source/repos/BroncoLibrary/BroncoParserANTLR\BroncoLexer.g4 by ANTLR 4.10.1
+// Generated from C:/Users/angry/source/repos/BroncoLibrary/BroncoParserANTLR\BroncoParser.g4 by ANTLR 4.10.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -29,7 +29,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.10.1")]
 [System.CLSCompliant(false)]
-public partial class BroncoLexer : Lexer {
+public partial class BroncoParserLexer : Lexer {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
@@ -49,17 +49,17 @@ public partial class BroncoLexer : Lexer {
 	};
 
 
-	public BroncoLexer(ICharStream input)
+	public BroncoParserLexer(ICharStream input)
 	: this(input, Console.Out, Console.Error) { }
 
-	public BroncoLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
+	public BroncoParserLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
 	: base(input, output, errorOutput)
 	{
 		Interpreter = new LexerATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
 	private static readonly string[] _LiteralNames = {
-		null, null, null, "'\\n'", null, "'@'", null, null, "':'", "','", "'<'", 
+		null, null, null, "'\\n'", null, "'@'", "'#'", "'%'", "':'", "','", "'<'", 
 		"'>'"
 	};
 	private static readonly string[] _SymbolicNames = {
@@ -77,7 +77,7 @@ public partial class BroncoLexer : Lexer {
 		}
 	}
 
-	public override string GrammarFileName { get { return "BroncoLexer.g4"; } }
+	public override string GrammarFileName { get { return "BroncoParser.g4"; } }
 
 	public override string[] RuleNames { get { return ruleNames; } }
 
@@ -87,7 +87,7 @@ public partial class BroncoLexer : Lexer {
 
 	public override int[] SerializedAtn { get { return _serializedATN; } }
 
-	static BroncoLexer() {
+	static BroncoParserLexer() {
 		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
 		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
 			decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);
@@ -110,7 +110,7 @@ public partial class BroncoLexer : Lexer {
 		0,36,37,5,34,0,0,37,4,1,0,0,0,38,39,5,10,0,0,39,6,1,0,0,0,40,42,7,3,0,
 		0,41,40,1,0,0,0,42,43,1,0,0,0,43,41,1,0,0,0,43,44,1,0,0,0,44,45,1,0,0,
 		0,45,46,6,3,0,0,46,8,1,0,0,0,47,48,5,64,0,0,48,10,1,0,0,0,49,50,5,35,0,
-		0,50,12,1,0,0,0,51,52,5,35,0,0,52,14,1,0,0,0,53,54,5,58,0,0,54,16,1,0,
+		0,50,12,1,0,0,0,51,52,5,37,0,0,52,14,1,0,0,0,53,54,5,58,0,0,54,16,1,0,
 		0,0,55,56,5,44,0,0,56,18,1,0,0,0,57,58,5,60,0,0,58,20,1,0,0,0,59,60,5,
 		62,0,0,60,22,1,0,0,0,4,0,27,34,43,1,6,0,0
 	};
