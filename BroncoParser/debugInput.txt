@@ -1,6 +1,0 @@
-=animal=
-dog %100
-cat#furry
-bird #feathered
-lizard
-< animal >-<animal>
