@@ -4,8 +4,6 @@ grammar ExplicitBroncoGrammar;
 PARSER
 */
 
-start: file;
-
 file: bag+ EOF;
 
 bag: bag_title bag_item+;

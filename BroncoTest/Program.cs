@@ -1,5 +1,4 @@
 ﻿using BroncoLibrary;
-using BroncoParser;
 using BroncoTest;
 
 VariableSetter setter = new VariableSetter();
@@ -101,36 +100,4 @@ test
 ");
 */
 
-ISymbol root = GeneratorParser.ParseString(
-@"
-
-@start   
-This is a story about a <setter | protagonist, animal> this particular <protagonist> looked <adjective>#tag1
-
-@animal
-dog %100
-cat#furry
-bird #feathered
-lizard
-< animal >-<animal>
-
-@adjective
-big
-small
-scary
-cute
-very <adjective>
-<adjective> and <adjective>
-much like a <animal>
-
-");
-
-Console.WriteLine(root.Flatten().Value);
-Console.WriteLine(root.Flatten().Value);
-Console.WriteLine(root.Flatten().Value);
-Console.WriteLine(root.Flatten().Value);
-Console.WriteLine(root.Flatten().Value);
-
-
-//GeneratorParser.Test();
 

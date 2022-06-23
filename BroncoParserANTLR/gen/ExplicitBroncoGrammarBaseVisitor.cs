@@ -35,16 +35,6 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class ExplicitBroncoGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IExplicitBroncoGrammarVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.start"/>.
-	/// <para>
-	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-	/// on <paramref name="context"/>.
-	/// </para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	public virtual Result VisitStart([NotNull] ExplicitBroncoGrammarParser.StartContext context) { return VisitChildren(context); }
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.file"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>

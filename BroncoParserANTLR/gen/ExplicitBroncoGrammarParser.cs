@@ -39,13 +39,12 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 		ID=1, TERMINAL=2, FLOAT=3, INT=4, WS=5, AT=6, HASH=7, PERCENT=8, COLON=9, 
 		COMMA=10, LT=11, GT=12, TILDA=13, PIPE=14;
 	public const int
-		RULE_start = 0, RULE_file = 1, RULE_bag = 2, RULE_bag_title = 3, RULE_bag_args = 4, 
-		RULE_bag_item = 5, RULE_symbol = 6, RULE_symbol_call = 7, RULE_symbol_call_args = 8, 
-		RULE_symbol_ref = 9, RULE_meta_data = 10, RULE_meta_tag = 11, RULE_meta_weight = 12;
+		RULE_file = 0, RULE_bag = 1, RULE_bag_title = 2, RULE_bag_args = 3, RULE_bag_item = 4, 
+		RULE_symbol = 5, RULE_symbol_call = 6, RULE_symbol_call_args = 7, RULE_symbol_ref = 8, 
+		RULE_meta_data = 9, RULE_meta_tag = 10, RULE_meta_weight = 11;
 	public static readonly string[] ruleNames = {
-		"start", "file", "bag", "bag_title", "bag_args", "bag_item", "symbol", 
-		"symbol_call", "symbol_call_args", "symbol_ref", "meta_data", "meta_tag", 
-		"meta_weight"
+		"file", "bag", "bag_title", "bag_args", "bag_item", "symbol", "symbol_call", 
+		"symbol_call_args", "symbol_ref", "meta_data", "meta_tag", "meta_weight"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -88,45 +87,6 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class StartContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public FileContext file() {
-			return GetRuleContext<FileContext>(0);
-		}
-		public StartContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_start; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IExplicitBroncoGrammarVisitor<TResult> typedVisitor = visitor as IExplicitBroncoGrammarVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitStart(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
-
-	[RuleVersion(0)]
-	public StartContext start() {
-		StartContext _localctx = new StartContext(Context, State);
-		EnterRule(_localctx, 0, RULE_start);
-		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 26;
-			file();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			ErrorHandler.ReportError(this, re);
-			ErrorHandler.Recover(this, re);
-		}
-		finally {
-			ExitRule();
-		}
-		return _localctx;
-	}
-
 	public partial class FileContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(ExplicitBroncoGrammarParser.Eof, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public BagContext[] bag() {
@@ -151,26 +111,26 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public FileContext file() {
 		FileContext _localctx = new FileContext(Context, State);
-		EnterRule(_localctx, 2, RULE_file);
+		EnterRule(_localctx, 0, RULE_file);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 29;
+			State = 25;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 28;
+				State = 24;
 				bag();
 				}
 				}
-				State = 31;
+				State = 27;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==AT );
-			State = 33;
+			State = 29;
 			Match(Eof);
 			}
 		}
@@ -211,24 +171,24 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public BagContext bag() {
 		BagContext _localctx = new BagContext(Context, State);
-		EnterRule(_localctx, 4, RULE_bag);
+		EnterRule(_localctx, 2, RULE_bag);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 35;
+			State = 31;
 			bag_title();
-			State = 37;
+			State = 33;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 36;
+				State = 32;
 				bag_item();
 				}
 				}
-				State = 39;
+				State = 35;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==TILDA );
@@ -267,21 +227,21 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Bag_titleContext bag_title() {
 		Bag_titleContext _localctx = new Bag_titleContext(Context, State);
-		EnterRule(_localctx, 6, RULE_bag_title);
+		EnterRule(_localctx, 4, RULE_bag_title);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 41;
+			State = 37;
 			Match(AT);
-			State = 42;
+			State = 38;
 			Match(ID);
-			State = 44;
+			State = 40;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COLON) {
 				{
-				State = 43;
+				State = 39;
 				bag_args();
 				}
 			}
@@ -325,28 +285,28 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Bag_argsContext bag_args() {
 		Bag_argsContext _localctx = new Bag_argsContext(Context, State);
-		EnterRule(_localctx, 8, RULE_bag_args);
+		EnterRule(_localctx, 6, RULE_bag_args);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 46;
+			State = 42;
 			Match(COLON);
-			State = 47;
+			State = 43;
 			Match(ID);
-			State = 52;
+			State = 48;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 48;
+				State = 44;
 				Match(COMMA);
-				State = 49;
+				State = 45;
 				Match(ID);
 				}
 				}
-				State = 54;
+				State = 50;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -388,23 +348,23 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Bag_itemContext bag_item() {
 		Bag_itemContext _localctx = new Bag_itemContext(Context, State);
-		EnterRule(_localctx, 10, RULE_bag_item);
+		EnterRule(_localctx, 8, RULE_bag_item);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 55;
+			State = 51;
 			Match(TILDA);
-			State = 56;
+			State = 52;
 			symbol();
-			State = 59;
+			State = 55;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==PIPE) {
 				{
-				State = 57;
+				State = 53;
 				Match(PIPE);
-				State = 58;
+				State = 54;
 				symbol_ref();
 				}
 			}
@@ -455,29 +415,29 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public SymbolContext symbol() {
 		SymbolContext _localctx = new SymbolContext(Context, State);
-		EnterRule(_localctx, 12, RULE_symbol);
+		EnterRule(_localctx, 10, RULE_symbol);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 63;
+			State = 59;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
-				State = 63;
+				State = 59;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case TERMINAL:
 					{
-					State = 61;
+					State = 57;
 					Match(TERMINAL);
 					}
 					break;
 				case ID:
 				case LT:
 					{
-					State = 62;
+					State = 58;
 					symbol_ref();
 					}
 					break;
@@ -485,21 +445,21 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 65;
+				State = 61;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ID) | (1L << TERMINAL) | (1L << LT))) != 0) );
-			State = 70;
+			State = 66;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==HASH || _la==PERCENT) {
 				{
 				{
-				State = 67;
+				State = 63;
 				meta_data();
 				}
 				}
-				State = 72;
+				State = 68;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -541,26 +501,26 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Symbol_callContext symbol_call() {
 		Symbol_callContext _localctx = new Symbol_callContext(Context, State);
-		EnterRule(_localctx, 14, RULE_symbol_call);
+		EnterRule(_localctx, 12, RULE_symbol_call);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 73;
+			State = 69;
 			Match(LT);
-			State = 74;
+			State = 70;
 			symbol_ref();
-			State = 76;
+			State = 72;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COLON) {
 				{
-				State = 75;
+				State = 71;
 				symbol_call_args();
 				}
 			}
 
-			State = 78;
+			State = 74;
 			Match(GT);
 			}
 		}
@@ -603,28 +563,28 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Symbol_call_argsContext symbol_call_args() {
 		Symbol_call_argsContext _localctx = new Symbol_call_argsContext(Context, State);
-		EnterRule(_localctx, 16, RULE_symbol_call_args);
+		EnterRule(_localctx, 14, RULE_symbol_call_args);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 80;
+			State = 76;
 			Match(COLON);
-			State = 81;
+			State = 77;
 			symbol_ref();
-			State = 86;
+			State = 82;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 82;
+				State = 78;
 				Match(COMMA);
-				State = 83;
+				State = 79;
 				symbol_ref();
 				}
 				}
-				State = 88;
+				State = 84;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -662,22 +622,22 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Symbol_refContext symbol_ref() {
 		Symbol_refContext _localctx = new Symbol_refContext(Context, State);
-		EnterRule(_localctx, 18, RULE_symbol_ref);
+		EnterRule(_localctx, 16, RULE_symbol_ref);
 		try {
-			State = 91;
+			State = 87;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case ID:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 89;
+				State = 85;
 				Match(ID);
 				}
 				break;
 			case LT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 90;
+				State = 86;
 				symbol_call();
 				}
 				break;
@@ -719,22 +679,22 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Meta_dataContext meta_data() {
 		Meta_dataContext _localctx = new Meta_dataContext(Context, State);
-		EnterRule(_localctx, 20, RULE_meta_data);
+		EnterRule(_localctx, 18, RULE_meta_data);
 		try {
-			State = 95;
+			State = 91;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case HASH:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 93;
+				State = 89;
 				meta_tag();
 				}
 				break;
 			case PERCENT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 94;
+				State = 90;
 				meta_weight();
 				}
 				break;
@@ -774,23 +734,23 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Meta_tagContext meta_tag() {
 		Meta_tagContext _localctx = new Meta_tagContext(Context, State);
-		EnterRule(_localctx, 22, RULE_meta_tag);
+		EnterRule(_localctx, 20, RULE_meta_tag);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 97;
+			State = 93;
 			Match(HASH);
-			State = 98;
+			State = 94;
 			Match(ID);
-			State = 101;
+			State = 97;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COLON) {
 				{
-				State = 99;
+				State = 95;
 				Match(COLON);
-				State = 100;
+				State = 96;
 				Match(FLOAT);
 				}
 			}
@@ -827,13 +787,13 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	[RuleVersion(0)]
 	public Meta_weightContext meta_weight() {
 		Meta_weightContext _localctx = new Meta_weightContext(Context, State);
-		EnterRule(_localctx, 24, RULE_meta_weight);
+		EnterRule(_localctx, 22, RULE_meta_weight);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 103;
+			State = 99;
 			Match(PERCENT);
-			State = 104;
+			State = 100;
 			Match(FLOAT);
 			}
 		}
@@ -849,37 +809,35 @@ public partial class ExplicitBroncoGrammarParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,14,107,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,1,0,1,0,1,1,4,1,30,8,
-		1,11,1,12,1,31,1,1,1,1,1,2,1,2,4,2,38,8,2,11,2,12,2,39,1,3,1,3,1,3,3,3,
-		45,8,3,1,4,1,4,1,4,1,4,5,4,51,8,4,10,4,12,4,54,9,4,1,5,1,5,1,5,1,5,3,5,
-		60,8,5,1,6,1,6,4,6,64,8,6,11,6,12,6,65,1,6,5,6,69,8,6,10,6,12,6,72,9,6,
-		1,7,1,7,1,7,3,7,77,8,7,1,7,1,7,1,8,1,8,1,8,1,8,5,8,85,8,8,10,8,12,8,88,
-		9,8,1,9,1,9,3,9,92,8,9,1,10,1,10,3,10,96,8,10,1,11,1,11,1,11,1,11,3,11,
-		102,8,11,1,12,1,12,1,12,1,12,0,0,13,0,2,4,6,8,10,12,14,16,18,20,22,24,
-		0,0,106,0,26,1,0,0,0,2,29,1,0,0,0,4,35,1,0,0,0,6,41,1,0,0,0,8,46,1,0,0,
-		0,10,55,1,0,0,0,12,63,1,0,0,0,14,73,1,0,0,0,16,80,1,0,0,0,18,91,1,0,0,
-		0,20,95,1,0,0,0,22,97,1,0,0,0,24,103,1,0,0,0,26,27,3,2,1,0,27,1,1,0,0,
-		0,28,30,3,4,2,0,29,28,1,0,0,0,30,31,1,0,0,0,31,29,1,0,0,0,31,32,1,0,0,
-		0,32,33,1,0,0,0,33,34,5,0,0,1,34,3,1,0,0,0,35,37,3,6,3,0,36,38,3,10,5,
-		0,37,36,1,0,0,0,38,39,1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,5,1,0,0,0,
-		41,42,5,6,0,0,42,44,5,1,0,0,43,45,3,8,4,0,44,43,1,0,0,0,44,45,1,0,0,0,
-		45,7,1,0,0,0,46,47,5,9,0,0,47,52,5,1,0,0,48,49,5,10,0,0,49,51,5,1,0,0,
-		50,48,1,0,0,0,51,54,1,0,0,0,52,50,1,0,0,0,52,53,1,0,0,0,53,9,1,0,0,0,54,
-		52,1,0,0,0,55,56,5,13,0,0,56,59,3,12,6,0,57,58,5,14,0,0,58,60,3,18,9,0,
-		59,57,1,0,0,0,59,60,1,0,0,0,60,11,1,0,0,0,61,64,5,2,0,0,62,64,3,18,9,0,
-		63,61,1,0,0,0,63,62,1,0,0,0,64,65,1,0,0,0,65,63,1,0,0,0,65,66,1,0,0,0,
-		66,70,1,0,0,0,67,69,3,20,10,0,68,67,1,0,0,0,69,72,1,0,0,0,70,68,1,0,0,
-		0,70,71,1,0,0,0,71,13,1,0,0,0,72,70,1,0,0,0,73,74,5,11,0,0,74,76,3,18,
-		9,0,75,77,3,16,8,0,76,75,1,0,0,0,76,77,1,0,0,0,77,78,1,0,0,0,78,79,5,12,
-		0,0,79,15,1,0,0,0,80,81,5,9,0,0,81,86,3,18,9,0,82,83,5,10,0,0,83,85,3,
-		18,9,0,84,82,1,0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,17,1,
-		0,0,0,88,86,1,0,0,0,89,92,5,1,0,0,90,92,3,14,7,0,91,89,1,0,0,0,91,90,1,
-		0,0,0,92,19,1,0,0,0,93,96,3,22,11,0,94,96,3,24,12,0,95,93,1,0,0,0,95,94,
-		1,0,0,0,96,21,1,0,0,0,97,98,5,7,0,0,98,101,5,1,0,0,99,100,5,9,0,0,100,
-		102,5,3,0,0,101,99,1,0,0,0,101,102,1,0,0,0,102,23,1,0,0,0,103,104,5,8,
-		0,0,104,105,5,3,0,0,105,25,1,0,0,0,13,31,39,44,52,59,63,65,70,76,86,91,
-		95,101
+		4,1,14,103,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,1,0,4,0,26,8,0,11,0,12,0,27,1,
+		0,1,0,1,1,1,1,4,1,34,8,1,11,1,12,1,35,1,2,1,2,1,2,3,2,41,8,2,1,3,1,3,1,
+		3,1,3,5,3,47,8,3,10,3,12,3,50,9,3,1,4,1,4,1,4,1,4,3,4,56,8,4,1,5,1,5,4,
+		5,60,8,5,11,5,12,5,61,1,5,5,5,65,8,5,10,5,12,5,68,9,5,1,6,1,6,1,6,3,6,
+		73,8,6,1,6,1,6,1,7,1,7,1,7,1,7,5,7,81,8,7,10,7,12,7,84,9,7,1,8,1,8,3,8,
+		88,8,8,1,9,1,9,3,9,92,8,9,1,10,1,10,1,10,1,10,3,10,98,8,10,1,11,1,11,1,
+		11,1,11,0,0,12,0,2,4,6,8,10,12,14,16,18,20,22,0,0,103,0,25,1,0,0,0,2,31,
+		1,0,0,0,4,37,1,0,0,0,6,42,1,0,0,0,8,51,1,0,0,0,10,59,1,0,0,0,12,69,1,0,
+		0,0,14,76,1,0,0,0,16,87,1,0,0,0,18,91,1,0,0,0,20,93,1,0,0,0,22,99,1,0,
+		0,0,24,26,3,2,1,0,25,24,1,0,0,0,26,27,1,0,0,0,27,25,1,0,0,0,27,28,1,0,
+		0,0,28,29,1,0,0,0,29,30,5,0,0,1,30,1,1,0,0,0,31,33,3,4,2,0,32,34,3,8,4,
+		0,33,32,1,0,0,0,34,35,1,0,0,0,35,33,1,0,0,0,35,36,1,0,0,0,36,3,1,0,0,0,
+		37,38,5,6,0,0,38,40,5,1,0,0,39,41,3,6,3,0,40,39,1,0,0,0,40,41,1,0,0,0,
+		41,5,1,0,0,0,42,43,5,9,0,0,43,48,5,1,0,0,44,45,5,10,0,0,45,47,5,1,0,0,
+		46,44,1,0,0,0,47,50,1,0,0,0,48,46,1,0,0,0,48,49,1,0,0,0,49,7,1,0,0,0,50,
+		48,1,0,0,0,51,52,5,13,0,0,52,55,3,10,5,0,53,54,5,14,0,0,54,56,3,16,8,0,
+		55,53,1,0,0,0,55,56,1,0,0,0,56,9,1,0,0,0,57,60,5,2,0,0,58,60,3,16,8,0,
+		59,57,1,0,0,0,59,58,1,0,0,0,60,61,1,0,0,0,61,59,1,0,0,0,61,62,1,0,0,0,
+		62,66,1,0,0,0,63,65,3,18,9,0,64,63,1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,
+		66,67,1,0,0,0,67,11,1,0,0,0,68,66,1,0,0,0,69,70,5,11,0,0,70,72,3,16,8,
+		0,71,73,3,14,7,0,72,71,1,0,0,0,72,73,1,0,0,0,73,74,1,0,0,0,74,75,5,12,
+		0,0,75,13,1,0,0,0,76,77,5,9,0,0,77,82,3,16,8,0,78,79,5,10,0,0,79,81,3,
+		16,8,0,80,78,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,15,1,
+		0,0,0,84,82,1,0,0,0,85,88,5,1,0,0,86,88,3,12,6,0,87,85,1,0,0,0,87,86,1,
+		0,0,0,88,17,1,0,0,0,89,92,3,20,10,0,90,92,3,22,11,0,91,89,1,0,0,0,91,90,
+		1,0,0,0,92,19,1,0,0,0,93,94,5,7,0,0,94,97,5,1,0,0,95,96,5,9,0,0,96,98,
+		5,3,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,21,1,0,0,0,99,100,5,8,0,0,100,101,
+		5,3,0,0,101,23,1,0,0,0,13,27,35,40,48,55,59,61,66,72,82,87,91,97
 	};
 
 	public static readonly ATN _ATN =

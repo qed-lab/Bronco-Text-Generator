@@ -32,12 +32,6 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IExplicitBroncoGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.start"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitStart([NotNull] ExplicitBroncoGrammarParser.StartContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.file"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
