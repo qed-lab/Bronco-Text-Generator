@@ -4,7 +4,7 @@ grammar BroncoGrammar;
 PARSER
 */
 
-start: bag;
+start: bag {System.out.println("Test?");};
 
 bag: bag_title bag_item+;
 bag_title: AT ID bag_args?;
