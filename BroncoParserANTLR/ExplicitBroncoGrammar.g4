@@ -26,11 +26,11 @@ LEXER
 */
 
 ID: [A-Za-z][A-Za-z0-9_]*;
-TERMINAL: '"'~["]+'"';
+TERMINAL: '\''~[']+'\'';
 FLOAT: INT ('.' INT)?;
 INT: [0-9]+;
 
-WS: [ \t\n]+ -> skip;
+WS: [ \t\n\r]+ -> skip;
 AT: '@';
 HASH: '#';
 PERCENT: '%';

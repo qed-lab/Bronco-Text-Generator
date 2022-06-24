@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BroncoParserANTLR
 {
-    internal class BroncoExplicitVisitor : ExplicitBroncoGrammarBaseVisitor<object>
+    public class BroncoExplicitVisitor : ExplicitBroncoGrammarBaseVisitor<object>
     {
         private readonly Dictionary<string, SymbolVariable> symbolLookup = new();
 
@@ -35,6 +35,16 @@ namespace BroncoParserANTLR
             symbol.SetPointer(value);
         }
 
+        public override object VisitFile([NotNull] ExplicitBroncoGrammarParser.FileContext context)
+        {
+            foreach (var bag in context.bag())
+            {
+                Visit(bag);
+            }
+
+            return GetReference("start");
+        }
+
         public override object VisitBag([NotNull] ExplicitBroncoGrammarParser.BagContext context)
         {
             string title = (string)Visit(context.bag_title());
@@ -46,9 +56,9 @@ namespace BroncoParserANTLR
                 bagItems.Add(((MetaData<ISymbol>, ISymbol)) Visit(itemContext));
             }
 
-
-
-            return new Bag(bagItems);
+            var bag = new Bag(bagItems);
+            SetReference(title, bag);
+            return bag;
         }
 
         public override object VisitBag_title([NotNull] ExplicitBroncoGrammarParser.Bag_titleContext context)
@@ -59,12 +69,13 @@ namespace BroncoParserANTLR
         public override object VisitBag_item([NotNull] ExplicitBroncoGrammarParser.Bag_itemContext context)
         {
             ISymbol symbol = (ISymbol)Visit(context.symbol());
-            ISymbol condition = (ISymbol)Visit(context.symbol_ref());
+            ISymbol condition;
 
             if(!(symbol is MetaData<ISymbol>)) symbol = new MetaData<ISymbol>(symbol);
-            if (condition == null) condition = new BoolSymbol(true);
+            if (context.symbol_ref() == null) condition = new BoolSymbol(true);
+            else condition = (ISymbol)Visit(context.symbol_ref());
 
-            return (symbol, condition);
+            return ((MetaData<ISymbol>) symbol, condition);
         }
 
         public override object VisitSymbol([NotNull] ExplicitBroncoGrammarParser.SymbolContext context)
@@ -75,6 +86,10 @@ namespace BroncoParserANTLR
             {
                 symbols.Add((ISymbol) Visit(symbol));
             }
+
+            ISymbol ret = symbols.Count() != 1 ? new SymbolList(symbols) : symbols[0];
+
+            return new MetaData<ISymbol>(ret);
         }
 
         public override object VisitSymbol_list_item([NotNull] ExplicitBroncoGrammarParser.Symbol_list_itemContext context)

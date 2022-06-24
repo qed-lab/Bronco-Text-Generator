@@ -1,5 +1,7 @@
 ﻿using BroncoLibrary;
 using BroncoTest;
+using BroncoParserANTLR;
+using Antlr4.Runtime;
 
 VariableSetter setter = new VariableSetter();
 SymbolVariable pickedAnimal = new SymbolVariable();
@@ -100,4 +102,27 @@ test
 ");
 */
 
+string input =
+@"
+@start
+~'item1 in start'
+~'A reference to'<test>
 
+@test
+~'one'
+~'two'
+~'three'
+";
+
+AntlrInputStream inputStream = new(input);
+ExplicitBroncoGrammarLexer speakLexer = new(inputStream);
+CommonTokenStream commonTokenStream = new CommonTokenStream(speakLexer);
+ExplicitBroncoGrammarParser parser = new ExplicitBroncoGrammarParser(commonTokenStream);
+
+BroncoExplicitVisitor visitor = new();
+ISymbol output = (ISymbol) visitor.Visit(parser.file());
+
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
