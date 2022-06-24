@@ -103,14 +103,16 @@ test
 
 string input =
 @"
-@start
-~'item1 in start'
-~'A reference to'<test> %0
-
-@test
+@num
 ~'one'
 ~'two'
 ~'three'
+
+@insert: arg
+~'I have '<arg>' things'
+
+@start
+~'Right here '<insert: num>
 ";
 
 AntlrInputStream inputStream = new(input);

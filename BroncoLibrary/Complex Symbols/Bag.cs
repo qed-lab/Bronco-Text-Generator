@@ -54,6 +54,9 @@ namespace BroncoLibrary
             return best.Item1;
         }
 
+        public void Add((MetaData<ISymbol>, ISymbol) item)
+            => Add(item.Item1, item.Item2);
+
         public void Add(MetaData<ISymbol> symbol, ISymbol condition) 
             => _items.Add((symbol, condition));
 

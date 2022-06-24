@@ -12,11 +12,14 @@ namespace BroncoParserANTLR
     public class BroncoExplicitVisitor : ExplicitBroncoGrammarBaseVisitor<object>
     {
         private readonly Dictionary<string, SymbolVariable> symbolLookup = new();
+        private readonly Dictionary<string, SymbolVariable> localLookup = new();
 
         private SymbolVariable GetReference(string id)
         {
             SymbolVariable symbol;
-            if(symbolLookup.TryGetValue(id, out symbol))
+            if (localLookup.TryGetValue(id, out symbol))
+                return symbol;
+            if (symbolLookup.TryGetValue(id, out symbol))
                 return symbol;
             symbol = new SymbolVariable();
             symbolLookup.Add(id, symbol);
@@ -35,6 +38,11 @@ namespace BroncoParserANTLR
             symbol.SetPointer(value);
         }
 
+        private void SetLocalReference(string id, ISymbol value)
+        {
+            localLookup.Add(id, new SymbolVariable(value));
+        }
+
         public override object VisitFile([NotNull] ExplicitBroncoGrammarParser.FileContext context)
         {
             foreach (var bag in context.bag())
@@ -47,23 +55,40 @@ namespace BroncoParserANTLR
 
         public override object VisitBag([NotNull] ExplicitBroncoGrammarParser.BagContext context)
         {
-            string title = (string)Visit(context.bag_title());
-            
-            IList<(MetaData<ISymbol>, ISymbol)> bagItems = new List<(MetaData<ISymbol>, ISymbol)>();
+            (string, IList<string>) title = ((string, IList<string>)) Visit(context.bag_title());
+            var bag = new Bag(title.Item2.Count());
+
+            for (int i = 0; i < title.Item2.Count(); i++)
+                SetLocalReference(title.Item2[i], bag.GetArgument(i));
 
             foreach(var itemContext in context.bag_item())
             {
-                bagItems.Add(((MetaData<ISymbol>, ISymbol)) Visit(itemContext));
+                bag.Add(((MetaData<ISymbol>, ISymbol)) Visit(itemContext));
             }
 
-            var bag = new Bag(0, bagItems);
-            SetReference(title, bag);
+            localLookup.Clear();
+
+            SetReference(title.Item1, bag);
             return bag;
         }
 
         public override object VisitBag_title([NotNull] ExplicitBroncoGrammarParser.Bag_titleContext context)
         {
-            return context.ID().GetText();
+            string title = context.ID().GetText();
+            var argContext = context.bag_args();
+            IList<string> args = argContext != null ? (IList<string>) Visit(argContext) : new List<string>();
+
+            return (title, args);
+        }
+
+        public override object VisitBag_args([NotNull] ExplicitBroncoGrammarParser.Bag_argsContext context)
+        {
+            IList<string> args = new List<string>();
+
+            foreach (var arg in context.ID())
+                args.Add(arg.GetText());
+
+            return args;
         }
 
         public override object VisitBag_item([NotNull] ExplicitBroncoGrammarParser.Bag_itemContext context)
