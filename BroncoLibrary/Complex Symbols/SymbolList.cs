@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class SymbolList : ISymbol
+    public class SymbolList : ISymbol, ICollection<ISymbol>
     {
         private List<ISymbol> _symbols;
 
@@ -37,5 +37,25 @@ namespace BroncoLibrary
         }
 
         public void Add(ISymbol item) => _symbols.Add(item);
+
+        public void Clear()
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
+
+
+        public bool Contains(ISymbol item)
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
+
+
+        public void CopyTo(ISymbol[] array, int arrayIndex)
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
+
+        public bool Remove(ISymbol item)
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
+
+        public IEnumerator<ISymbol> GetEnumerator()
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
+
+        IEnumerator IEnumerable.GetEnumerator()
+            => throw new NotImplementedException("This type only implements ICollection for the collection initializer");
     }
 }

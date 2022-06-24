@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BroncoLibrary.Operator_Symbols;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,61 +11,59 @@ namespace BroncoLibrary
 {
     public class Bag : DynamicSymbol
     {
-        private List<(MetaData<ISymbol>, ISymbol)> _symbols;
+        private static readonly TagMatcher tagMatcher = new TagMatcher();
+
+        private List<(MetaData<ISymbol> symbol, ISymbol condition)> _items;
         private Random _random;
 
-        public int Count => _symbols.Count;
-        public bool IsReadOnly => true;
+        public int ArgumentCount { get; private set; }
 
-        public Bag()
+        public Bag() : this(0) { }
+
+        public Bag(IEnumerable<MetaData<ISymbol>> items) : this(0, items) { }
+
+        public Bag(int argCount) : this(argCount, new List<MetaData<ISymbol>>()) { }
+
+        public Bag(int argCount, IEnumerable<MetaData<ISymbol>> items)
         {
-            _symbols = new();
+            ArgumentCount = argCount;
+            _items = new();
             _random = new();
         }
 
         public Bag(IEnumerable<MetaData<ISymbol>> items) : this()
         {
             foreach (var item in items)
-                _symbols.Add((item, new BoolSymbol(true)));
+                _items.Add((item, new BoolSymbol(true)));
 
             AddEvaluation(Pick);
         }
 
-        public Bag(IEnumerable<(MetaData<ISymbol>, ISymbol)> items) : this()
-        {
-            foreach (var item in items)
-                _symbols.Add(item);
-
-            AddEvaluation(Pick);
-        }
-
-        //TODO make arguments actually do something
         public ISymbol Pick(ISymbol[] args)
         {
-            (MetaData<ISymbol>, double) best = (null, -double.MaxValue);
+            (MetaData<ISymbol> symbol, double weight) best = (null, -double.MaxValue);
 
-            foreach (var symbol in _symbols)
+            foreach (var item in _items)
             {
-                double rolledWeight = _random.NextDouble() * symbol.Item1.Weight;
-                if (rolledWeight > best.Item2)
-                    best = (symbol.Item1, rolledWeight);
+                double rolledWeight = _random.NextDouble() * item.symbol.Weight;
+                FloatSymbol condition = item.condition.FlattenTo<FloatSymbol>();
+                rolledWeight *= condition.FloatValue;
+                if (rolledWeight > best.weight)
+                    best = (item.symbol, rolledWeight);
             }
 
             return best.Item1;
         }
 
-        private bool TagMatch(ISet<string> tags1, ISet<string> tags2)
+        public void Add(MetaData<ISymbol> symbol, ISymbol condition) 
+            => _items.Add((symbol, condition));
+
+        public void Add(MetaData<ISymbol> symbol)
         {
-            foreach(string tag1 in tags1)
-            {
-                if (tags2.Contains(tag1)) return true;
-            }
+            var condition = ArgumentCount == 0 ? 
+                new BoolSymbol(true) : tagMatcher.Argue(new ISymbol[]{ symbol, GetArgument(0)});
 
-            return false;
+            _items.Add((symbol, condition));
         }
-
-        public void Add(MetaData<ISymbol> symbol, ISymbol condition) => _symbols.Add((symbol, condition));
-
-        public void Add(MetaData<ISymbol> symbol) => Add(symbol, new BoolSymbol(true));
     }
 }
