@@ -31,6 +31,11 @@ namespace BroncoLibrary
             return FlattenTo<ITerminal>();
         }
 
+        public string ToString()
+        {
+            return Flatten().Value;
+        }
+
         public static ISymbol FlattenTo(ISymbol toFlat, Type type)
         {
             ISymbol current = toFlat;

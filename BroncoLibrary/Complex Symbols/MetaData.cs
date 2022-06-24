@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class MetaData<T> : DynamicSymbol, ISymbol where T : ISymbol
+    public class MetaData<T> : DynamicSymbol where T : ISymbol
     {
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
@@ -87,12 +87,6 @@ namespace BroncoLibrary
         public void SetMetaData(object key, object value)
         {
             _metaData[key] = value;
-        }
-
-        ISymbol ISymbol.FlattenTo(Type type)
-        {
-            ISymbol symbol = this;
-            return new MetaData<ISymbol>(ISymbol.FlattenTo(this, type));
         }
     }
 }

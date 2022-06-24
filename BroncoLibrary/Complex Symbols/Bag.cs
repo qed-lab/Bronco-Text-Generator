@@ -51,7 +51,7 @@ namespace BroncoLibrary
                     best = (item.symbol, rolledWeight);
             }
 
-            return best.Item1;
+            return best.symbol;
         }
 
         public void Add((MetaData<ISymbol>, ISymbol) item)

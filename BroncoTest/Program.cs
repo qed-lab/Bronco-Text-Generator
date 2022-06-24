@@ -103,16 +103,26 @@ test
 
 string input =
 @"
-@num
-~'one'
-~'two'
-~'three'
+@colors
+~'red' #red
+~'yellow' #yellow
+~'orange' #red:0.5 #yellow:0.5
+~'green' #green
 
-@insert: arg
-~'I have '<arg>' things'
+@red
+~'red'#red
+
+@animals: tag
+~'turtle' #green
+~'snake' #green
+~'bee' #yellow
+~'giraffe' #yellow
+~'cardinal' #red
+~'fox' #red
+
 
 @start
-~'Right here '<insert: num>
+~'This animal is red '<animals: red>
 ";
 
 AntlrInputStream inputStream = new(input);
