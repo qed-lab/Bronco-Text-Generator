@@ -68,6 +68,12 @@ public interface IExplicitBroncoGrammarVisitor<Result> : IParseTreeVisitor<Resul
 	/// <return>The visitor result.</return>
 	Result VisitSymbol([NotNull] ExplicitBroncoGrammarParser.SymbolContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.symbol_list_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSymbol_list_item([NotNull] ExplicitBroncoGrammarParser.Symbol_list_itemContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="ExplicitBroncoGrammarParser.symbol_call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
