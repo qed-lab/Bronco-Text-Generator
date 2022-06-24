@@ -29,7 +29,10 @@ namespace BroncoLibrary
             ArgumentCount = argCount;
             _items = new();
             _random = new();
+        }
 
+        public Bag(IEnumerable<MetaData<ISymbol>> items) : this()
+        {
             foreach (var item in items)
                 _items.Add((item, new BoolSymbol(true)));
 
