@@ -83,13 +83,50 @@ namespace BroncoParserANTLR
             IList<ISymbol> symbols = new List<ISymbol>();
 
             foreach (var symbol in context.symbol_list_item())
-            {
                 symbols.Add((ISymbol) Visit(symbol));
-            }
 
             ISymbol ret = symbols.Count() != 1 ? new SymbolList(symbols) : symbols[0];
 
-            return new MetaData<ISymbol>(ret);
+            var metaDataContext = context.meta_data();
+            if (metaDataContext != null)
+            {
+                MetaData<ISymbol> metaDataRet = new(ret);
+                foreach (var dataContext in metaDataContext)
+                {
+                    var data = Visit(dataContext);
+
+                    if (data is float) metaDataRet.Weight = (float)data;
+                    else
+                    {
+                        (string, float) tag = ((string, float)) data;
+                        metaDataRet.Tags.AddTag(tag.Item1, tag.Item2);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public override object VisitMeta_data([NotNull] ExplicitBroncoGrammarParser.Meta_dataContext context)
+        {
+            var meta = context.meta_tag();
+            if (meta != null) return Visit(meta);
+            return Visit(context.meta_weight());
+        }
+
+        public override object VisitMeta_tag([NotNull] ExplicitBroncoGrammarParser.Meta_tagContext context)
+        {
+            var weightContext = context.FLOAT();
+            float weight;
+            if (weightContext == null) weight = 1;
+            else weight = float.Parse(weightContext.GetText());
+
+            return (context.ID().GetText(), weight);
+        }
+
+        public override object VisitMeta_weight([NotNull] ExplicitBroncoGrammarParser.Meta_weightContext context)
+        {
+            return float.Parse(context.FLOAT().GetText());
         }
 
         public override object VisitSymbol_list_item([NotNull] ExplicitBroncoGrammarParser.Symbol_list_itemContext context)

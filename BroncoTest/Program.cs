@@ -106,7 +106,7 @@ string input =
 @"
 @start
 ~'item1 in start'
-~'A reference to'<test>
+~'A reference to'<test> %0.0
 
 @test
 ~'one'
