@@ -23,7 +23,17 @@ namespace BroncoLibrary
         
         public ISymbol FlattenTo(Type type)
         {
-            ISymbol current = this;
+            return FlattenTo(this, type);
+        }
+
+        public ITerminal Flatten()
+        {
+            return FlattenTo<ITerminal>();
+        }
+
+        public static ISymbol FlattenTo(ISymbol toFlat, Type type)
+        {
+            ISymbol current = toFlat;
 
             while (!type.IsAssignableFrom(current.GetType()))
             {
@@ -33,11 +43,6 @@ namespace BroncoLibrary
             }
 
             return current;
-        }
-
-        public ITerminal Flatten()
-        {
-            return FlattenTo<ITerminal>();
         }
     }
 }

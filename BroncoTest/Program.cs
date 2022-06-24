@@ -1,8 +1,8 @@
 ﻿using BroncoLibrary;
-using BroncoTest;
 using BroncoParserANTLR;
 using Antlr4.Runtime;
 
+/*
 VariableSetter setter = new VariableSetter();
 SymbolVariable pickedAnimal = new SymbolVariable();
 
@@ -60,7 +60,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Cyper Security"), new stri
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Encryption"), new string[] { "security", "algs", "math" }));
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Cryptography"), new string[] { "security" }));
 researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[] { "security" }));
-
+*/
 /*
  * ai
  * procGen
@@ -73,7 +73,7 @@ researchNouns.Add(new MetaData<ISymbol>(new Terminal("Blockchain"), new string[]
  * security
  * math
  */
-
+/*
 MetaData<ISymbol>[] tags = new MetaData<ISymbol>[] { 
     new MetaData<ISymbol>(new Terminal("Big old noticable name"), new string[] {"ai"}) };
 
@@ -105,7 +105,7 @@ string input =
 @"
 @start
 ~'item1 in start'
-~'A reference to'<test> %0.0
+~'A reference to'<test> %0
 
 @test
 ~'one'
@@ -121,6 +121,10 @@ ExplicitBroncoGrammarParser parser = new ExplicitBroncoGrammarParser(commonToken
 BroncoExplicitVisitor visitor = new();
 ISymbol output = (ISymbol) visitor.Visit(parser.file());
 
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
+Console.WriteLine(output.Flatten().Value);
 Console.WriteLine(output.Flatten().Value);
 Console.WriteLine(output.Flatten().Value);
 Console.WriteLine(output.Flatten().Value);

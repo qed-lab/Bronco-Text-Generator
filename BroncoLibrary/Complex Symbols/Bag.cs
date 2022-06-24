@@ -18,25 +18,24 @@ namespace BroncoLibrary
 
         public int ArgumentCount { get; private set; }
 
-        public Bag() : this(0) { }
-
-        public Bag(IEnumerable<MetaData<ISymbol>> items) : this(0, items) { }
-
-        public Bag(int argCount) : this(argCount, new List<MetaData<ISymbol>>()) { }
-
-        public Bag(int argCount, IEnumerable<MetaData<ISymbol>> items)
+        public Bag(int argCount)
         {
             ArgumentCount = argCount;
             _items = new();
             _random = new();
+            AddEvaluation(Pick);
         }
 
-        public Bag(IEnumerable<MetaData<ISymbol>> items) : this()
+        public Bag(int argCount, IEnumerable<MetaData<ISymbol>> items) : this(argCount)
         {
             foreach (var item in items)
                 _items.Add((item, new BoolSymbol(true)));
+        }
 
-            AddEvaluation(Pick);
+        public Bag(int argCount, IEnumerable<(MetaData<ISymbol>, ISymbol)> items) : this(argCount)
+        {
+            foreach(var item in items)
+                _items.Add(item);
         }
 
         public ISymbol Pick(ISymbol[] args)

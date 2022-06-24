@@ -56,7 +56,7 @@ namespace BroncoParserANTLR
                 bagItems.Add(((MetaData<ISymbol>, ISymbol)) Visit(itemContext));
             }
 
-            var bag = new Bag(bagItems);
+            var bag = new Bag(0, bagItems);
             SetReference(title, bag);
             return bag;
         }
@@ -102,6 +102,8 @@ namespace BroncoParserANTLR
                         metaDataRet.Tags.AddTag(tag.Item1, tag.Item2);
                     }
                 }
+
+                ret = metaDataRet;
             }
 
             return ret;
