@@ -124,13 +124,7 @@ string input =
 ~'fox' #red
 ";
 
-AntlrInputStream inputStream = new(input);
-ExplicitBroncoGrammarLexer speakLexer = new(inputStream);
-CommonTokenStream commonTokenStream = new CommonTokenStream(speakLexer);
-ExplicitBroncoGrammarParser parser = new ExplicitBroncoGrammarParser(commonTokenStream);
-
-BroncoExplicitVisitor visitor = new();
-ISymbol output = (ISymbol) visitor.Visit(parser.file());
+ISymbol output = BroncoParser.Parse(input);
 
 Console.WriteLine(output.Flatten().Value);
 Console.WriteLine(output.Flatten().Value);
