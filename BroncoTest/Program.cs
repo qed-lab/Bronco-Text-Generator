@@ -103,6 +103,9 @@ test
 
 string input =
 @"
+@start
+~'This animal is red '<animals: red>
+
 @colors
 ~'red' #red
 ~'yellow' #yellow
@@ -119,10 +122,6 @@ string input =
 ~'giraffe' #yellow
 ~'cardinal' #red
 ~'fox' #red
-
-
-@start
-~'This animal is red '<animals: red>
 ";
 
 AntlrInputStream inputStream = new(input);
