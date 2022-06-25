@@ -176,7 +176,11 @@ namespace BroncoParserANTLR
         public override object VisitSymbol_list_item([NotNull] ExplicitBroncoGrammarParser.Symbol_list_itemContext context)
         {
             var symbol = context.TERMINAL();
-            if (symbol != null) return (ISymbol)new Terminal(symbol.GetText());
+            if (symbol != null)
+            {
+                string text = symbol.GetText();
+                return (ISymbol) new Terminal(text.Substring(1, text.Length - 2));
+            }
             return (ISymbol) Visit(context.symbol_ref());
         }
 
