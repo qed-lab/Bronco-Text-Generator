@@ -14,6 +14,18 @@ namespace BroncoParserANTLR
         private readonly Dictionary<string, SymbolVariable> symbolLookup = new();
         private readonly Dictionary<string, SymbolVariable> localLookup = new();
 
+        public BroncoExplicitVisitor()
+        {
+            symbolLookup.Add("setter", new SymbolVariable(new VariableSetter()));
+            symbolLookup.Add("tagMatch", new SymbolVariable(new TagMatcher()));
+        }
+
+        public BroncoExplicitVisitor(IDictionary<string, ISymbol> startingGlobals)
+        {
+            foreach (var symbol in startingGlobals)
+                symbolLookup.Add(symbol.Key, new SymbolVariable(symbol.Value));
+        }
+
         private SymbolVariable GetReference(string id)
         {
             SymbolVariable symbol;

@@ -10,6 +10,9 @@ namespace BroncoParserANTLR
 {
     public static class BroncoParser
     {
+        public static ISymbol Parse(Stream input)
+            => Parse(new AntlrInputStream(input));
+
         public static ISymbol Parse(string input)
             => Parse(new AntlrInputStream(input));
 

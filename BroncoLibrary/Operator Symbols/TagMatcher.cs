@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BroncoLibrary.Operator_Symbols
+namespace BroncoLibrary
 {
     public class TagMatcher : DynamicSymbol
     {

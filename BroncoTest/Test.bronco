@@ -1,0 +1,19 @@
+﻿@start
+~'This animal is red '<animals: red>
+
+@colors
+~'red' #red
+~'yellow' #yellow
+~'orange' #red:0.5 #yellow:0.5
+~'green' #green
+
+@red
+~'red'#red
+
+@animals: tag
+~'turtle' #green
+~'snake' #green
+~'bee' #yellow
+~'giraffe' #yellow
+~'cardinal' #red
+~'fox' #red

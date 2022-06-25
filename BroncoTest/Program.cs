@@ -101,30 +101,7 @@ test
 ");
 */
 
-string input =
-@"
-@start
-~'This animal is red '<animals: red>
-
-@colors
-~'red' #red
-~'yellow' #yellow
-~'orange' #red:0.5 #yellow:0.5
-~'green' #green
-
-@red
-~'red'#red
-
-@animals: tag
-~'turtle' #green
-~'snake' #green
-~'bee' #yellow
-~'giraffe' #yellow
-~'cardinal' #red
-~'fox' #red
-";
-
-ISymbol output = BroncoParser.Parse(input);
+ISymbol output = BroncoParser.Parse(File.OpenRead("Test.bronco"));
 
 Console.WriteLine(output.Flatten().Value);
 Console.WriteLine(output.Flatten().Value);

@@ -12,4 +12,10 @@
     <ProjectReference Include="..\BroncoParserANTLR\BroncoParserANTLR.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Test.bronco">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
