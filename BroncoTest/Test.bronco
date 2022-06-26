@@ -1,5 +1,5 @@
 ﻿@start
-~'This animal is red '<animals: red>
+~'I am thinking of a '<setter: pickedColor, colors>' animal: '<animals: pickedColor>
 
 @colors
 ~'red' #red

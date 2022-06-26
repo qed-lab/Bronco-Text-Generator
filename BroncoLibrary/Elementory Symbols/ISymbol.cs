@@ -20,31 +20,36 @@ namespace BroncoLibrary
 
         public T FlattenTo<T>() where T : ISymbol
             => (T) FlattenTo(typeof(T));
-        
+
         public ISymbol FlattenTo(Type type)
-        {
-            return FlattenTo(this, type);
-        }
+            => FlattenTo(this, type);
 
         public ITerminal Flatten()
-        {
-            return FlattenTo<ITerminal>();
-        }
+            => FlattenTo<ITerminal>();
 
         public string ToString()
-        {
-            return Flatten().Value;
-        }
+            => Flatten().Value;
 
         public static ISymbol FlattenTo(ISymbol toFlat, Type type)
         {
+            //TODO: MetaData has gotten progessivly more and more janky. First thing to fix on refactor
+            MetaData metaData = null;
             ISymbol current = toFlat;
 
             while (!type.IsAssignableFrom(current.GetType()))
             {
                 if (current is ITerminal) throw new Exception("Symbol cannot be flattened to desired type");
+                if(metaData == null && current is MetaData) metaData = (MetaData)current;
 
                 current = current.Evaluate();
+            }
+
+            if(metaData != null)
+            {
+                if (current is ITerminal)
+                    return new TerminalMetaData((ITerminal)current, metaData);
+                else
+                    return new MetaData(current, metaData);
             }
 
             return current;

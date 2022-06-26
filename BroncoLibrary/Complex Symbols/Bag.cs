@@ -13,7 +13,7 @@ namespace BroncoLibrary
     {
         private static readonly TagMatcher tagMatcher = new TagMatcher();
 
-        private List<(MetaData<ISymbol> symbol, ISymbol condition)> _items;
+        private List<(MetaData symbol, ISymbol condition)> _items;
         private Random _random;
 
         public int ArgumentCount { get; private set; }
@@ -26,13 +26,13 @@ namespace BroncoLibrary
             AddEvaluation(Pick);
         }
 
-        public Bag(int argCount, IEnumerable<MetaData<ISymbol>> items) : this(argCount)
+        public Bag(int argCount, IEnumerable<MetaData> items) : this(argCount)
         {
             foreach (var item in items)
                 _items.Add((item, new BoolSymbol(true)));
         }
 
-        public Bag(int argCount, IEnumerable<(MetaData<ISymbol>, ISymbol)> items) : this(argCount)
+        public Bag(int argCount, IEnumerable<(MetaData, ISymbol)> items) : this(argCount)
         {
             foreach(var item in items)
                 _items.Add(item);
@@ -40,7 +40,7 @@ namespace BroncoLibrary
 
         public ISymbol Pick(ISymbol[] args)
         {
-            (MetaData<ISymbol> symbol, double weight) best = (null, -double.MaxValue);
+            (MetaData symbol, double weight) best = (null, -double.MaxValue);
 
             foreach (var item in _items)
             {
@@ -54,13 +54,13 @@ namespace BroncoLibrary
             return best.symbol;
         }
 
-        public void Add((MetaData<ISymbol>, ISymbol) item)
+        public void Add((MetaData, ISymbol) item)
             => Add(item.Item1, item.Item2);
 
-        public void Add(MetaData<ISymbol> symbol, ISymbol condition) 
+        public void Add(MetaData symbol, ISymbol condition) 
             => _items.Add((symbol, condition));
 
-        public void Add(MetaData<ISymbol> symbol)
+        public void Add(MetaData symbol)
         {
             var condition = ArgumentCount == 0 ? 
                 new BoolSymbol(true) : tagMatcher.Argue(new ISymbol[]{ symbol, GetArgument(0)});

@@ -77,10 +77,10 @@ namespace BroncoParserANTLR
             {
                 var item = Visit(itemContext);
 
-                if(item is (MetaData<ISymbol>, ISymbol))
-                    bag.Add(((MetaData<ISymbol>, ISymbol)) item);
+                if(item is (MetaData, ISymbol))
+                    bag.Add(((MetaData, ISymbol)) item);
                 else
-                    bag.Add((MetaData<ISymbol>) item);
+                    bag.Add((MetaData) item);
             }
 
             localLookup.Clear();
@@ -113,11 +113,11 @@ namespace BroncoParserANTLR
             ISymbol symbol = (ISymbol)Visit(context.symbol());
             ISymbol condition;
 
-            if(!(symbol is MetaData<ISymbol>)) symbol = new MetaData<ISymbol>(symbol);
+            if(!(symbol is MetaData)) symbol = new MetaData(symbol);
             if (context.symbol_ref() == null) condition = null;
             else condition = (ISymbol)Visit(context.symbol_ref());
 
-            return condition != null ? ((MetaData<ISymbol>)symbol, condition) : (MetaData<ISymbol>)symbol;
+            return condition != null ? ((MetaData)symbol, condition) : (MetaData)symbol;
         }
 
         public override object VisitSymbol([NotNull] ExplicitBroncoGrammarParser.SymbolContext context)
@@ -132,7 +132,7 @@ namespace BroncoParserANTLR
             var metaDataContext = context.meta_data();
             if (metaDataContext != null)
             {
-                MetaData<ISymbol> metaDataRet = new(ret);
+                MetaData metaDataRet = new(ret);
                 foreach (var dataContext in metaDataContext)
                 {
                     var data = Visit(dataContext);

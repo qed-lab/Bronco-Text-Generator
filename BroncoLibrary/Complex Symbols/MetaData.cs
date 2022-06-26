@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BroncoLibrary
 {
-    public class MetaData<T> : DynamicSymbol where T : ISymbol
+    public class MetaData : DynamicSymbol
     {
         private static readonly string weightKey = "weight";
         private static readonly Func<double> weightFallBack = () => 1.0;
@@ -15,7 +15,7 @@ namespace BroncoLibrary
 
         private Dictionary<object, object> _metaData;
 
-        public T Symbol { get; set; }
+        public ISymbol Symbol { get; set; }
         public double Weight
         {
             get
@@ -42,18 +42,24 @@ namespace BroncoLibrary
             }
         }
 
-        public MetaData(T symbol, ICollection<string> tags) : this(symbol)
+        public MetaData(ISymbol symbol, MetaData metaDataBase) : this(symbol)
+        {
+            foreach (var data in metaDataBase._metaData)
+                this._metaData.Add(data.Key, data.Value);
+        }
+
+        public MetaData(ISymbol symbol, ICollection<string> tags) : this(symbol)
         {
             foreach (var tag in tags)
                 Tags.AddTag(tag);
         }
 
-        public MetaData(T symbol, double weight) : this(symbol)
+        public MetaData(ISymbol symbol, double weight) : this(symbol)
         {
             Weight = weight;
         }
 
-        public MetaData(T symbol)
+        public MetaData(ISymbol symbol)
         {
             Symbol = symbol;
             _metaData = new Dictionary<object, object>();

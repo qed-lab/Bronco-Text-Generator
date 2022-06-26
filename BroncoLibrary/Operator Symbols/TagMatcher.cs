@@ -9,9 +9,9 @@ namespace BroncoLibrary
     public class TagMatcher : DynamicSymbol
     {
         public TagMatcher()
-            => AddEvaluation<MetaData<ISymbol>, MetaData<ISymbol>>(TagMatch);
+            => AddEvaluation<MetaData, MetaData>(TagMatch);
 
-        public ISymbol TagMatch(MetaData<ISymbol> s1, MetaData<ISymbol> s2)
+        public ISymbol TagMatch(MetaData s1, MetaData s2)
             => new FloatSymbol(s1.Tags.CompareTags(s2.Tags));
     }
 }
