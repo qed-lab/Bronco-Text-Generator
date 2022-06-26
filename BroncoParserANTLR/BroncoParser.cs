@@ -23,7 +23,8 @@ namespace BroncoParserANTLR
             ExplicitBroncoGrammarParser parser = new ExplicitBroncoGrammarParser(commonTokenStream);
 
             BroncoExplicitVisitor visitor = new();
-            return (ISymbol)visitor.Visit(parser.file());
+            var symbol = (ISymbol)visitor.Visit(parser.file());
+            return symbol;
         }
     }
 }

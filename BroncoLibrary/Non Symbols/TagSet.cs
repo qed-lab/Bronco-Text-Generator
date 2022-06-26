@@ -10,6 +10,8 @@ namespace BroncoLibrary
     {
         private Dictionary<string, float> _tags = new Dictionary<string, float>();
 
+        public int Count { get { return _tags.Count; } }
+
         public void AddTag(string tagName, float weight)
             => _tags.Add(tagName, weight);
 

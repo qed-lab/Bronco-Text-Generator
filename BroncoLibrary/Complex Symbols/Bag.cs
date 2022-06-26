@@ -62,7 +62,7 @@ namespace BroncoLibrary
 
         public void Add(MetaData symbol)
         {
-            var condition = ArgumentCount == 0 ? 
+            var condition = ArgumentCount == 0 || symbol.Tags.Count == 0 ?
                 new BoolSymbol(true) : tagMatcher.Argue(new ISymbol[]{ symbol, GetArgument(0)});
 
             _items.Add((symbol, condition));

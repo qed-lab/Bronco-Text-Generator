@@ -26,7 +26,7 @@ LEXER
 */
 
 ID: [A-Za-z][A-Za-z0-9_]*;
-TERMINAL: '\''~[']+'\'';
+TERMINAL: '\''~[']*'\'';
 COMMENT: '/*'~[*]+'*/' -> skip;
 FLOAT: INT ('.' INT)?;
 INT: [0-9]+;

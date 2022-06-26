@@ -20,10 +20,10 @@ namespace BroncoLibrary
             }
 
             public ISymbol Evaluate()
-                => _symbol.Evaluate();
+                => _symbol.Argue(_args).Evaluate(); //TODO: Argue is handled inconcistantly, which results in inconsistancy here
 
             public void Update(ISymbol symbol)
-                => _symbol = symbol.Argue(_args);
+                => _symbol = symbol;
         }
 
         private IList<ArgReference> _argReferences = new List<ArgReference>();
@@ -53,7 +53,7 @@ namespace BroncoLibrary
         public void SetPointer(ISymbol value)
             => SetSymbol(value);
 
-        public void SetSymbol(ISymbol symbol)
+        private void SetSymbol(ISymbol symbol)
         {
             _currentSymbol = symbol;
             foreach(var argRef in _argReferences)
