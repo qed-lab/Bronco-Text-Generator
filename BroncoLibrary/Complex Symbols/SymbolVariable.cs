@@ -20,7 +20,10 @@ namespace BroncoLibrary
             }
 
             public ISymbol Evaluate()
-                => _symbol.Argue(_args).Evaluate(); //TODO: Argue is handled inconcistantly, which results in inconsistancy here
+            {
+                if (_symbol == null) throw new NullReferenceException("Variable is not set to a symbol");
+                return _symbol.Argue(_args).Evaluate(); //TODO: Argue is handled inconcistantly, which results in inconsistancy here
+            }
 
             public void Update(ISymbol symbol)
                 => _symbol = symbol;
@@ -35,7 +38,10 @@ namespace BroncoLibrary
             => SetPointer(symbol);
 
         public ISymbol Evaluate()
-            => _currentSymbol;
+        {
+            if (_currentSymbol == null) throw new NullReferenceException("Variable is not set to a symbol");
+            return _currentSymbol;
+        }
 
         public ISymbol Argue(ISymbol[]  args)
         {
