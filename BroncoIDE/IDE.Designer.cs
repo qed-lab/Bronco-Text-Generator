@@ -76,12 +76,13 @@
         '\"',
         '\'',
         '\''};
-            this.inputPane.AutoScrollMinSize = new System.Drawing.Size(121, 18);
+            this.inputPane.AutoScrollMinSize = new System.Drawing.Size(91, 36);
             this.inputPane.BackBrush = null;
             this.inputPane.CharHeight = 18;
             this.inputPane.CharWidth = 10;
             this.inputPane.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.inputPane.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputPane.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.inputPane.IsReplaceMode = false;
             this.inputPane.Location = new System.Drawing.Point(0, 28);
             this.inputPane.Name = "inputPane";
@@ -90,7 +91,7 @@
             this.inputPane.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("inputPane.ServiceColors")));
             this.inputPane.Size = new System.Drawing.Size(800, 184);
             this.inputPane.TabIndex = 1;
-            this.inputPane.Text = "inputPane";
+            this.inputPane.Text = "@start\r\n";
             this.inputPane.Zoom = 100;
             this.inputPane.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.inputPane_TextChanged);
             // 
@@ -125,7 +126,7 @@
             this.outputPane.ReadOnly = true;
             this.outputPane.Size = new System.Drawing.Size(794, 228);
             this.outputPane.TabIndex = 0;
-            this.outputPane.Text = "test";
+            this.outputPane.Text = "Your output will appear here";
             // 
             // BackgroundParser
             // 
