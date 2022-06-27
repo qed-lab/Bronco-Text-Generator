@@ -5,7 +5,7 @@ LEXER
 */
 
 fragment ID: [A-Za-z][A-Za-z0-9_]*;
-fragment NUM: [0-9]+ ('.' [0-9]+)?;
+fragment NUM: '-'?[0-9]+ ('.' [0-9]+)?;
 fragment NL: '\r'?'\n';
 
 TITLE: '@'ID -> mode(TITLE_MODE);
