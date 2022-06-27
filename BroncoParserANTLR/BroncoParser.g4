@@ -1,4 +1,6 @@
-grammar ExplicitBroncoGrammar;
+parser grammar BroncoParser;
+
+options {   tokenVocab = BroncoLexer; }
 
 /*
 PARSER
@@ -7,37 +9,17 @@ PARSER
 file: bag+ EOF;
 
 bag: bag_title bag_item+;
-bag_title: AT ID bag_args?;
-bag_args: COLON ID (COMMA ID)*;
-bag_item: TILDA symbol (PIPE symbol_ref)?;
+bag_title: TITLE bag_title_args? TITLE_NEWLINE;
+bag_title_args: TITLE_COLON TITLE_ID (TITLE_COMMA TITLE_ID)*;
+bag_item: symbol (PIPE symbol_ref)? NEWLINE?;
 symbol: symbol_list_item+ meta_data*;
-symbol_list_item: TERMINAL | symbol_ref;
+symbol_list_item: TERMINAL | symbol_insert;
 
-symbol_call: LT ID symbol_call_args? GT;
+symbol_insert: LT (symbol_ref | symbol_call_inner) GT;
+
+symbol_ref: IDENTIFIER | symbol_call;
+symbol_call: OP symbol_call_inner CP;
+symbol_call_inner: IDENTIFIER symbol_call_args?;
 symbol_call_args: COLON symbol_ref (COMMA symbol_ref)*;
-symbol_ref: ID | symbol_call;
 
-meta_data: meta_tag | meta_weight;
-meta_tag: HASH ID (COLON FLOAT)?;
-meta_weight: PERCENT FLOAT;
-
-/*
-LEXER
-*/
-
-ID: [A-Za-z][A-Za-z0-9_]*;
-TERMINAL: '\''~[']*'\'';
-COMMENT: '/*'~[*]+'*/' -> skip;
-FLOAT: INT ('.' INT)?;
-INT: [0-9]+;
-
-WS: [ \t\n\r]+ -> skip;
-AT: '@';
-HASH: '#';
-PERCENT: '%';
-COLON: ':';
-COMMA: ',';
-LT: '<';
-GT: '>';
-TILDA: '~';
-PIPE: '|';
+meta_data: META_TAG | META_WEIGHT;
