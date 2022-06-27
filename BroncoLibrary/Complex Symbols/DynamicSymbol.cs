@@ -94,7 +94,7 @@ namespace BroncoLibrary
             SymbolVariable arg;
             if(!_argumentLookup.TryGetValue(index, out arg))
             {
-                arg = new SymbolVariable();
+                arg = new SymbolVariable($"Arg{index}");
                 _argumentLookup[index] = arg;
             }
 

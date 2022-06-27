@@ -31,15 +31,19 @@ namespace BroncoLibrary
 
         private IList<ArgReference> _argReferences = new List<ArgReference>();
         private ISymbol _currentSymbol = null;
+        public string Name { get; private set; }
 
-        public SymbolVariable() { }
+        public SymbolVariable(string name) 
+        {
+            Name = name;
+        }
 
-        public SymbolVariable(ISymbol symbol)
+        public SymbolVariable(string name, ISymbol symbol) : this(name)
             => SetPointer(symbol);
 
         public ISymbol Evaluate()
         {
-            if (_currentSymbol == null) throw new NullReferenceException("Variable is not set to a symbol");
+            if (_currentSymbol == null) throw new NullReferenceException($"Variable `{Name}` is not set to a symbol");
             return _currentSymbol;
         }
 

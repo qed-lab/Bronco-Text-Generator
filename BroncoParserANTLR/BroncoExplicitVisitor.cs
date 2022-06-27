@@ -16,15 +16,15 @@ namespace BroncoParserANTLR
 
         public BroncoExplicitVisitor()
         {
-            symbolLookup.Add("setter", new SymbolVariable(new VariableSetter()));
-            symbolLookup.Add("tagAdder", new SymbolVariable(new TagAdder()));
-            symbolLookup.Add("tagMatch", new SymbolVariable(new TagMatcher()));
+            symbolLookup.Add("setter", new SymbolVariable("setter", new VariableSetter()));
+            symbolLookup.Add("tagAdder", new SymbolVariable("tagAdder", new TagAdder()));
+            symbolLookup.Add("tagMatch", new SymbolVariable("tagMatch", new TagMatcher()));
         }
 
         public BroncoExplicitVisitor(IDictionary<string, ISymbol> startingGlobals)
         {
             foreach (var symbol in startingGlobals)
-                symbolLookup.Add(symbol.Key, new SymbolVariable(symbol.Value));
+                symbolLookup.Add(symbol.Key, new SymbolVariable(symbol.Key, symbol.Value));
         }
 
         private SymbolVariable GetReference(string id)
@@ -34,7 +34,7 @@ namespace BroncoParserANTLR
                 return symbol;
             if (symbolLookup.TryGetValue(id, out symbol))
                 return symbol;
-            symbol = new SymbolVariable();
+            symbol = new SymbolVariable(id);
             symbolLookup.Add(id, symbol);
             return symbol;
         }
@@ -44,7 +44,7 @@ namespace BroncoParserANTLR
             SymbolVariable symbol;
             if (!symbolLookup.TryGetValue(id, out symbol))
             {
-                symbol = new SymbolVariable();
+                symbol = new SymbolVariable(id);
                 symbolLookup.Add(id, symbol);
             }
 
@@ -53,7 +53,7 @@ namespace BroncoParserANTLR
 
         private void SetLocalReference(string id, ISymbol value)
         {
-            localLookup.Add(id, new SymbolVariable(value));
+            localLookup.Add(id, new SymbolVariable(id, value));
         }
 
         public override object VisitFile([NotNull] ExplicitBroncoGrammarParser.FileContext context)
