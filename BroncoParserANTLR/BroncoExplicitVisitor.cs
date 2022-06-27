@@ -17,6 +17,7 @@ namespace BroncoParserANTLR
         public BroncoExplicitVisitor()
         {
             symbolLookup.Add("setter", new SymbolVariable(new VariableSetter()));
+            symbolLookup.Add("tagAdder", new SymbolVariable(new TagAdder()));
             symbolLookup.Add("tagMatch", new SymbolVariable(new TagMatcher()));
         }
 

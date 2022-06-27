@@ -50,7 +50,12 @@ namespace BroncoLibrary
                 if (rolledWeight > best.weight)
                     best = (item.symbol, rolledWeight);
             }
-
+            /*
+            Console.Write("Picked ");
+            foreach (var tag in best.symbol.Tags)
+                Console.Write($"{tag.Key} ");
+            Console.WriteLine();
+            */
             return best.symbol;
         }
 

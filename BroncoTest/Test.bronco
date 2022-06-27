@@ -1,131 +1,31 @@
-﻿@pronoun
-~'' #they
-~'' #she
-~'' #he
-~'' #it
+﻿@pickColors
+~<setter: picked, colors>' or '<tagAdder: picked, colors>
 
-@are: tag
-~'are' #they
-~'is' #he #she #it
+@colors
+~'red' #red
+~'green' #green
+~'blue' #blue
+~'yellow' #yellow
+~'purple' #purple
+~'orange' #orange
+~'cyan' #cyan
+~'black' #black
+~'grey' #grey
+~'brown' #brown
+~'white' #white
 
-@they: tag
-~'they' #they
-~'he' #he
-~'she' #she
-~'it' #it
-
-@them: tag
-~'them' #they
-~'him' #he
-~'her' #she
-~'it' #it
-
-@their: tag
-~'their' #they
-~'his' #he
-~'hers' #she
-~'its' #it
-
-/*
-rock
-plant
-water
-air
-fire
-good
-evil
-*/
-
-@titles: tags
-~<titlesSingle: tags>
-~<titleAdjectives: tags>' '<titlesSingle: tags>
-
-@titlesSingle: tags
-~'god'
-~'spirit'
-~'diety' #evil:0.8 #good
-~'demon' #evil:1.2 #good:0.3 #fire:1.3
-~'angel' #evil:0.4 #good:1.2
-
-@titleAdjectives: tags
-~'good' #good
-~'benevolent' #good
-~'merciful' #good
-~'angelic' #evil:0.3 #good
-~'evil' #evil
-~'wicked' #evil
-~'horrible' #evil
-~'demonic' #evil
-~'firey' #fire
-~'drowned' #water
-~'stoney' #rock
-~'ghostly' #air
-~'overgrown' #plant
-
-@strongResembles: tags
-~'fish' #water
-~'shark' #water
-~'eel' #water
-~'octopus' #water
-~'storm' #water #air #evil:1.3 #good:0.7
-~'dragon' #fire
-~'demon' #fire #evil #good:0.0
-~'salamander' #fire
-~'inferno' #fire #good:0.5
-~'eagle' #fire #air
-~'bird' #air
-~'gust of wind' #air
-~'mist' #air #water
-~'song bird' #air #good:1.5 #evil:0.0
-~'tree' #plant
-~'swarm of insects' #plant #good:0.7 #air:0.8
-~'turtle' #plant #water
-~'statue' #rock
-~'goat' #rock
-~'mountian' #rock
-
-@neutralResembles
-~'man'
-~'woman'
-~'person'
-~'child'
-
-@resembles: tags
-~<resemblesAdjectives: tags>' '<strongResembles: tags>
-~<resemblesAdjectives: tags>' '<neutralResembles>
-~<strongResembles: tags>
-~<strongResembles: tags>' crossed with a '<strongResembles: tags>
-
-@resemblesAdjectives: tags
-~'firey' #fire
-~'burning' #fire
-~'raging' #evil:1.5 #good:0.5
-~'peaceful' #evil:0.3 #good:1.7
-~'horrible' #evil:1.7 #good:0.3
-~'drowned' #water
-~'dripping' #water
-~'floating' #air
-~'wind-blown' #air
-~'overgrown' #plant
-~'viney' #plant
-~'stoney' #rock
-~'solid stone' #rock
-~'rocky' #rock
-
-@domain: tags
-~'rock' #rock
-~'air' #air
-~'fire' #fire
-~'plant' #plant
-~'water' #water
-~'all things good' #good
-~'all things evil' #evil
-
-@themeSource
-~'' #water #rock #evil
+@colorSelect: tags
+~'red' #red
+~'green' #green
+~'blue' #blue
+~'yellow' #yellow
+~'purple' #purple
+~'orange' #orange
+~'cyan' #cyan
+~'black' #black
+~'grey' #grey
+~'brown' #brown
+~'white' #white
 
 @start
-~<setter: themes, themeSource><setter: pn, pronoun> <god>
-
-@god
-~<they: pn>' '<are: pn>' the '<titles: themes>' of '<domain: themes>', '<they: pn>' '<are: pn>' said to resemble a '<resembles: themes>
+~'I pick '<pickColors>', which leaves '<colorSelect: picked>', '<colorSelect: picked>', '<colorSelect: picked>', '<colorSelect: picked>

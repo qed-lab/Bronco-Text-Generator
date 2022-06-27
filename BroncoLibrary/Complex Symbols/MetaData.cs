@@ -46,6 +46,7 @@ namespace BroncoLibrary
         {
             foreach (var data in metaDataBase._metaData)
                 this._metaData.Add(data.Key, data.Value);
+            _metaData[weightKey] = metaDataBase.Tags.Clone();
         }
 
         public MetaData(ISymbol symbol, ICollection<string> tags) : this(symbol)
