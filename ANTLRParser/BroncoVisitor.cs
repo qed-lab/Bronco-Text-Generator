@@ -201,9 +201,18 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_ref([NotNull] BroncoParser.Symbol_refContext context)
         {
-            var symbol = context.IDENTIFIER();
-            if (symbol != null) return GetReference(symbol.GetText());
-            return (ISymbol)Visit(context.symbol_call());
+            var id = context.IDENTIFIER();
+            if (id != null) return GetReference(id.GetText());
+
+            var call = context.symbol_call();
+            if (call != null) return (ISymbol) Visit(call);
+
+            var num = context.NUMBER();
+            if (num != null) return new FloatSymbol(float.Parse(num.GetText()));
+
+            string text = context.TEXT_LITERAL().GetText();
+            text = text.Substring(1, text.Length - 2);
+            return new Terminal(text);
         }
 
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)

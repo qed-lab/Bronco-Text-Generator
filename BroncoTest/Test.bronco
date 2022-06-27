@@ -1,31 +1,5 @@
-﻿@pickColors
-~<setter: picked, colors>' or '<tagAdder: picked, colors>
+﻿@start
+<tell: 123>
 
-@colors
-~'red' #red
-~'green' #green
-~'blue' #blue
-~'yellow' #yellow
-~'purple' #purple
-~'orange' #orange
-~'cyan' #cyan
-~'black' #black
-~'grey' #grey
-~'brown' #brown
-~'white' #white
-
-@colorSelect: tags
-~'red' #red
-~'green' #green
-~'blue' #blue
-~'yellow' #yellow
-~'purple' #purple
-~'orange' #orange
-~'cyan' #cyan
-~'black' #black
-~'grey' #grey
-~'brown' #brown
-~'white' #white
-
-@start
-~'I pick '<pickColors>', which leaves '<colorSelect: picked>', '<colorSelect: picked>', '<colorSelect: picked>', '<colorSelect: picked>
+@tell: arg
+tell me about <arg>

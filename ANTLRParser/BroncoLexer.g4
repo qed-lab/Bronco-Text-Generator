@@ -11,6 +11,7 @@ fragment NL: '\r'?'\n';
 TITLE: '@'ID -> mode(TITLE_MODE);
 IDENTIFIER: ID;
 NUMBER: NUM;
+TEXT_LITERAL: '\''.*?'\'';
 
 SKIP_COMMENT: '/*'~[*]+'*/' -> skip;
 SKIP_WS: [ \t\n\r]+ -> skip;

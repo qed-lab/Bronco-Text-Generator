@@ -1,9 +1,10 @@
 ﻿using BroncoLibrary;
 using BroncoParserANTLR;
 using Antlr4.Runtime;
+using BroncoTextParser;
 
 
-ISymbol output = BroncoParser.Parse(File.OpenRead("Test.bronco"));
+ISymbol output = TextParser.Parse(File.OpenRead("Test.bronco"));
 
 Console.WriteLine(output.Flatten().Value);
 Console.WriteLine();
