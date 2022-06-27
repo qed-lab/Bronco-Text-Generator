@@ -9,6 +9,7 @@ fragment NUM: [0-9]+ ('.' [0-9]+)?;
 fragment NL: '\r'?'\n';
 
 TITLE: '@'ID -> mode(TITLE_MODE);
+BOOL_LITERAL: 'true' | 'false';
 IDENTIFIER: ID;
 NUMBER: NUM;
 TEXT_LITERAL: '\''.*?'\'';

@@ -21,7 +21,7 @@ namespace BroncoTextParser
             SetReference("matchTag", new TagMatcher());
             SetReference("choose", new Choose());
             SetReference("setPointer", new VariablePointerSetter());
-            SetReference("ifElse", new VariablePointerSetter());
+            SetReference("if", new IfElse());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
@@ -212,6 +212,9 @@ namespace BroncoTextParser
 
             var num = context.NUMBER();
             if (num != null) return new FloatSymbol(float.Parse(num.GetText()));
+
+            var boolean = context.BOOL_LITERAL();
+            if (boolean != null) return new BoolSymbol(bool.Parse(boolean.GetText()));
 
             string text = context.TEXT_LITERAL().GetText();
             text = text.Substring(1, text.Length - 2);
