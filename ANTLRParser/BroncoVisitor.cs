@@ -24,6 +24,7 @@ namespace BroncoTextParser
             SetReference("if", new IfElse());
             SetReference("gt", new GreaterThan());
             SetReference("lt", new LessThan());
+            SetReference("equal", new Equals());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
