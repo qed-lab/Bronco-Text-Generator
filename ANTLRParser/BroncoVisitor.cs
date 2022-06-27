@@ -16,9 +16,10 @@ namespace BroncoTextParser
 
         public BroncoVisitor()
         {
-            symbolLookup.Add("setter", new SymbolVariable("setter", new VariableSetter()));
-            symbolLookup.Add("tagAdder", new SymbolVariable("tagAdder", new TagAdder()));
-            symbolLookup.Add("tagMatch", new SymbolVariable("tagMatch", new TagMatcher()));
+            symbolLookup.Add("set", new SymbolVariable("set", new VariableSetter()));
+            symbolLookup.Add("addTag", new SymbolVariable("addTag", new TagAdder()));
+            symbolLookup.Add("matchTag", new SymbolVariable("matchTag", new TagMatcher()));
+            symbolLookup.Add("choose", new SymbolVariable("choose", new Choose()));
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
