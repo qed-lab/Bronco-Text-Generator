@@ -8,7 +8,7 @@ PARSER
 
 file: bag+ EOF;
 
-bag: bag_title bag_item+;
+bag: bag_title bag_item+ EMPTY_LINE?;
 bag_title: TITLE bag_title_args? TITLE_NEWLINE;
 bag_title_args: TITLE_COLON TITLE_ID (TITLE_COMMA TITLE_ID)*;
 bag_item: symbol (PIPE symbol_ref)? NEWLINE?;
