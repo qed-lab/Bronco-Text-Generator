@@ -21,6 +21,7 @@ namespace BroncoTextParser
             SetReference("matchTag", new TagMatcher());
             SetReference("choose", new Choose());
             SetReference("setPointer", new VariablePointerSetter());
+            SetReference("ifElse", new VariablePointerSetter());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
