@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BroncoParserANTLR\BroncoParser.csproj" />
+    <ProjectReference Include="..\ANTLRParser\ANTLRParser.csproj" />
+    <ProjectReference Include="..\BroncoParserANTLR\BroncoParserOld.csproj" />
   </ItemGroup>
 
 </Project>

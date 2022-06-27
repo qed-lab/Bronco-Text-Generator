@@ -1,5 +1,5 @@
 using BroncoLibrary;
-using BroncoParserANTLR;
+using BroncoTextParser;
 using FastColoredTextBoxNS;
 using System.ComponentModel;
 
@@ -23,7 +23,7 @@ namespace BroncoIDE
 
             try
             {
-                ISymbol symbol = BroncoParser.Parse((string)e.Argument);
+                ISymbol symbol = TextParser.Parse((string)e.Argument);
                 outputText = symbol.Flatten().Value;
             } catch (Exception ex)
             {
