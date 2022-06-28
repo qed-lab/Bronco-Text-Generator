@@ -36,7 +36,7 @@ dark <color>
 **Sample output: **`I randomly choose the color dark red`
 
 ### Arguments
-When making a reference, you can include arguments which will effect the output. These are denoted with a colon after the reference, followed by a number of comma-separated arguments `<reference: argument1, arg2, otherArg>`. Similarly, it is possible add arguments to a bag, and to use that argument in the output. Arguments can either be, literals, references to other symbols, or nested arguments denoted with parentheses instead of triangle braces `<bag: (otherBag: \`argument\`)>`.
+When making a reference, you can include arguments which will effect the output. These are denoted with a colon after the reference, followed by a number of comma-separated arguments `<reference: argument1, arg2, otherArg>`. Similarly, it is possible add arguments to a bag, and to use that argument in the output. Arguments can either be, literals, references to other symbols, or nested arguments denoted with parentheses instead of triangle braces `<bag: (otherBag: ``argument``)>`.
 
 ```
 @start
