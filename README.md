@@ -5,10 +5,13 @@ Bronco is a programming language for building powerful text generators easily. I
 Each Bronco file is made up of a number of *bags*. Every bag is denoted with a `@symbol`, followed by a number of newline separated items, which is mostly normal text.
 
 
-`@bag
+```
+@bag
 first item
 second item
 third item
 
 @anotherBag
-another item`
+more items
+one last one
+```
