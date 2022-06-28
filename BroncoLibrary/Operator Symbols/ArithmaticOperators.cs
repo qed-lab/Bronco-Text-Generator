@@ -15,6 +15,15 @@ namespace BroncoLibrary
             => new FloatSymbol(symbol1.FloatValue + symbol2.FloatValue);
     }
 
+    public class Subtract : DynamicSymbol
+    {
+        public Subtract()
+            => AddEvaluation<FloatSymbol, FloatSymbol>(SubTo);
+
+        public ISymbol SubTo(FloatSymbol symbol1, FloatSymbol symbol2)
+            => new FloatSymbol(symbol1.FloatValue - symbol2.FloatValue);
+    }
+
     public class Multiply : DynamicSymbol
     {
         public Multiply()

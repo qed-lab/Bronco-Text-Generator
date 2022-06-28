@@ -26,6 +26,7 @@ namespace BroncoTextParser
             SetReference("lt", new LessThan());
             SetReference("equal", new Equals());
             SetReference("add", new Add());
+            SetReference("sub", new Subtract());
             SetReference("mult", new Multiply());
             SetReference("random", new RandomFloat());
             SetReference("randomI", new RandomInt());
@@ -33,6 +34,7 @@ namespace BroncoTextParser
             SetReference("and", new And());
             SetReference("or", new Or());
             SetReference("not", new Not());
+            SetReference("silent", new Silent());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)

@@ -35,7 +35,7 @@ mode TERMINAL_MODE;
 LT: '<' -> mode(DEFAULT_MODE);
 META_TAG: '#' ID (COLON NUM)?;
 META_WEIGHT: '%' NUM;
-TERMINAL: ~[<\n\r#%'|]+;
+TERMINAL: ~[<\n\r#%`|]+;
 END_QUOTE: '`' -> mode(DEFAULT_MODE);
 EMPTY_LINE: NL [ \t]* NL -> mode(DEFAULT_MODE);
 NEWLINE: NL;
