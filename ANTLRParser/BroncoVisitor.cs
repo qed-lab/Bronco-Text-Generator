@@ -193,7 +193,7 @@ namespace BroncoTextParser
             string text;
             if (meta != null)
             {
-                text = meta.GetText();
+                text = meta.GetText().Trim();
 
                 int colIndex = text.IndexOf(':');
                 string tagName;
@@ -212,7 +212,7 @@ namespace BroncoTextParser
               
             }
 
-            text = context.META_WEIGHT().GetText();
+            text = context.META_WEIGHT().GetText().Trim();
             return float.Parse(text.Substring(1, text.Length - 1));
         }
 

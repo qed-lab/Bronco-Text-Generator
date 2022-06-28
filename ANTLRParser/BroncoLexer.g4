@@ -33,8 +33,8 @@ TITLE_NEWLINE: NL -> mode(TERMINAL_MODE);
 
 mode TERMINAL_MODE;
 LT: '<' -> mode(DEFAULT_MODE);
-META_TAG: '#' ID (COLON NUM)?;
-META_WEIGHT: '%' NUM;
+META_TAG: '#' ID (COLON NUM)? [ \t]*;
+META_WEIGHT: '%' NUM [ \t]*;
 TERMINAL: ~[<\n\r#%`|]+;
 END_QUOTE: '`' -> mode(DEFAULT_MODE);
 EMPTY_LINE: NL [ \t]* NL -> mode(DEFAULT_MODE);
