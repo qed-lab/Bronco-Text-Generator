@@ -49,12 +49,12 @@ namespace BroncoIDE
         private void inputPane_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
         {
             e.ChangedRange.ClearStyle(blue, red, green);
-            e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9]*");
-            e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9]*:[0-9.]*");
+            e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9_]*");
+            e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9_]*:[0-9.]*");
             e.ChangedRange.SetStyle(blue, "%[0-9.]*");
             e.ChangedRange.SetStyle(red, "[`<].*?[`>]");
             e.ChangedRange.SetStyle(red, "\\|.*?\\|");
-            e.ChangedRange.SetStyle(green, "@[A-Za-z][A-Za-z0-9]*");
+            e.ChangedRange.SetStyle(green, "@[A-Za-z][A-Za-z0-9_]*");
             e.ChangedRange.SetStyle(grey, "/\\*.*?\\*/");
         }
     }
