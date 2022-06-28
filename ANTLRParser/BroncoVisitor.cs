@@ -27,6 +27,8 @@ namespace BroncoTextParser
             SetReference("equal", new Equals());
             SetReference("add", new Add());
             SetReference("mult", new Multiply());
+            SetReference("random", new RandomNumber());
+            SetReference("round", new Round());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
@@ -221,9 +223,7 @@ namespace BroncoTextParser
             var boolean = context.BOOL_LITERAL();
             if (boolean != null) return new BoolSymbol(bool.Parse(boolean.GetText()));
 
-            string text = context.TEXT_LITERAL().GetText();
-            text = text.Substring(1, text.Length - 2);
-            return new Terminal(text);
+            return Visit(context.symbol());
         }
 
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)

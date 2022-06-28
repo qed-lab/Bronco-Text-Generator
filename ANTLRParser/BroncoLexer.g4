@@ -12,7 +12,6 @@ TITLE: '@'ID -> mode(TITLE_MODE);
 BOOL_LITERAL: 'true' | 'false';
 IDENTIFIER: ID;
 NUMBER: NUM;
-TEXT_LITERAL: '\''.*?'\'';
 
 SKIP_COMMENT: '/*'~[*]+'*/' -> skip;
 SKIP_WS: [ \t\n\r]+ -> skip;
@@ -23,6 +22,7 @@ OP: '(';
 CP: ')';
 PIPE: '|';
 GT: '>' -> mode(TERMINAL_MODE);
+START_QUOTE: '\'' -> mode(TERMINAL_MODE);
 
 mode TITLE_MODE;
 TITLE_COLON: COLON;
@@ -35,6 +35,7 @@ mode TERMINAL_MODE;
 LT: '<' -> mode(DEFAULT_MODE);
 META_TAG: '#' ID (COLON NUM)?;
 META_WEIGHT: '%' NUM;
-TERMINAL: ~[<\n\r#%]+;
+TERMINAL: ~[<\n\r#%']+;
+END_QUOTE: '\'' -> mode(DEFAULT_MODE);
 EMPTY_LINE: NL [ \t]* NL -> mode(DEFAULT_MODE);
 NEWLINE: NL;

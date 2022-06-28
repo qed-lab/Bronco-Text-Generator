@@ -23,4 +23,13 @@ namespace BroncoLibrary
         public ISymbol Mult(FloatSymbol symbol1, FloatSymbol symbol2)
             => new FloatSymbol(symbol1.FloatValue * symbol2.FloatValue);
     }
+
+    public class Round : DynamicSymbol
+    {
+        public Round()
+            => AddEvaluation<FloatSymbol>(RoundFloat);
+
+        public ISymbol RoundFloat(FloatSymbol symbol1)
+            => new FloatSymbol((float) Math.Round(symbol1.FloatValue));
+    }
 }
