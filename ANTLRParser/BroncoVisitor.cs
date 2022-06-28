@@ -194,13 +194,14 @@ namespace BroncoTextParser
             if (meta != null)
             {
                 text = meta.GetText();
+
                 int colIndex = text.IndexOf(':');
                 string tagName;
                 float weight;
                 if (colIndex != -1)
                 {
                     tagName = text.Substring(1, colIndex - 1);
-                    weight = float.Parse(text.Substring(colIndex + 1, text.Length - colIndex));
+                    weight = float.Parse(text.Substring(colIndex + 1, text.Length - colIndex - 1));
                 } else
                 {
                     tagName = text.Substring(1, text.Length - 1);

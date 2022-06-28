@@ -1,5 +1,19 @@
 ﻿@start
-<tell: 123>
+I'm looking for something <pickPreference>, like <colors: preference>
 
-@tell: arg
-tell me about <arg>
+@pickPreference
+<set: preference, colorValues>
+<set: preference, colorValues> and <addTag: preference, colorValues>
+
+@colorValues
+red#red
+green#green
+blue#blue
+
+@colors: values
+chartreuse#red:2.23#green:2.55#blue:0
+seafoam green#red:1.59#green:2.26#blue:1.91
+mahogany#red:1.92#green:0.64#blue:0.0
+orchid#red:2.18#green:1.12#blue:2.14
+violet#red:1.27#green:0#blue:2.55
+salmon#red:2.5#green:1.18#blue:1.14
