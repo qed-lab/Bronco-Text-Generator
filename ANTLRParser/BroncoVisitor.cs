@@ -27,7 +27,8 @@ namespace BroncoTextParser
             SetReference("equal", new Equals());
             SetReference("add", new Add());
             SetReference("mult", new Multiply());
-            SetReference("random", new RandomNumber());
+            SetReference("random", new RandomFloat());
+            SetReference("randomI", new RandomInt());
             SetReference("round", new Round());
             SetReference("and", new And());
             SetReference("or", new Or());
