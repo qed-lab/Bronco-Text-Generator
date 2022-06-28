@@ -11,7 +11,7 @@ file: bag+ EOF;
 bag: bag_title bag_item+ EMPTY_LINE?;
 bag_title: TITLE bag_title_args? TITLE_NEWLINE;
 bag_title_args: TITLE_COLON TITLE_ID (TITLE_COMMA TITLE_ID)*;
-bag_item: symbol (PIPE symbol_ref)? NEWLINE?;
+bag_item: symbol (OPEN_PIPE symbol_ref CLOSE_PIPE)? NEWLINE?;
 symbol: symbol_list_item+ meta_data*;
 symbol_list_item: TERMINAL | symbol_insert;
 
