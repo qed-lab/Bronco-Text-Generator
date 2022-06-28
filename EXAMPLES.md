@@ -87,13 +87,12 @@ green#green
 blue#blue
 
 @colors: values
-chartreuse#red:2.23#green:2.55#blue:0
-seafoam green#red:1.59#green:2.26#blue:1.91
-mahogany#red:1.92#green:0.64#blue:0.0
-orchid#red:2.18#green:1.12#blue:2.14
-violet#red:1.27#green:0#blue:2.55
-salmon#red:2.5#green:1.18#blue:1.14
-
+chartreuse#red:2.23 #green:2.55 #blue:0
+seafoam green#red:1.59 #green:2.26 #blue:1.91
+mahogany#red:1.92 #green:0.64 #blue:0.0
+orchid#red:2.18 #green:1.12 #blue:2.14
+violet#red:1.27 #green:0 #blue:2.55
+salmon#red:2.5 #green:1.18 #blue:1.14
 ```
 **Sample output** `I'm looking for something green and blue, like orchid`
 
@@ -102,6 +101,7 @@ salmon#red:2.5#green:1.18#blue:1.14
 ```
 @start
 This number is <num: 7>!
+
 @num: input
 greater than 5| (gt: input, 5) |
 less than 5| (lt: input, 5) |
