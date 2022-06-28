@@ -52,7 +52,7 @@ namespace BroncoIDE
             e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9]*");
             e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9]*:[0-9.]*");
             e.ChangedRange.SetStyle(blue, "%[0-9.]*");
-            e.ChangedRange.SetStyle(red, "<.*?>");
+            e.ChangedRange.SetStyle(red, "['<].*?['>]");
             e.ChangedRange.SetStyle(green, "@[A-Za-z][A-Za-z0-9]*");
             e.ChangedRange.SetStyle(grey, "/\\*.*?\\*/");
         }
