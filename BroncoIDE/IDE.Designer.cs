@@ -34,7 +34,9 @@
             this.inputPane = new FastColoredTextBoxNS.FastColoredTextBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.generateButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.outputPane = new System.Windows.Forms.TextBox();
+            this.ReferencesPane = new System.Windows.Forms.TextBox();
             this.BackgroundParser = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -42,6 +44,10 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputPane)).BeginInit();
             this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -58,7 +64,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.outputPane);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 0;
@@ -114,19 +120,48 @@
             this.generateButton.Text = "Generate";
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.outputPane);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.ReferencesPane);
+            this.splitContainer2.Size = new System.Drawing.Size(800, 234);
+            this.splitContainer2.SplitterDistance = 492;
+            this.splitContainer2.TabIndex = 1;
+            // 
             // outputPane
             // 
-            this.outputPane.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.outputPane.BackColor = System.Drawing.SystemColors.Window;
-            this.outputPane.Location = new System.Drawing.Point(3, 3);
+            this.outputPane.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputPane.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.outputPane.Location = new System.Drawing.Point(0, 0);
             this.outputPane.Multiline = true;
             this.outputPane.Name = "outputPane";
             this.outputPane.ReadOnly = true;
-            this.outputPane.Size = new System.Drawing.Size(794, 228);
+            this.outputPane.Size = new System.Drawing.Size(492, 234);
             this.outputPane.TabIndex = 0;
             this.outputPane.Text = "Your output will appear here";
+            // 
+            // ReferencesPane
+            // 
+            this.ReferencesPane.BackColor = System.Drawing.SystemColors.Window;
+            this.ReferencesPane.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ReferencesPane.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ReferencesPane.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesPane.Multiline = true;
+            this.ReferencesPane.Name = "ReferencesPane";
+            this.ReferencesPane.ReadOnly = true;
+            this.ReferencesPane.Size = new System.Drawing.Size(304, 234);
+            this.ReferencesPane.TabIndex = 1;
+            this.ReferencesPane.Text = "References will appear here";
             // 
             // BackgroundParser
             // 
@@ -145,12 +180,17 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inputPane)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -163,5 +203,7 @@
         private MenuStrip menuStrip;
         private ToolStripMenuItem generateButton;
         private System.ComponentModel.BackgroundWorker BackgroundParser;
+        private SplitContainer splitContainer2;
+        private TextBox ReferencesPane;
     }
 }
