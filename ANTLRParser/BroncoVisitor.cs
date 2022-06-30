@@ -41,6 +41,7 @@ namespace BroncoTextParser
             SetReference("or", new Or());
             SetReference("not", new Not());
             SetReference("silent", new Silent());
+            SetReference("addToBag", new BagAdder());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)

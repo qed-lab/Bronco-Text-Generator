@@ -74,6 +74,10 @@ namespace BroncoLibrary
         }
 
         public override string ToString()
-            => $"{Name}: {_currentSymbol.ToString()}";
+        {
+            if(_currentSymbol != null)
+                return $"{Name}: {_currentSymbol.ToString()}";
+            return $"{Name}: Not Assigned";
+        }
     }
 }
