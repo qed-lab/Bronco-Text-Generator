@@ -13,7 +13,7 @@ namespace BroncoLibrary
 
         public ISymbol BeSilent(ISymbol symbol)
         {
-            symbol.Evaluate();
+            symbol.Flatten();
             return new EmptySymbol();
         }
     }

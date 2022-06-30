@@ -1,19 +1,57 @@
 ﻿@start
-I'm looking for something <pickPreference>, like <colors: preference>
+<silent: setVars><publishedEvent><awardEvent>
 
-@pickPreference
-<set: preference, colorValues>
-<set: preference, colorValues> and <addTag: preference, colorValues>
+@setVars
+<set: papersCount, 0><set: awardsCount, 0>
 
-@colorValues
-red#red
-green#green
-blue#blue
+@history
+<events>\n<history>
+And that takes us to the present.%0.5
 
-@colors: values
-chartreuse#red:2.23#green:2.55#blue:0
-seafoam green#red:1.59#green:2.26#blue:1.91
-mahogany#red:1.92#green:0.64#blue:0.0
-orchid#red:2.18#green:1.12#blue:2.14
-violet#red:1.27#green:0#blue:2.55
-salmon#red:2.5#green:1.18#blue:1.14
+@events
+<publishedEvent>
+<awardEvent>%0.5|(gt: papersCount, 0)|
+
+/*Awards*/
+@awardEvent
+Won an award for the publication <publishedPapers>.
+
+/*Paper publishing*/
+
+@publishedPapers
+ %0
+
+@publishedEvent
+Published the paper "<set: paper, paperTitle>".<silent: (addToBag: publishedPapers, paper)><silent: (set: papersCount, (add: papersCount, 1))>
+
+@paperTitle
+<researchAdj> <researchAreas>
+<researchNoun> for <researchNoun>
+<researchNoun> in <researchNoun>
+The relation between <researchNoun> and <researchNoun>
+
+@researchNoun
+<researchAreas>
+<researchAdj> <researchAreas>
+
+@researchAreas
+Computer Science
+Anthropology
+Mathimatics
+Art
+History
+Physics
+Engineering
+Ethics
+Humanities
+
+@researchAdj
+Technical
+Theoretical
+Abstract
+Applied
+Ethical
+Moral
+
+
+
