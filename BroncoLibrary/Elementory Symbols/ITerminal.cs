@@ -14,5 +14,10 @@ namespace BroncoLibrary
         {
             return this;
         }
+
+        public String ToString()
+        {
+            return Value;
+        }
     }
 }

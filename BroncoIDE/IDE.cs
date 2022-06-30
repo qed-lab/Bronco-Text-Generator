@@ -14,6 +14,8 @@ namespace BroncoIDE
         private static TextStyle grey = new TextStyle(Brushes.Gray, null, style);
         private static Dictionary<string, SymbolVariable>  EmptyDictionary = new();
 
+        private string _currentFile = "";
+
         public IDE()
         {
             InitializeComponent();
@@ -43,9 +45,9 @@ namespace BroncoIDE
 
             outputPane.Text = parseResult.Item1.Replace("\\n", Environment.NewLine);
 
-            ReferencesPane.Text = "";
+            referencesPane.Text = "";
             foreach (var reference in parseResult.Item2)
-                ReferencesPane.AppendText($"{reference.Key} =     {reference.Value}{Environment.NewLine}");
+                referencesPane.AppendText($"{reference.Key} =     {reference.Value.ToString()}{Environment.NewLine}");
 
             generateButton.Enabled = true;
         }
@@ -66,6 +68,69 @@ namespace BroncoIDE
             e.ChangedRange.SetStyle(red, "[`|].*?[`|]");
             e.ChangedRange.SetStyle(green, "@[A-Za-z][A-Za-z0-9_]*");
             e.ChangedRange.SetStyle(grey, "/\\*.*?\\*/");
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if(_currentFile.Length == 0)
+            {
+                saveAsButton_Click(sender, e);
+                return;
+            }
+
+            SaveFile(File.OpenWrite(_currentFile));
+        }
+
+        private void saveAsButton_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Stream file;
+                if ((file = saveFileDialog.OpenFile()) != null)
+                {
+                    SaveFile(file);
+                    SetOpenFile(saveFileDialog.FileName);
+                }
+            }
+        }
+
+        private void openButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Stream file;
+                if ((file = openFileDialog.OpenFile()) != null)
+                {
+                    StreamReader reader = new StreamReader(file);
+                    string text = reader.ReadToEnd();
+                    reader.Close();
+                    file.Close();
+
+                    inputPane.Text = text;
+                    SetOpenFile(openFileDialog.FileName);
+                }
+            }
+        }
+
+        private void SaveFile(Stream file)
+        {
+            StreamWriter writer = new StreamWriter(file);
+            writer.Write(inputPane.Text);
+            writer.Close();
+            file.Close();
+        }
+
+        private void SetOpenFile(string file)
+        {
+            _currentFile = file;
+            Text = $"Bronco Editor - {file}";
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _currentFile = "";
+            Text = $"Bronco Editor";
+            inputPane.Text = "";
         }
     }
 }

@@ -27,9 +27,6 @@ namespace BroncoLibrary
         public ITerminal Flatten()
             => FlattenTo<ITerminal>();
 
-        public string ToString()
-            => Flatten().Value;
-
         public static ISymbol FlattenTo(ISymbol toFlat, Type type)
         {
             //TODO: MetaData has gotten progessivly more and more janky. First thing to fix on refactor

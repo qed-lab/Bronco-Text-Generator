@@ -27,6 +27,9 @@ namespace BroncoLibrary
 
             public void Update(ISymbol symbol)
                 => _symbol = symbol;
+
+            public override string ToString()
+            => $"Argued: {_symbol.ToString()}";
         }
 
         private IList<ArgReference> _argReferences = new List<ArgReference>();
@@ -69,5 +72,8 @@ namespace BroncoLibrary
             foreach(var argRef in _argReferences)
                 argRef.Update(symbol);
         }
+
+        public override string ToString()
+            => $"{Name}: {_currentSymbol.ToString()}";
     }
 }
