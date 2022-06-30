@@ -18,6 +18,8 @@ namespace BroncoTextParser
             }
         }
 
+        private static BroncoVisitor _lastVisitor;
+
         public static ISymbol Parse(Stream input)
             => Parse(new AntlrInputStream(input));
 
@@ -25,15 +27,32 @@ namespace BroncoTextParser
             => Parse(new AntlrInputStream(input));
 
         public static ISymbol Parse(AntlrInputStream input)
+            => GetSymbol(input, new());
+
+        public static ISymbol Parse(Stream input, IEnumerable<KeyValuePair<string, ISymbol>> startingReferences)
+            => Parse(new AntlrInputStream(input), startingReferences);
+
+        public static ISymbol Parse(string input, IEnumerable<KeyValuePair<string, ISymbol>> startingReferences)
+            => Parse(new AntlrInputStream(input), startingReferences);
+
+        public static ISymbol Parse(AntlrInputStream input, IEnumerable<KeyValuePair<string, ISymbol>> startingReferences)
+            => GetSymbol(input, new(startingReferences));
+
+        public static IEnumerable<KeyValuePair<string, SymbolVariable>> GetReferences()
+        {
+            return _lastVisitor.GetReferences();
+        }
+
+        private static ISymbol GetSymbol(AntlrInputStream input, BroncoVisitor visitor)
         {
             BroncoLexer lexer = new(input);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             BroncoParser parser = new BroncoParser(commonTokenStream);
             parser.AddErrorListener(new ExceptionErrorListner());
 
-            BroncoVisitor visitor = new();
-            var symbol = (ISymbol)visitor.Visit(parser.file());
-            return symbol;
+            _lastVisitor = visitor;
+
+            return (ISymbol)visitor.Visit(parser.file());
         }
     }
 }

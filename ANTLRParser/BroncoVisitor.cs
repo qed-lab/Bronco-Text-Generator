@@ -11,8 +11,14 @@ namespace BroncoTextParser
 {
     public class BroncoVisitor : BroncoParserBaseVisitor<object>
     {
-        private readonly Dictionary<string, SymbolVariable> symbolLookup = new();
-        private readonly Dictionary<string, SymbolVariable> localLookup = new();
+        private readonly Dictionary<string, SymbolVariable> _globalLookup = new();
+        private readonly Dictionary<string, SymbolVariable> _localLookup = new();
+
+        public BroncoVisitor(IEnumerable<KeyValuePair<string, ISymbol>> startingReferences) : this()
+        {
+            foreach (var reference in startingReferences)
+                SetReference(reference.Key, reference.Value);
+        }
 
         public BroncoVisitor()
         {
@@ -40,28 +46,33 @@ namespace BroncoTextParser
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
         {
             foreach (var symbol in startingGlobals)
-                symbolLookup.Add(symbol.Key, new SymbolVariable(symbol.Key, symbol.Value));
+                _globalLookup.Add(symbol.Key, new SymbolVariable(symbol.Key, symbol.Value));
+        }
+
+        public IEnumerable<KeyValuePair<string, SymbolVariable>> GetReferences()
+        {
+            return _globalLookup;
         }
 
         private SymbolVariable GetReference(string id)
         {
             SymbolVariable symbol;
-            if (localLookup.TryGetValue(id, out symbol))
+            if (_localLookup.TryGetValue(id, out symbol))
                 return symbol;
-            if (symbolLookup.TryGetValue(id, out symbol))
+            if (_globalLookup.TryGetValue(id, out symbol))
                 return symbol;
             symbol = new SymbolVariable(id);
-            symbolLookup.Add(id, symbol);
+            _globalLookup.Add(id, symbol);
             return symbol;
         }
 
         private void SetReference(string id, ISymbol value)
         {
             SymbolVariable symbol;
-            if (!symbolLookup.TryGetValue(id, out symbol))
+            if (!_globalLookup.TryGetValue(id, out symbol))
             {
                 symbol = new SymbolVariable(id);
-                symbolLookup.Add(id, symbol);
+                _globalLookup.Add(id, symbol);
             }
 
             symbol.SetPointer(value);
@@ -69,7 +80,7 @@ namespace BroncoTextParser
 
         private void SetLocalReference(string id, ISymbol value)
         {
-            localLookup.Add(id, new SymbolVariable(id, value));
+            _localLookup.Add(id, new SymbolVariable(id, value));
         }
 
         public override object VisitFile([NotNull] BroncoParser.FileContext context)
@@ -100,7 +111,7 @@ namespace BroncoTextParser
                     bag.Add((MetaData) item);
             }
 
-            localLookup.Clear();
+            _localLookup.Clear();
 
             SetReference(title.Item1, bag);
             return bag;
