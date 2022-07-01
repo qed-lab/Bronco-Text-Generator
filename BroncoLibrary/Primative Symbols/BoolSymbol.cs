@@ -8,6 +8,9 @@ namespace BroncoLibrary
 {
     public class BoolSymbol : FloatSymbol
     {
+        public static BoolSymbol True = new BoolSymbol(true);
+        public static BoolSymbol False = new BoolSymbol(false);
+
         private bool _state = false;
         private float _value = 0.0f;
 

@@ -44,11 +44,11 @@ public interface IBroncoParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBag([NotNull] BroncoParser.BagContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.bag_title"/>.
+	/// Visit a parse tree produced by <see cref="BroncoParser.bag_default_condition"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBag_title([NotNull] BroncoParser.Bag_titleContext context);
+	Result VisitBag_default_condition([NotNull] BroncoParser.Bag_default_conditionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="BroncoParser.bag_title_args"/>.
 	/// </summary>

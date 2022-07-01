@@ -37,31 +37,31 @@ public partial class BroncoParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		TITLE=1, BOOL_LITERAL=2, IDENTIFIER=3, NUMBER=4, SKIP_COMMENT=5, SKIP_WS=6, 
-		COLON=7, COMMA=8, OP=9, CP=10, GT=11, START_QUOTE=12, CLOSE_PIPE=13, TITLE_COLON=14, 
-		TITLE_COMMA=15, TITLE_ID=16, TITLE_SKIP_WS=17, TITLE_NEWLINE=18, LT=19, 
-		META_TAG=20, META_WEIGHT=21, TERMINAL=22, END_QUOTE=23, EMPTY_LINE=24, 
-		NEWLINE=25, OPEN_PIPE=26;
+		COLON=7, COMMA=8, OP=9, CP=10, GT=11, START_QUOTE=12, CLOSE_SQUARE=13, 
+		TITLE_COLON=14, TITLE_COMMA=15, TITLE_ID=16, TITLE_SKIP_WS=17, TITLE_OPEN_SQUARE=18, 
+		TITLE_NEWLINE=19, LT=20, META_TAG=21, META_WEIGHT=22, TERMINAL=23, END_QUOTE=24, 
+		EMPTY_LINE=25, NEWLINE=26, TERMINAL_OPEN_SQUARE=27;
 	public const int
-		RULE_file = 0, RULE_bag = 1, RULE_bag_title = 2, RULE_bag_title_args = 3, 
+		RULE_file = 0, RULE_bag = 1, RULE_bag_default_condition = 2, RULE_bag_title_args = 3, 
 		RULE_bag_item = 4, RULE_symbol = 5, RULE_symbol_list_item = 6, RULE_symbol_insert = 7, 
 		RULE_symbol_ref = 8, RULE_symbol_call = 9, RULE_symbol_call_inner = 10, 
 		RULE_symbol_call_args = 11, RULE_meta_data = 12;
 	public static readonly string[] ruleNames = {
-		"file", "bag", "bag_title", "bag_title_args", "bag_item", "symbol", "symbol_list_item", 
-		"symbol_insert", "symbol_ref", "symbol_call", "symbol_call_inner", "symbol_call_args", 
-		"meta_data"
+		"file", "bag", "bag_default_condition", "bag_title_args", "bag_item", 
+		"symbol", "symbol_list_item", "symbol_insert", "symbol_ref", "symbol_call", 
+		"symbol_call_inner", "symbol_call_args", "meta_data"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, null, null, null, null, null, null, "':'", "','", "'('", "')'", 
-		"'>'", null, null, null, null, null, null, null, "'<'"
+		"'>'", null, "']'", null, null, null, null, null, null, "'<'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TITLE", "BOOL_LITERAL", "IDENTIFIER", "NUMBER", "SKIP_COMMENT", 
-		"SKIP_WS", "COLON", "COMMA", "OP", "CP", "GT", "START_QUOTE", "CLOSE_PIPE", 
-		"TITLE_COLON", "TITLE_COMMA", "TITLE_ID", "TITLE_SKIP_WS", "TITLE_NEWLINE", 
-		"LT", "META_TAG", "META_WEIGHT", "TERMINAL", "END_QUOTE", "EMPTY_LINE", 
-		"NEWLINE", "OPEN_PIPE"
+		"SKIP_WS", "COLON", "COMMA", "OP", "CP", "GT", "START_QUOTE", "CLOSE_SQUARE", 
+		"TITLE_COLON", "TITLE_COMMA", "TITLE_ID", "TITLE_SKIP_WS", "TITLE_OPEN_SQUARE", 
+		"TITLE_NEWLINE", "LT", "META_TAG", "META_WEIGHT", "TERMINAL", "END_QUOTE", 
+		"EMPTY_LINE", "NEWLINE", "TERMINAL_OPEN_SQUARE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -154,8 +154,13 @@ public partial class BroncoParser : Parser {
 	}
 
 	public partial class BagContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public Bag_titleContext bag_title() {
-			return GetRuleContext<Bag_titleContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE() { return GetToken(BroncoParser.TITLE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE_NEWLINE() { return GetToken(BroncoParser.TITLE_NEWLINE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Bag_title_argsContext bag_title_args() {
+			return GetRuleContext<Bag_title_argsContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Bag_default_conditionContext bag_default_condition() {
+			return GetRuleContext<Bag_default_conditionContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public Bag_itemContext[] bag_item() {
 			return GetRuleContexts<Bag_itemContext>();
@@ -186,27 +191,49 @@ public partial class BroncoParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 33;
-			bag_title();
+			Match(TITLE);
 			State = 35;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==TITLE_COLON) {
+				{
+				State = 34;
+				bag_title_args();
+				}
+			}
+
+			State = 38;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==TITLE_OPEN_SQUARE) {
+				{
+				State = 37;
+				bag_default_condition();
+				}
+			}
+
+			State = 40;
+			Match(TITLE_NEWLINE);
+			State = 42;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 34;
+				State = 41;
 				bag_item();
 				}
 				}
-				State = 37;
+				State = 44;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==LT || _la==TERMINAL );
-			State = 40;
+			State = 47;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==EMPTY_LINE) {
 				{
-				State = 39;
+				State = 46;
 				Match(EMPTY_LINE);
 				}
 			}
@@ -224,47 +251,38 @@ public partial class BroncoParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Bag_titleContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE() { return GetToken(BroncoParser.TITLE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE_NEWLINE() { return GetToken(BroncoParser.TITLE_NEWLINE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public Bag_title_argsContext bag_title_args() {
-			return GetRuleContext<Bag_title_argsContext>(0);
+	public partial class Bag_default_conditionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TITLE_OPEN_SQUARE() { return GetToken(BroncoParser.TITLE_OPEN_SQUARE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext symbol_ref() {
+			return GetRuleContext<Symbol_refContext>(0);
 		}
-		public Bag_titleContext(ParserRuleContext parent, int invokingState)
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE_SQUARE() { return GetToken(BroncoParser.CLOSE_SQUARE, 0); }
+		public Bag_default_conditionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_bag_title; } }
+		public override int RuleIndex { get { return RULE_bag_default_condition; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IBroncoParserVisitor<TResult> typedVisitor = visitor as IBroncoParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBag_title(this);
+			if (typedVisitor != null) return typedVisitor.VisitBag_default_condition(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public Bag_titleContext bag_title() {
-		Bag_titleContext _localctx = new Bag_titleContext(Context, State);
-		EnterRule(_localctx, 4, RULE_bag_title);
-		int _la;
+	public Bag_default_conditionContext bag_default_condition() {
+		Bag_default_conditionContext _localctx = new Bag_default_conditionContext(Context, State);
+		EnterRule(_localctx, 4, RULE_bag_default_condition);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 42;
-			Match(TITLE);
-			State = 44;
-			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
-			if (_la==TITLE_COLON) {
-				{
-				State = 43;
-				bag_title_args();
-				}
-			}
-
-			State = 46;
-			Match(TITLE_NEWLINE);
+			State = 49;
+			Match(TITLE_OPEN_SQUARE);
+			State = 50;
+			symbol_ref();
+			State = 51;
+			Match(CLOSE_SQUARE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -309,23 +327,23 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 48;
+			State = 53;
 			Match(TITLE_COLON);
-			State = 49;
-			Match(TITLE_ID);
 			State = 54;
+			Match(TITLE_ID);
+			State = 59;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TITLE_COMMA) {
 				{
 				{
-				State = 50;
+				State = 55;
 				Match(TITLE_COMMA);
-				State = 51;
+				State = 56;
 				Match(TITLE_ID);
 				}
 				}
-				State = 56;
+				State = 61;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -346,11 +364,11 @@ public partial class BroncoParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public SymbolContext symbol() {
 			return GetRuleContext<SymbolContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OPEN_PIPE() { return GetToken(BroncoParser.OPEN_PIPE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TERMINAL_OPEN_SQUARE() { return GetToken(BroncoParser.TERMINAL_OPEN_SQUARE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext symbol_ref() {
 			return GetRuleContext<Symbol_refContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE_PIPE() { return GetToken(BroncoParser.CLOSE_PIPE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CLOSE_SQUARE() { return GetToken(BroncoParser.CLOSE_SQUARE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEWLINE() { return GetToken(BroncoParser.NEWLINE, 0); }
 		public Bag_itemContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -373,28 +391,28 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 57;
-			symbol();
 			State = 62;
+			symbol();
+			State = 67;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==OPEN_PIPE) {
+			if (_la==TERMINAL_OPEN_SQUARE) {
 				{
-				State = 58;
-				Match(OPEN_PIPE);
-				State = 59;
+				State = 63;
+				Match(TERMINAL_OPEN_SQUARE);
+				State = 64;
 				symbol_ref();
-				State = 60;
-				Match(CLOSE_PIPE);
+				State = 65;
+				Match(CLOSE_SQUARE);
 				}
 			}
 
-			State = 65;
+			State = 70;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==NEWLINE) {
 				{
-				State = 64;
+				State = 69;
 				Match(NEWLINE);
 				}
 			}
@@ -447,7 +465,7 @@ public partial class BroncoParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 68;
+			State = 73;
 			ErrorHandler.Sync(this);
 			_alt = 1;
 			do {
@@ -455,7 +473,7 @@ public partial class BroncoParser : Parser {
 				case 1:
 					{
 					{
-					State = 67;
+					State = 72;
 					symbol_list_item();
 					}
 					}
@@ -463,21 +481,21 @@ public partial class BroncoParser : Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 70;
+				State = 75;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,7,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
-			State = 75;
+			State = 80;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==META_TAG || _la==META_WEIGHT) {
 				{
 				{
-				State = 72;
+				State = 77;
 				meta_data();
 				}
 				}
-				State = 77;
+				State = 82;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -517,20 +535,20 @@ public partial class BroncoParser : Parser {
 		Symbol_list_itemContext _localctx = new Symbol_list_itemContext(Context, State);
 		EnterRule(_localctx, 12, RULE_symbol_list_item);
 		try {
-			State = 80;
+			State = 85;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case TERMINAL:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 78;
+				State = 83;
 				Match(TERMINAL);
 				}
 				break;
 			case LT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 79;
+				State = 84;
 				symbol_insert();
 				}
 				break;
@@ -578,25 +596,25 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 82;
+			State = 87;
 			Match(LT);
-			State = 85;
+			State = 90;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
 				{
-				State = 83;
+				State = 88;
 				symbol_ref();
 				}
 				break;
 			case 2:
 				{
-				State = 84;
+				State = 89;
 				symbol_call_inner();
 				}
 				break;
 			}
-			State = 87;
+			State = 92;
 			Match(GT);
 			}
 		}
@@ -641,34 +659,34 @@ public partial class BroncoParser : Parser {
 		Symbol_refContext _localctx = new Symbol_refContext(Context, State);
 		EnterRule(_localctx, 16, RULE_symbol_ref);
 		try {
-			State = 97;
+			State = 102;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case IDENTIFIER:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 89;
+				State = 94;
 				Match(IDENTIFIER);
 				}
 				break;
 			case OP:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 90;
+				State = 95;
 				symbol_call();
 				}
 				break;
 			case NUMBER:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 91;
+				State = 96;
 				Match(NUMBER);
 				}
 				break;
 			case BOOL_LITERAL:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 92;
+				State = 97;
 				Match(BOOL_LITERAL);
 				}
 				break;
@@ -676,11 +694,11 @@ public partial class BroncoParser : Parser {
 				EnterOuterAlt(_localctx, 5);
 				{
 				{
-				State = 93;
+				State = 98;
 				Match(START_QUOTE);
-				State = 94;
+				State = 99;
 				symbol();
-				State = 95;
+				State = 100;
 				Match(END_QUOTE);
 				}
 				}
@@ -726,11 +744,11 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 99;
+			State = 104;
 			Match(OP);
-			State = 100;
+			State = 105;
 			symbol_call_inner();
-			State = 101;
+			State = 106;
 			Match(CP);
 			}
 		}
@@ -771,14 +789,14 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 103;
+			State = 108;
 			Match(IDENTIFIER);
-			State = 105;
+			State = 110;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COLON) {
 				{
-				State = 104;
+				State = 109;
 				symbol_call_args();
 				}
 			}
@@ -829,23 +847,23 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 107;
+			State = 112;
 			Match(COLON);
-			State = 108;
-			symbol_ref();
 			State = 113;
+			symbol_ref();
+			State = 118;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 109;
+				State = 114;
 				Match(COMMA);
-				State = 110;
+				State = 115;
 				symbol_ref();
 				}
 				}
-				State = 115;
+				State = 120;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -886,7 +904,7 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 116;
+			State = 121;
 			_la = TokenStream.LA(1);
 			if ( !(_la==META_TAG || _la==META_WEIGHT) ) {
 			ErrorHandler.RecoverInline(this);
@@ -909,41 +927,43 @@ public partial class BroncoParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,26,119,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,27,124,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,1,0,4,0,28,8,0,11,0,
-		12,0,29,1,0,1,0,1,1,1,1,4,1,36,8,1,11,1,12,1,37,1,1,3,1,41,8,1,1,2,1,2,
-		3,2,45,8,2,1,2,1,2,1,3,1,3,1,3,1,3,5,3,53,8,3,10,3,12,3,56,9,3,1,4,1,4,
-		1,4,1,4,1,4,3,4,63,8,4,1,4,3,4,66,8,4,1,5,4,5,69,8,5,11,5,12,5,70,1,5,
-		5,5,74,8,5,10,5,12,5,77,9,5,1,6,1,6,3,6,81,8,6,1,7,1,7,1,7,3,7,86,8,7,
-		1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,98,8,8,1,9,1,9,1,9,1,9,1,10,
-		1,10,3,10,106,8,10,1,11,1,11,1,11,1,11,5,11,112,8,11,10,11,12,11,115,9,
-		11,1,12,1,12,1,12,0,0,13,0,2,4,6,8,10,12,14,16,18,20,22,24,0,1,1,0,20,
-		21,122,0,27,1,0,0,0,2,33,1,0,0,0,4,42,1,0,0,0,6,48,1,0,0,0,8,57,1,0,0,
-		0,10,68,1,0,0,0,12,80,1,0,0,0,14,82,1,0,0,0,16,97,1,0,0,0,18,99,1,0,0,
-		0,20,103,1,0,0,0,22,107,1,0,0,0,24,116,1,0,0,0,26,28,3,2,1,0,27,26,1,0,
-		0,0,28,29,1,0,0,0,29,27,1,0,0,0,29,30,1,0,0,0,30,31,1,0,0,0,31,32,5,0,
-		0,1,32,1,1,0,0,0,33,35,3,4,2,0,34,36,3,8,4,0,35,34,1,0,0,0,36,37,1,0,0,
-		0,37,35,1,0,0,0,37,38,1,0,0,0,38,40,1,0,0,0,39,41,5,24,0,0,40,39,1,0,0,
-		0,40,41,1,0,0,0,41,3,1,0,0,0,42,44,5,1,0,0,43,45,3,6,3,0,44,43,1,0,0,0,
-		44,45,1,0,0,0,45,46,1,0,0,0,46,47,5,18,0,0,47,5,1,0,0,0,48,49,5,14,0,0,
-		49,54,5,16,0,0,50,51,5,15,0,0,51,53,5,16,0,0,52,50,1,0,0,0,53,56,1,0,0,
-		0,54,52,1,0,0,0,54,55,1,0,0,0,55,7,1,0,0,0,56,54,1,0,0,0,57,62,3,10,5,
-		0,58,59,5,26,0,0,59,60,3,16,8,0,60,61,5,13,0,0,61,63,1,0,0,0,62,58,1,0,
-		0,0,62,63,1,0,0,0,63,65,1,0,0,0,64,66,5,25,0,0,65,64,1,0,0,0,65,66,1,0,
-		0,0,66,9,1,0,0,0,67,69,3,12,6,0,68,67,1,0,0,0,69,70,1,0,0,0,70,68,1,0,
-		0,0,70,71,1,0,0,0,71,75,1,0,0,0,72,74,3,24,12,0,73,72,1,0,0,0,74,77,1,
-		0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,11,1,0,0,0,77,75,1,0,0,0,78,81,5,
-		22,0,0,79,81,3,14,7,0,80,78,1,0,0,0,80,79,1,0,0,0,81,13,1,0,0,0,82,85,
-		5,19,0,0,83,86,3,16,8,0,84,86,3,20,10,0,85,83,1,0,0,0,85,84,1,0,0,0,86,
-		87,1,0,0,0,87,88,5,11,0,0,88,15,1,0,0,0,89,98,5,3,0,0,90,98,3,18,9,0,91,
-		98,5,4,0,0,92,98,5,2,0,0,93,94,5,12,0,0,94,95,3,10,5,0,95,96,5,23,0,0,
-		96,98,1,0,0,0,97,89,1,0,0,0,97,90,1,0,0,0,97,91,1,0,0,0,97,92,1,0,0,0,
-		97,93,1,0,0,0,98,17,1,0,0,0,99,100,5,9,0,0,100,101,3,20,10,0,101,102,5,
-		10,0,0,102,19,1,0,0,0,103,105,5,3,0,0,104,106,3,22,11,0,105,104,1,0,0,
-		0,105,106,1,0,0,0,106,21,1,0,0,0,107,108,5,7,0,0,108,113,3,16,8,0,109,
-		110,5,8,0,0,110,112,3,16,8,0,111,109,1,0,0,0,112,115,1,0,0,0,113,111,1,
-		0,0,0,113,114,1,0,0,0,114,23,1,0,0,0,115,113,1,0,0,0,116,117,7,0,0,0,117,
-		25,1,0,0,0,14,29,37,40,44,54,62,65,70,75,80,85,97,105,113
+		12,0,29,1,0,1,0,1,1,1,1,3,1,36,8,1,1,1,3,1,39,8,1,1,1,1,1,4,1,43,8,1,11,
+		1,12,1,44,1,1,3,1,48,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,5,3,58,8,3,10,
+		3,12,3,61,9,3,1,4,1,4,1,4,1,4,1,4,3,4,68,8,4,1,4,3,4,71,8,4,1,5,4,5,74,
+		8,5,11,5,12,5,75,1,5,5,5,79,8,5,10,5,12,5,82,9,5,1,6,1,6,3,6,86,8,6,1,
+		7,1,7,1,7,3,7,91,8,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,103,8,
+		8,1,9,1,9,1,9,1,9,1,10,1,10,3,10,111,8,10,1,11,1,11,1,11,1,11,5,11,117,
+		8,11,10,11,12,11,120,9,11,1,12,1,12,1,12,0,0,13,0,2,4,6,8,10,12,14,16,
+		18,20,22,24,0,1,1,0,21,22,128,0,27,1,0,0,0,2,33,1,0,0,0,4,49,1,0,0,0,6,
+		53,1,0,0,0,8,62,1,0,0,0,10,73,1,0,0,0,12,85,1,0,0,0,14,87,1,0,0,0,16,102,
+		1,0,0,0,18,104,1,0,0,0,20,108,1,0,0,0,22,112,1,0,0,0,24,121,1,0,0,0,26,
+		28,3,2,1,0,27,26,1,0,0,0,28,29,1,0,0,0,29,27,1,0,0,0,29,30,1,0,0,0,30,
+		31,1,0,0,0,31,32,5,0,0,1,32,1,1,0,0,0,33,35,5,1,0,0,34,36,3,6,3,0,35,34,
+		1,0,0,0,35,36,1,0,0,0,36,38,1,0,0,0,37,39,3,4,2,0,38,37,1,0,0,0,38,39,
+		1,0,0,0,39,40,1,0,0,0,40,42,5,19,0,0,41,43,3,8,4,0,42,41,1,0,0,0,43,44,
+		1,0,0,0,44,42,1,0,0,0,44,45,1,0,0,0,45,47,1,0,0,0,46,48,5,25,0,0,47,46,
+		1,0,0,0,47,48,1,0,0,0,48,3,1,0,0,0,49,50,5,18,0,0,50,51,3,16,8,0,51,52,
+		5,13,0,0,52,5,1,0,0,0,53,54,5,14,0,0,54,59,5,16,0,0,55,56,5,15,0,0,56,
+		58,5,16,0,0,57,55,1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,1,0,0,0,60,
+		7,1,0,0,0,61,59,1,0,0,0,62,67,3,10,5,0,63,64,5,27,0,0,64,65,3,16,8,0,65,
+		66,5,13,0,0,66,68,1,0,0,0,67,63,1,0,0,0,67,68,1,0,0,0,68,70,1,0,0,0,69,
+		71,5,26,0,0,70,69,1,0,0,0,70,71,1,0,0,0,71,9,1,0,0,0,72,74,3,12,6,0,73,
+		72,1,0,0,0,74,75,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,80,1,0,0,0,77,
+		79,3,24,12,0,78,77,1,0,0,0,79,82,1,0,0,0,80,78,1,0,0,0,80,81,1,0,0,0,81,
+		11,1,0,0,0,82,80,1,0,0,0,83,86,5,23,0,0,84,86,3,14,7,0,85,83,1,0,0,0,85,
+		84,1,0,0,0,86,13,1,0,0,0,87,90,5,20,0,0,88,91,3,16,8,0,89,91,3,20,10,0,
+		90,88,1,0,0,0,90,89,1,0,0,0,91,92,1,0,0,0,92,93,5,11,0,0,93,15,1,0,0,0,
+		94,103,5,3,0,0,95,103,3,18,9,0,96,103,5,4,0,0,97,103,5,2,0,0,98,99,5,12,
+		0,0,99,100,3,10,5,0,100,101,5,24,0,0,101,103,1,0,0,0,102,94,1,0,0,0,102,
+		95,1,0,0,0,102,96,1,0,0,0,102,97,1,0,0,0,102,98,1,0,0,0,103,17,1,0,0,0,
+		104,105,5,9,0,0,105,106,3,20,10,0,106,107,5,10,0,0,107,19,1,0,0,0,108,
+		110,5,3,0,0,109,111,3,22,11,0,110,109,1,0,0,0,110,111,1,0,0,0,111,21,1,
+		0,0,0,112,113,5,7,0,0,113,118,3,16,8,0,114,115,5,8,0,0,115,117,3,16,8,
+		0,116,114,1,0,0,0,117,120,1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,
+		23,1,0,0,0,120,118,1,0,0,0,121,122,7,0,0,0,122,25,1,0,0,0,15,29,35,38,
+		44,47,59,67,70,75,80,85,90,102,110,118
 	};
 
 	public static readonly ATN _ATN =

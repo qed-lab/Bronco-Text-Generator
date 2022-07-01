@@ -8,6 +8,7 @@ namespace BroncoIDE
     public partial class IDE : Form
     {
         private static FontStyle style = FontStyle.Regular;
+        private static TextStyle black = new TextStyle(Brushes.Black, null, style);
         private static TextStyle blue = new TextStyle(Brushes.LightBlue, null, style);
         private static TextStyle red = new TextStyle(Brushes.Red, null, style);
         private static TextStyle green = new TextStyle(Brushes.Green, null, style);
@@ -60,12 +61,13 @@ namespace BroncoIDE
         
         private void inputPane_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(blue, red, green);
+            e.ChangedRange.ClearStyle(blue, red, green, grey, black);
             e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9_]*");
             e.ChangedRange.SetStyle(blue, "#[A-Za-z][A-Za-z0-9_]*:[0-9.]*");
+            e.ChangedRange.SetStyle(black, "`.*?`");
+            e.ChangedRange.SetStyle(red, "<.*?>");
+            e.ChangedRange.SetStyle(red, "\\[.*?\\]");
             e.ChangedRange.SetStyle(blue, "%[0-9.]*");
-            e.ChangedRange.SetStyle(red, "[`<].*?[`>]");
-            e.ChangedRange.SetStyle(red, "[`|].*?[`|]");
             e.ChangedRange.SetStyle(green, "@[A-Za-z][A-Za-z0-9_]*");
             e.ChangedRange.SetStyle(grey, "/\\*.*?\\*/");
         }

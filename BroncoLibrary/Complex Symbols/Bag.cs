@@ -16,14 +16,21 @@ namespace BroncoLibrary
         private List<(MetaData symbol, ISymbol condition)> _items;
         private Random _random;
 
+        public ISymbol DefaultCondition { get; set; }
+        public SymbolVariable CurrentItem { get; private set; } = new SymbolVariable("item");
         public int ArgumentCount { get; private set; }
 
-        public Bag(int argCount)
+        public Bag(int argCount, ISymbol condition)
         {
             ArgumentCount = argCount;
+            DefaultCondition = condition;
             _items = new();
             _random = new();
             AddEvaluation(Pick);
+        }
+
+        public Bag(int argCount) : this(argCount, new BoolSymbol(true))
+        {
         }
 
         public Bag(int argCount, IEnumerable<MetaData> items) : this(argCount)
@@ -44,6 +51,7 @@ namespace BroncoLibrary
 
             foreach (var item in _items)
             {
+                CurrentItem.SetPointer(item.symbol);
                 double rolledWeight = _random.NextDouble() * item.symbol.Weight;
                 FloatSymbol condition = item.condition.FlattenTo<FloatSymbol>();
                 rolledWeight *= condition.FloatValue;
@@ -66,11 +74,6 @@ namespace BroncoLibrary
             => _items.Add((symbol, condition));
 
         public void Add(MetaData symbol)
-        {
-            var condition = ArgumentCount == 0 || symbol.Tags.Count == 0 ?
-                new BoolSymbol(true) : tagMatcher.Argue(new ISymbol[]{ symbol, GetArgument(0)});
-
-            _items.Add((symbol, condition));
-        }
+            => _items.Add((symbol, DefaultCondition));
     }
 }

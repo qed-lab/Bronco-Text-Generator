@@ -94,13 +94,25 @@ namespace BroncoTextParser
             return GetReference("start");
         }
 
+        //TODO: This thing is a beast, need to rethink it, but not now...
         public override object VisitBag([NotNull] BroncoParser.BagContext context)
         {
-            (string, IList<string>) title = ((string, IList<string>)) Visit(context.bag_title());
-            var bag = new Bag(title.Item2.Count());
+            var argContext = context.bag_title_args();
+            IList<string> args = argContext != null ? (IList<string>)Visit(argContext) : new List<string>();
 
-            for (int i = 0; i < title.Item2.Count(); i++)
-                SetLocalReference(title.Item2[i], bag.GetArgument(i));
+            Bag bag = new Bag(args.Count());
+
+            string title = context.TITLE().GetText();
+            title = title.Substring(1, title.Length - 1);
+
+            SetReference(title, bag);
+
+            for (int i = 0; i < args.Count(); i++)
+                SetLocalReference(args[i], bag.GetArgument(i));
+            SetLocalReference("item", bag.CurrentItem);
+
+            var conditionContext = context.bag_default_condition();
+            if (conditionContext != null) bag.DefaultCondition = (ISymbol)Visit(conditionContext);
 
             foreach(var itemContext in context.bag_item())
             {
@@ -114,18 +126,12 @@ namespace BroncoTextParser
 
             _localLookup.Clear();
 
-            SetReference(title.Item1, bag);
             return bag;
         }
 
-        public override object VisitBag_title([NotNull] BroncoParser.Bag_titleContext context)
+        public override object VisitBag_default_condition([NotNull] BroncoParser.Bag_default_conditionContext context)
         {
-            string title = context.TITLE().GetText();
-            title = title.Substring(1, title.Length-1);
-            var argContext = context.bag_title_args();
-            IList<string> args = argContext != null ? (IList<string>) Visit(argContext) : new List<string>();
-
-            return (title, args);
+            return (ISymbol) Visit(context.symbol_ref());
         }
 
         public override object VisitBag_title_args([NotNull] BroncoParser.Bag_title_argsContext context)

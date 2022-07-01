@@ -1,57 +1,8 @@
 ﻿@start
-<silent: setVars><publishedEvent><awardEvent>
+I pick <autoSet>! Once again, that is <picked>, <picked>, <picked>!
 
-@setVars
-<set: papersCount, 0><set: awardsCount, 0>
-
-@history
-<events>\n<history>
-And that takes us to the present.%0.5
-
-@events
-<publishedEvent>
-<awardEvent>%0.5|(gt: papersCount, 0)|
-
-/*Awards*/
-@awardEvent
-Won an award for the publication <publishedPapers>.
-
-/*Paper publishing*/
-
-@publishedPapers
- %0
-
-@publishedEvent
-Published the paper "<set: paper, paperTitle>".<silent: (addToBag: publishedPapers, paper)><silent: (set: papersCount, (add: papersCount, 1))>
-
-@paperTitle
-<researchAdj> <researchAreas>
-<researchNoun> for <researchNoun>
-<researchNoun> in <researchNoun>
-The relation between <researchNoun> and <researchNoun>
-
-@researchNoun
-<researchAreas>
-<researchAdj> <researchAreas>
-
-@researchAreas
-Computer Science
-Anthropology
-Mathimatics
-Art
-History
-Physics
-Engineering
-Ethics
-Humanities
-
-@researchAdj
-Technical
-Theoretical
-Abstract
-Applied
-Ethical
-Moral
-
-
-
+@autoSet
+Orange<silent: (set: picked, item)>
+Red<silent: (set: picked, item)>
+Yellow<silent: (set: picked, item)>
+Blue<silent: (set: picked, item)>
