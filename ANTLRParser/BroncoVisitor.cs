@@ -24,7 +24,7 @@ namespace BroncoTextParser
         {
             SetReference("set", new VariableSetter());
             SetReference("addTag", new TagAdder());
-            SetReference("matchTag", new TagMatcher());
+            SetReference("removeTag", new TagRemover());
             SetReference("choose", new Choose());
             SetReference("setPointer", new VariablePointerSetter());
             SetReference("if", new IfElse());
@@ -40,8 +40,13 @@ namespace BroncoTextParser
             SetReference("and", new And());
             SetReference("or", new Or());
             SetReference("not", new Not());
-            SetReference("silent", new Silent());
+            SetReference("do", new Do());
+            SetReference("doYield", new DoYield());
             SetReference("addToBag", new BagAdder());
+            SetReference("tagMult", new TagMult());
+            SetReference("tagContains", new TagContains());
+            SetReference("tagNoOverlap", new TagNoOverlap());
+            SetReference("tagOverlap", new TagOverlap());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)

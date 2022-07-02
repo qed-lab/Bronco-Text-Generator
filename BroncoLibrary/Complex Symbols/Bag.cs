@@ -11,8 +11,6 @@ namespace BroncoLibrary
 {
     public class Bag : DynamicSymbol
     {
-        private static readonly TagMatcher tagMatcher = new TagMatcher();
-
         private List<(MetaData symbol, ISymbol condition)> _items;
         private Random _random;
 

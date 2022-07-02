@@ -21,4 +21,20 @@ namespace BroncoLibrary
             return addFrom;
         }
     }
+
+    public class TagRemover : DynamicSymbol
+    {
+        public TagRemover()
+        {
+            AddEvaluation<MetaData, MetaData>(Remove);
+        }
+
+        public ISymbol Remove(MetaData remove, MetaData removeFrom)
+        {
+            foreach (var tag in remove.Tags)
+                if (removeFrom.Tags.Contains(tag)) removeFrom.Tags.Tags.Remove(tag.Key);
+
+            return removeFrom;
+        }
+    }
 }
