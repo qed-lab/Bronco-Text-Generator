@@ -11,7 +11,7 @@ file: bag+ EOF;
 bag: TITLE bag_title_args? bag_default_condition? TITLE_NEWLINE bag_item+ EMPTY_LINE?;
 bag_default_condition: TITLE_OPEN_SQUARE symbol_ref CLOSE_SQUARE;
 bag_title_args: TITLE_COLON TITLE_ID (TITLE_COMMA TITLE_ID)*;
-bag_item: symbol (TERMINAL_OPEN_SQUARE symbol_ref CLOSE_SQUARE)? NEWLINE?;
+bag_item: symbol (TERMINAL_OPEN_SQUARE symbol_ref CLOSE_SQUARE)? (NEWLINE | PIPE)?;
 symbol: symbol_list_item+ meta_data*;
 symbol_list_item: TERMINAL | symbol_insert;
 
