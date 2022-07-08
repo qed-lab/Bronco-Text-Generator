@@ -41,7 +41,7 @@ namespace BroncoLibrary
                     return new Terminal("an " + input.Value);
             }
 
-            return new Terminal("an " + input.Value);
+            return new Terminal("a " + input.Value);
         }
     }
 
