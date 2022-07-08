@@ -47,6 +47,10 @@ namespace BroncoTextParser
             SetReference("tagContains", new TagContains());
             SetReference("tagNoOverlap", new TagNoOverlap());
             SetReference("tagOverlap", new TagOverlap());
+            SetReference("cap", new Capitalize());
+            SetReference("a", new Ana());
+            SetReference("s", new Plural());
+            SetReference("ed", new Ed());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
