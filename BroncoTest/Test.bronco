@@ -1,8 +1,7 @@
 ﻿@start
-I pick <autoSet>! Once again, that is <picked>, <picked>, <picked>!
+<test>
 
-@autoSet
-Orange<silent: (set: picked, item)>
-Red<silent: (set: picked, item)>
-Yellow<silent: (set: picked, item)>
-Blue<silent: (set: picked, item)>
+@test
+one
+two
+three
