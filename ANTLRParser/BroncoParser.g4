@@ -17,7 +17,8 @@ symbol_list_item: TERMINAL | symbol_insert;
 
 symbol_insert: LT (symbol_ref | symbol_call_inner) GT;
 
-symbol_ref: IDENTIFIER | symbol_call | NUMBER | BOOL_LITERAL | (START_QUOTE symbol END_QUOTE);
+symbol_ref: symbol_identifier | symbol_call | NUMBER | BOOL_LITERAL | (START_QUOTE symbol END_QUOTE);
+symbol_identifier: IDENTIFIER (DOT IDENTIFIER)*;
 symbol_call: OP symbol_call_inner CP;
 symbol_call_inner: IDENTIFIER symbol_call_args?;
 symbol_call_args: COLON symbol_ref (COMMA symbol_ref)*;

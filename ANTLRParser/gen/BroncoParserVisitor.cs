@@ -86,6 +86,12 @@ public interface IBroncoParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSymbol_ref([NotNull] BroncoParser.Symbol_refContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="BroncoParser.symbol_identifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSymbol_identifier([NotNull] BroncoParser.Symbol_identifierContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="BroncoParser.symbol_call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

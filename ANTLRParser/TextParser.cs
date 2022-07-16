@@ -38,7 +38,7 @@ namespace BroncoTextParser
         public static ISymbol Parse(AntlrInputStream input, IEnumerable<KeyValuePair<string, ISymbol>> startingReferences)
             => GetSymbol(input, new(startingReferences));
 
-        public static IEnumerable<KeyValuePair<string, SymbolVariable>> GetReferences()
+        public static IEnumerable<KeyValuePair<string, ISymbol>> GetReferences()
         {
             return _lastVisitor.GetReferences();
         }
