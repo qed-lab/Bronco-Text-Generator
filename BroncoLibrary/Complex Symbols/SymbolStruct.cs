@@ -8,13 +8,13 @@ namespace BroncoLibrary
 {
     public class SymbolStruct : DynamicSymbol
     {
-        private IList<SymbolVariable> _fields = new List<SymbolVariable>();
+        private IList<UserVariable> _fields = new List<UserVariable>();
         private IDictionary<string, int> _fieldLookup = new Dictionary<string, int>();
 
-        public SymbolVariable GetField(int index)
+        public UserVariable GetField(int index)
             => _fields[index];
 
-        public SymbolVariable GetField(string id)
+        public UserVariable GetField(string id)
             => _fields[GetFieldIndex(id)];
 
         public int GetFieldIndex(string id)
@@ -24,7 +24,7 @@ namespace BroncoLibrary
             if(_fieldLookup.TryGetValue(id, out index))
                 return index;
 
-            _fields.Add(new SymbolVariable(id));
+            _fields.Add(new UserVariable(id));
             index = _fields.Count - 1;
             _fieldLookup.Add(id, index);
             return index;

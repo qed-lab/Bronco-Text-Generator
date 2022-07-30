@@ -3,6 +3,7 @@ using Antlr4.Runtime.Tree;
 using BroncoLibrary;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace BroncoTextParser
         private void SetVariable(string id, ISymbol value)
             => _globals.GetField(id).SetPointer(value);
 
-        private ISymbol GetVariable(string id)
+        private ISymbol GetReference(string id)
         {
             ISymbol reference;
 
@@ -95,7 +96,7 @@ namespace BroncoTextParser
                 Visit(bag);
             }
 
-            return GetVariable("start");
+            return GetReference("start");
         }
 
         //TODO: This thing is a beast, need to rethink it, but not now...
@@ -240,8 +241,8 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_ref([NotNull] BroncoParser.Symbol_refContext context)
         {
-            var id = context.IDENTIFIER();
-            if (id != null) return GetVariable(id.GetText());
+            var id = context.symbol_identifier();
+            if (id != null) return Visit(id);
 
             var call = context.symbol_call();
             if (call != null) return (ISymbol) Visit(call);
@@ -255,6 +256,43 @@ namespace BroncoTextParser
             return Visit(context.symbol());
         }
 
+        public override object VisitSymbol_identifier([NotNull] BroncoParser.Symbol_identifierContext context)
+        {
+            var ids = context.IDENTIFIER();
+
+            ISymbol symbol = GetReference(ids[0].GetText());
+            if (ids.Length == 1) return symbol;
+
+            UserVariable current = symbol.FlattenTo<UserVariable>();
+
+            SymbolStruct origin = null;
+            int[] fields = new int[ids.Length - 1];
+            string[] names = new string[ids.Length - 1];
+            
+            for(int i = 0; i < ids.Length; i++)
+            {
+                if (!current.IsSet)
+                {
+                    current.SetPointer(new SymbolStruct());
+                    Console.WriteLine($"Set {current.Name}");
+                }
+
+                SymbolStruct currentStruct = ((ISymbol) current).FlattenTo<SymbolStruct>();
+
+                if (i == 0)
+                    origin = currentStruct;
+                else
+                {
+                    int index = currentStruct.GetFieldIndex(ids[i].GetText());
+                    current = currentStruct.GetField(index);
+
+                    fields[i - 1] = index;
+                }
+            }
+
+            return new StructAccessor(origin, fields);
+        }
+           
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)
         {
             return Visit(context.symbol_call_inner());
@@ -262,7 +300,7 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_call_inner([NotNull] BroncoParser.Symbol_call_innerContext context)
         {
-            ISymbol callee = GetVariable(context.IDENTIFIER().GetText());
+            ISymbol callee = GetReference(context.IDENTIFIER().GetText());
 
             var argsContext = context.symbol_call_args();
             if (argsContext != null)
