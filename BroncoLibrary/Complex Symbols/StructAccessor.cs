@@ -8,10 +8,10 @@ namespace BroncoLibrary
 {
     public class StructAccessor : ISymbol
     {
-        private SymbolStruct _origin;
-        private int[] _fields;
+        private ISymbol _origin;
+        private string[] _fields;
 
-        public StructAccessor(SymbolStruct origin, int[] fields)
+        public StructAccessor(ISymbol origin, string[] fields)
         {
             _origin = origin;
             _fields = fields;
@@ -19,11 +19,16 @@ namespace BroncoLibrary
 
         public ISymbol Evaluate()
         {
-            ISymbol current = _origin;
+            UserVariable current = _origin.FlattenTo<UserVariable>();
 
             foreach(var field in _fields)
             {
-                SymbolStruct currentStruct = current.FlattenTo<SymbolStruct>();
+                if(!current.IsSet)
+                {
+                    current.SetPointer(new SymbolStruct());
+                }
+
+                SymbolStruct currentStruct = ((ISymbol) current).FlattenTo<SymbolStruct>();
                 current = currentStruct.GetField(field); 
             }
 

@@ -263,34 +263,14 @@ namespace BroncoTextParser
             ISymbol symbol = GetReference(ids[0].GetText());
             if (ids.Length == 1) return symbol;
 
-            UserVariable current = symbol.FlattenTo<UserVariable>();
+            string[] fields = new string[ids.Length - 1];
 
-            SymbolStruct origin = null;
-            int[] fields = new int[ids.Length - 1];
-            string[] names = new string[ids.Length - 1];
-            
-            for(int i = 0; i < ids.Length; i++)
+            for(int i = 1; i < ids.Length; i++)
             {
-                if (!current.IsSet)
-                {
-                    current.SetPointer(new SymbolStruct());
-                    Console.WriteLine($"Set {current.Name}");
-                }
-
-                SymbolStruct currentStruct = ((ISymbol) current).FlattenTo<SymbolStruct>();
-
-                if (i == 0)
-                    origin = currentStruct;
-                else
-                {
-                    int index = currentStruct.GetFieldIndex(ids[i].GetText());
-                    current = currentStruct.GetField(index);
-
-                    fields[i - 1] = index;
-                }
+                fields[i - 1] = ids[i].GetText();
             }
 
-            return new StructAccessor(origin, fields);
+            return new StructAccessor(symbol, fields);
         }
            
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)

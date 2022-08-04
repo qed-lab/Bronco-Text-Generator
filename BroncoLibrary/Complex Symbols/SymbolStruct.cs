@@ -8,26 +8,18 @@ namespace BroncoLibrary
 {
     public class SymbolStruct : DynamicSymbol
     {
-        private IList<UserVariable> _fields = new List<UserVariable>();
-        private IDictionary<string, int> _fieldLookup = new Dictionary<string, int>();
-
-        public UserVariable GetField(int index)
-            => _fields[index];
+        private IDictionary<string, UserVariable> _fieldLookup = new Dictionary<string, UserVariable>();
 
         public UserVariable GetField(string id)
-            => _fields[GetFieldIndex(id)];
-
-        public int GetFieldIndex(string id)
         {
-            int index;
+            UserVariable value;
 
-            if(_fieldLookup.TryGetValue(id, out index))
-                return index;
+            if(_fieldLookup.TryGetValue(id, out value))
+                return value;
 
-            _fields.Add(new UserVariable(id));
-            index = _fields.Count - 1;
-            _fieldLookup.Add(id, index);
-            return index;
+            value = new UserVariable(id);
+            _fieldLookup.Add(id, value);
+            return value;
         }
     }
 }

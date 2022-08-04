@@ -7,10 +7,12 @@ Here's a <test>!
 */
 
 @start
-<set: foo.bar, 10>. Again that's <foo.bar>. <giveMeA: foo>
+<set: foo.bar1, 10> and <set: foo.bar2, 20>. Again that's <foo.bar1>, <foo.bar2>. <giveMeA: foo>
 
 @giveMeA: test
-Here's a <test.bar>!
+Here's a <test.bar1> and a <test.bar2>!
+
+
 
 /*
 @start
