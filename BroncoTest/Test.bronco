@@ -1,29 +1,16 @@
 ﻿/*
 @start
-<set: foo, 10>. Again that's <foo>. <giveMeA: foo>
-
-@giveMeA: test
-Here's a <test>!
-*/
-
-@start
-<set: foo.bar1, 10> and <set: foo.bar2, 20>. Again that's <foo.bar1>, <foo.bar2>. <giveMeA: foo>
-
-@giveMeA: test
-Here's a <test.bar1> and a <test.bar2>!
-
-
-
-/*
-@start
-<setBar: foo1> <foo1>
+<setBar: foo1> <foo1.bar>
 
 @setBar: foo
 <set: foo.bar, 10>
+*/
+
+@start
+<do: (makeChar: c1)><displayChar: c1>
 
 @displayChar: char
 This hero has <char.str> Strength, <char.dex> Dexterity and <char.cha> Charisma
 
 @makeChar: char
 <set: char.str, (randomI: 6, 20)> <set: char.dex, (randomI: 6, 20)> <set: char.cha, (randomI: 6, 20)>
-*/
