@@ -35,7 +35,6 @@ namespace BroncoLibrary
         private IList<ArgReference> _argReferences = new List<ArgReference>();
         private ISymbol _currentSymbol = null;
         public string Name { get; private set; }
-        public bool IsSet { get; private set; } = false;
 
         public SymbolVariable(string name) 
         {
@@ -69,7 +68,6 @@ namespace BroncoLibrary
 
         private void SetSymbol(ISymbol symbol)
         {
-            IsSet = true;
             _currentSymbol = symbol;
             foreach(var argRef in _argReferences)
                 argRef.Update(symbol);

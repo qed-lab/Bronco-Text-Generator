@@ -20,7 +20,6 @@ COLON: ':';
 COMMA: ',';
 OP: '(';
 CP: ')';
-DOT: '.';
 GT: '>' -> mode(TERMINAL_MODE);
 START_QUOTE: '`' -> mode(TERMINAL_MODE);
 CLOSE_SQUARE: ']' -> popMode;

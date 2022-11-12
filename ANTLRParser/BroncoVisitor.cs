@@ -3,7 +3,6 @@ using Antlr4.Runtime.Tree;
 using BroncoLibrary;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,82 +11,87 @@ namespace BroncoTextParser
 {
     public class BroncoVisitor : BroncoParserBaseVisitor<object>
     {
-        private readonly Dictionary<string, ISymbol> _staticLookup = new();
-        private readonly Dictionary<string, ISymbol> _localLookup = new();
-        private readonly SymbolStruct _globals = new();
+        private readonly Dictionary<string, SymbolVariable> _globalLookup = new();
+        private readonly Dictionary<string, SymbolVariable> _localLookup = new();
 
         public BroncoVisitor(IEnumerable<KeyValuePair<string, ISymbol>> startingReferences) : this()
         {
             foreach (var reference in startingReferences)
-                _staticLookup.Add(reference.Key, reference.Value);
+                SetReference(reference.Key, reference.Value);
         }
 
         public BroncoVisitor()
         {
-            _staticLookup.Add("set", new VariableSetter());
-            _staticLookup.Add("addTag", new TagAdder());
-            _staticLookup.Add("removeTag", new TagRemover());
-            _staticLookup.Add("choose", new Choose());
-            _staticLookup.Add("setPointer", new VariablePointerSetter());
-            _staticLookup.Add("if", new IfElse());
-            _staticLookup.Add("gt", new GreaterThan());
-            _staticLookup.Add("lt", new LessThan());
-            _staticLookup.Add("equal", new Equals());
-            _staticLookup.Add("add", new Add());
-            _staticLookup.Add("sub", new Subtract());
-            _staticLookup.Add("mult", new Multiply());
-            _staticLookup.Add("random", new RandomFloat());
-            _staticLookup.Add("randomI", new RandomInt());
-            _staticLookup.Add("round", new Round());
-            _staticLookup.Add("and", new And());
-            _staticLookup.Add("or", new Or());
-            _staticLookup.Add("not", new Not());
-            _staticLookup.Add("do", new Do());
-            _staticLookup.Add("doYield", new DoYield());
-            _staticLookup.Add("addToBag", new BagAdder());
-            _staticLookup.Add("tagMult", new TagMult());
-            _staticLookup.Add("tagContains", new TagContains());
-            _staticLookup.Add("tagNoOverlap", new TagNoOverlap());
-            _staticLookup.Add("tagOverlap", new TagOverlap());
-            _staticLookup.Add("cap", new Capitalize());
-            _staticLookup.Add("a", new Ana());
-            _staticLookup.Add("s", new Plural());
-            _staticLookup.Add("ed", new Ed());
+            SetReference("set", new VariableSetter());
+            SetReference("addTag", new TagAdder());
+            SetReference("removeTag", new TagRemover());
+            SetReference("choose", new Choose());
+            SetReference("setPointer", new VariablePointerSetter());
+            SetReference("if", new IfElse());
+            SetReference("gt", new GreaterThan());
+            SetReference("lt", new LessThan());
+            SetReference("equal", new Equals());
+            SetReference("add", new Add());
+            SetReference("sub", new Subtract());
+            SetReference("mult", new Multiply());
+            SetReference("random", new RandomFloat());
+            SetReference("randomI", new RandomInt());
+            SetReference("round", new Round());
+            SetReference("and", new And());
+            SetReference("or", new Or());
+            SetReference("not", new Not());
+            SetReference("do", new Do());
+            SetReference("doYield", new DoYield());
+            SetReference("addToBag", new BagAdder());
+            SetReference("tagMult", new TagMult());
+            SetReference("tagContains", new TagContains());
+            SetReference("tagNoOverlap", new TagNoOverlap());
+            SetReference("tagOverlap", new TagOverlap());
+            SetReference("cap", new Capitalize());
+            SetReference("a", new Ana());
+            SetReference("s", new Plural());
+            SetReference("ed", new Ed());
         }
 
         public BroncoVisitor(IDictionary<string, ISymbol> startingGlobals)
         {
             foreach (var symbol in startingGlobals)
-                _staticLookup.Add(symbol.Key, symbol.Value);
+                _globalLookup.Add(symbol.Key, new SymbolVariable(symbol.Key, symbol.Value));
         }
 
-        public IEnumerable<KeyValuePair<string, ISymbol>> GetReferences()
+        public IEnumerable<KeyValuePair<string, SymbolVariable>> GetReferences()
         {
-            return _staticLookup;
+            return _globalLookup;
         }
 
-        private void SetVariable(string id, ISymbol value)
-            => _globals.GetField(id).SetPointer(value);
-
-        private ISymbol GetReference(string id)
+        private SymbolVariable GetReference(string id)
         {
-            ISymbol reference;
-
-            if (_localLookup.TryGetValue(id, out reference)) return reference;
-
-            if (_staticLookup.TryGetValue(id, out reference)) return reference;
-
-            return _globals.GetField(id);
+            SymbolVariable symbol;
+            if (_localLookup.TryGetValue(id, out symbol))
+                return symbol;
+            if (_globalLookup.TryGetValue(id, out symbol))
+                return symbol;
+            symbol = new SymbolVariable(id);
+            _globalLookup.Add(id, symbol);
+            return symbol;
         }
 
-        private void SetStatic(string id, ISymbol symbol)
-            => _staticLookup.Add(id, symbol);
+        private void SetReference(string id, ISymbol value)
+        {
+            SymbolVariable symbol;
+            if (!_globalLookup.TryGetValue(id, out symbol))
+            {
+                symbol = new SymbolVariable(id);
+                _globalLookup.Add(id, symbol);
+            }
 
-        private void SetLocal(string id, ISymbol symbol)
-            => _localLookup.Add(id, symbol);
+            symbol.SetPointer(value);
+        }
 
-        private void ClearLocals()
-            => _localLookup.Clear();
+        private void SetLocalReference(string id, ISymbol value)
+        {
+            _localLookup.Add(id, new SymbolVariable(id, value));
+        }
 
         public override object VisitFile([NotNull] BroncoParser.FileContext context)
         {
@@ -110,11 +114,11 @@ namespace BroncoTextParser
             string title = context.TITLE().GetText();
             title = title.Substring(1, title.Length - 1);
 
-            SetVariable(title, bag);
+            SetReference(title, bag);
 
             for (int i = 0; i < args.Count(); i++)
-                SetLocal(args[i], bag.GetArgument(i));
-            SetLocal("item", bag.CurrentItem);
+                SetLocalReference(args[i], bag.GetArgument(i));
+            SetLocalReference("item", bag.CurrentItem);
 
             var conditionContext = context.bag_default_condition();
             if (conditionContext != null) bag.DefaultCondition = (ISymbol)Visit(conditionContext);
@@ -129,7 +133,7 @@ namespace BroncoTextParser
                     bag.Add((MetaData) item);
             }
 
-            ClearLocals();
+            _localLookup.Clear();
 
             return bag;
         }
@@ -241,8 +245,8 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_ref([NotNull] BroncoParser.Symbol_refContext context)
         {
-            var id = context.symbol_identifier();
-            if (id != null) return Visit(id);
+            var id = context.IDENTIFIER();
+            if (id != null) return GetReference(id.GetText());
 
             var call = context.symbol_call();
             if (call != null) return (ISymbol) Visit(call);
@@ -256,43 +260,6 @@ namespace BroncoTextParser
             return Visit(context.symbol());
         }
 
-        public override object VisitSymbol_identifier([NotNull] BroncoParser.Symbol_identifierContext context)
-        {
-            var ids = context.IDENTIFIER();
-
-            ISymbol symbol = GetReference(ids[0].GetText());
-            if (ids.Length == 1) return symbol;
-
-            UserVariable current = symbol.FlattenTo<UserVariable>();
-
-            SymbolStruct origin = null;
-            int[] fields = new int[ids.Length - 1];
-            string[] names = new string[ids.Length - 1];
-            
-            for(int i = 0; i < ids.Length; i++)
-            {
-                if (!current.IsSet)
-                {
-                    current.SetPointer(new SymbolStruct());
-                    Console.WriteLine($"Set {current.Name}");
-                }
-
-                SymbolStruct currentStruct = ((ISymbol) current).FlattenTo<SymbolStruct>();
-
-                if (i == 0)
-                    origin = currentStruct;
-                else
-                {
-                    int index = currentStruct.GetFieldIndex(ids[i].GetText());
-                    current = currentStruct.GetField(index);
-
-                    fields[i - 1] = index;
-                }
-            }
-
-            return new StructAccessor(origin, fields);
-        }
-           
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)
         {
             return Visit(context.symbol_call_inner());

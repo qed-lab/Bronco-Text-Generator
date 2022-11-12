@@ -13,7 +13,7 @@ namespace BroncoIDE
         private static TextStyle red = new TextStyle(Brushes.Red, null, style);
         private static TextStyle green = new TextStyle(Brushes.Green, null, style);
         private static TextStyle grey = new TextStyle(Brushes.Gray, null, style);
-        private static Dictionary<string, ISymbol>  EmptyDictionary = new();
+        private static Dictionary<string, SymbolVariable>  EmptyDictionary = new();
 
         private string _currentFile = "";
 
@@ -25,7 +25,7 @@ namespace BroncoIDE
         private void BackgroundParser_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             string outputText = "Something went wrong...";
-            IEnumerable<KeyValuePair<string, ISymbol>> references = EmptyDictionary;
+            IEnumerable<KeyValuePair<string, SymbolVariable>> references = EmptyDictionary;
             try
             {
                 ISymbol symbol = TextParser.Parse((string)e.Argument);
@@ -41,8 +41,8 @@ namespace BroncoIDE
 
         private void BackgroundParser_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            (string, IEnumerable<KeyValuePair<string, ISymbol>>) parseResult =
-                ((string, IEnumerable<KeyValuePair<string, ISymbol>>)) e.Result;
+            (string, IEnumerable<KeyValuePair<string, SymbolVariable>>) parseResult =
+                ((string, IEnumerable<KeyValuePair<string, SymbolVariable>>)) e.Result;
 
             outputPane.Text = parseResult.Item1.Replace("\\n", Environment.NewLine);
 
