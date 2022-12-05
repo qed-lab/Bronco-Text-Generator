@@ -1,8 +1,31 @@
 ﻿@start
-My favorite color is <favColor = color>... ...like I said before, I like <favColor>
+<intro><battle>
 
-@color
-red
-green
-blue
-yellow
+@battle
+The <char1> makes the first move! \n<char1Turn>
+The <char2> makes the first move! \n<char2Turn>
+
+@char1Turn
+<charTurn: char1, char2, hp2><do: (set: hp2, dmgHP)><if: (gt: hp2, 0), char2Turn, (battleEnd: char1)> 
+
+@char2Turn
+<charTurn: char2, char1, hp1><do: (set: hp1, dmgHP)><if: (gt: hp1, 0), char1Turn, (battleEnd: char2)> 
+
+@charTurn: charMe, charEn, hpEn
+The <charMe> attacks the <charEn>! <attack: charEn, hpEn>\n
+
+@attack: char, hp
+The attack deals <set: dmg, (randomI: 5, 20)> damage, leaving the <char> <dmgDescribe: hp, dmg>
+The attack misses the <char>.<do: (set: dmgHP, hp)>
+
+@dmgDescribe: hp, dmg
+with <set: dmgHP, (sub: hp, dmg)>.[(gt: hp, dmg)]| dead<do: (set: dmgHP, 0)>.[(not: (gt: hp, dmg))]
+
+@intro
+<cap: (a: (set: char1, animal))><do: (set: hp1, hp)> and <a: (set: char2, animal)><do: (set: hp2, hp)> prepare for battle.\n
+
+@battleEnd: char
+The <char> is victorious!
+
+@animal
+ant<do: (set: hp, 1)>| snake<do: (set: hp, 20)>| rat<do: (set: hp, 10)>| bear<do: (set: hp, 50)>| dragon<do: (set: hp, 70)>| emu<do: (set: hp, 30)>| lion<do: (set: hp, 40)>et: hp, 40)>>

@@ -92,12 +92,6 @@ public interface IBroncoParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.symbol_call_inner"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSymbol_call_inner([NotNull] BroncoParser.Symbol_call_innerContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="BroncoParser.symbol_call_args"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -109,28 +103,4 @@ public interface IBroncoParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMeta_data([NotNull] BroncoParser.Meta_dataContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.ss_rewrite"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSs_rewrite([NotNull] BroncoParser.Ss_rewriteContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.ss_assignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSs_assignment([NotNull] BroncoParser.Ss_assignmentContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.ss_ternary"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSs_ternary([NotNull] BroncoParser.Ss_ternaryContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="BroncoParser.ss_code"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSs_code([NotNull] BroncoParser.Ss_codeContext context);
 }

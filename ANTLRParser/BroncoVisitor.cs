@@ -209,9 +209,7 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_insert([NotNull] BroncoParser.Symbol_insertContext context)
         {
-            var symbolRef = context.symbol_ref();
-            if (symbolRef != null) return (ISymbol) Visit(symbolRef);
-            return (ISymbol) Visit(context.symbol_call_inner());
+            return (ISymbol) Visit(context.symbol_ref());
         }
 
         public override object VisitMeta_data([NotNull] BroncoParser.Meta_dataContext context)
@@ -245,11 +243,11 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_ref([NotNull] BroncoParser.Symbol_refContext context)
         {
-            var id = context.IDENTIFIER();
-            if (id != null) return GetReference(id.GetText());
-
             var call = context.symbol_call();
-            if (call != null) return (ISymbol) Visit(call);
+            if (call != null) return Visit(call);
+
+            var opening_paren = context.OP();
+            if (opening_paren != null) return Visit(context.symbol_ref()[0]);
 
             var num = context.NUMBER();
             if (num != null) return new FloatSymbol(float.Parse(num.GetText()));
@@ -257,20 +255,29 @@ namespace BroncoTextParser
             var boolean = context.BOOL_LITERAL();
             if (boolean != null) return new BoolSymbol(bool.Parse(boolean.GetText()));
 
-            return Visit(context.symbol());
+            var inlineSymbol = context.symbol();
+            if (inlineSymbol != null) return Visit(inlineSymbol);
+
+            var symbol_refContexts = context.symbol_ref();
+            IList<ISymbol> symbols = new List<ISymbol>();
+
+            foreach (var symbolContext in symbol_refContexts)
+                symbols.Add((ISymbol)Visit(symbolContext));
+
+            var equals = context.EQUALS();
+            if (equals != null) return SSAssignment(symbols);
+
+            var question = context.QUESTION_MARK();
+            if (question != null) return SSTernary(symbols);
+
+            var dollar = context.DOLLAR();
+            if (dollar != null) return SSCode(symbols);
+
+            return null;
         }
 
         public override object VisitSymbol_call([NotNull] BroncoParser.Symbol_callContext context)
         {
-            return Visit(context.symbol_call_inner());
-        }
-
-        public override object VisitSymbol_call_inner([NotNull] BroncoParser.Symbol_call_innerContext context)
-        {
-            var rewriteContext = context.ss_rewrite();
-
-            if(rewriteContext != null) return Visit(rewriteContext);
-
             ISymbol callee = GetReference(context.IDENTIFIER().GetText());
 
             var argsContext = context.symbol_call_args();
@@ -293,43 +300,26 @@ namespace BroncoTextParser
             return args;
         }
 
-        public override object VisitSs_rewrite([NotNull] BroncoParser.Ss_rewriteContext context)
+        public ISymbol SSAssignment(IList<ISymbol> symbols)
         {
-            //This is horrible ): why do you have to be this way Antlr?
-            var assignContext = context.ss_assignment();
-            if (assignContext != null) return Visit(assignContext);
-
-            var ternary_context = context.ss_ternary();
-            if (ternary_context != null) return Visit(ternary_context);
-
-            var code_context = context.ss_code();
-            if (code_context != null) return Visit(code_context);
-
-            return null;
-        }
-
-        public override object VisitSs_assignment([NotNull] BroncoParser.Ss_assignmentContext context)
-        {
-            var symbol_refContext = context.symbol_ref();
-            ISymbol assignee = (ISymbol) Visit(symbol_refContext[0]);
-            ISymbol assignment = (ISymbol) Visit(symbol_refContext[1]);
+            ISymbol assignee = symbols[0];
+            ISymbol assignment = (ISymbol) symbols[1];
             
             return GetReference("set").Argue(new ISymbol[] { assignee, assignment });
         }
 
-        public override object VisitSs_ternary([NotNull] BroncoParser.Ss_ternaryContext context)
+        public ISymbol SSTernary(IList<ISymbol> symbols)
         {
-            var symbol_refContext = context.symbol_ref();
-            ISymbol condition = (ISymbol)Visit(symbol_refContext[0]);
-            ISymbol case1 = (ISymbol)Visit(symbol_refContext[1]);
-            ISymbol case2 = (ISymbol)Visit(symbol_refContext[2]);
+            ISymbol condition = symbols[0];
+            ISymbol case1 = symbols[1];
+            ISymbol case2 = symbols[2];
 
             return GetReference("if").Argue(new ISymbol[] { condition, case1, case2 });
         }
 
-        public override object VisitSs_code([NotNull] BroncoParser.Ss_codeContext context)
+        public ISymbol SSCode(IList<ISymbol> symbols)
         {
-            ISymbol code = (ISymbol)Visit(context.symbol_ref());
+            ISymbol code = symbols[0];
 
             return GetReference("do").Argue(new ISymbol[] { code });
         }
