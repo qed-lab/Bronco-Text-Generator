@@ -38,30 +38,35 @@ public partial class BroncoParser : Parser {
 	public const int
 		TITLE=1, BOOL_LITERAL=2, IDENTIFIER=3, NUMBER=4, SKIP_COMMENT=5, SKIP_WS=6, 
 		COLON=7, COMMA=8, OP=9, CP=10, GT=11, START_QUOTE=12, CLOSE_SQUARE=13, 
-		TITLE_COLON=14, TITLE_COMMA=15, TITLE_ID=16, TITLE_SKIP_WS=17, TITLE_OPEN_SQUARE=18, 
-		TITLE_NEWLINE=19, LT=20, META_TAG=21, META_WEIGHT=22, TERMINAL=23, END_QUOTE=24, 
-		EMPTY_LINE=25, NEWLINE=26, PIPE=27, TERMINAL_OPEN_SQUARE=28;
+		DOLLAR=14, EQUALS=15, QUESTION_MARK=16, SEMI_COLON=17, TITLE_COLON=18, 
+		TITLE_COMMA=19, TITLE_ID=20, TITLE_SKIP_WS=21, TITLE_OPEN_SQUARE=22, TITLE_NEWLINE=23, 
+		LT=24, META_TAG=25, META_WEIGHT=26, TERMINAL=27, END_QUOTE=28, EMPTY_LINE=29, 
+		NEWLINE=30, PIPE=31, TERMINAL_OPEN_SQUARE=32;
 	public const int
 		RULE_file = 0, RULE_bag = 1, RULE_bag_default_condition = 2, RULE_bag_title_args = 3, 
 		RULE_bag_item = 4, RULE_symbol = 5, RULE_symbol_list_item = 6, RULE_symbol_insert = 7, 
 		RULE_symbol_ref = 8, RULE_symbol_call = 9, RULE_symbol_call_inner = 10, 
-		RULE_symbol_call_args = 11, RULE_meta_data = 12;
+		RULE_symbol_call_args = 11, RULE_meta_data = 12, RULE_ss_rewrite = 13, 
+		RULE_ss_assignment = 14, RULE_ss_ternary = 15, RULE_ss_code = 16;
 	public static readonly string[] ruleNames = {
 		"file", "bag", "bag_default_condition", "bag_title_args", "bag_item", 
 		"symbol", "symbol_list_item", "symbol_insert", "symbol_ref", "symbol_call", 
-		"symbol_call_inner", "symbol_call_args", "meta_data"
+		"symbol_call_inner", "symbol_call_args", "meta_data", "ss_rewrite", "ss_assignment", 
+		"ss_ternary", "ss_code"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, null, null, null, null, null, null, "':'", "','", "'('", "')'", 
-		"'>'", null, "']'", null, null, null, null, null, null, "'<'"
+		"'>'", null, "']'", "'$'", "'='", "'?'", "';'", null, null, null, null, 
+		null, null, "'<'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "TITLE", "BOOL_LITERAL", "IDENTIFIER", "NUMBER", "SKIP_COMMENT", 
 		"SKIP_WS", "COLON", "COMMA", "OP", "CP", "GT", "START_QUOTE", "CLOSE_SQUARE", 
-		"TITLE_COLON", "TITLE_COMMA", "TITLE_ID", "TITLE_SKIP_WS", "TITLE_OPEN_SQUARE", 
-		"TITLE_NEWLINE", "LT", "META_TAG", "META_WEIGHT", "TERMINAL", "END_QUOTE", 
-		"EMPTY_LINE", "NEWLINE", "PIPE", "TERMINAL_OPEN_SQUARE"
+		"DOLLAR", "EQUALS", "QUESTION_MARK", "SEMI_COLON", "TITLE_COLON", "TITLE_COMMA", 
+		"TITLE_ID", "TITLE_SKIP_WS", "TITLE_OPEN_SQUARE", "TITLE_NEWLINE", "LT", 
+		"META_TAG", "META_WEIGHT", "TERMINAL", "END_QUOTE", "EMPTY_LINE", "NEWLINE", 
+		"PIPE", "TERMINAL_OPEN_SQUARE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -124,21 +129,21 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27;
+			State = 35;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 26;
+				State = 34;
 				bag();
 				}
 				}
-				State = 29;
+				State = 37;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==TITLE );
-			State = 31;
+			State = 39;
 			Match(Eof);
 			}
 		}
@@ -190,50 +195,50 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 33;
+			State = 41;
 			Match(TITLE);
-			State = 35;
+			State = 43;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==TITLE_COLON) {
 				{
-				State = 34;
+				State = 42;
 				bag_title_args();
 				}
 			}
 
-			State = 38;
+			State = 46;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==TITLE_OPEN_SQUARE) {
 				{
-				State = 37;
+				State = 45;
 				bag_default_condition();
 				}
 			}
 
-			State = 40;
+			State = 48;
 			Match(TITLE_NEWLINE);
-			State = 42;
+			State = 50;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 41;
+				State = 49;
 				bag_item();
 				}
 				}
-				State = 44;
+				State = 52;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==LT || _la==TERMINAL );
-			State = 47;
+			State = 55;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==EMPTY_LINE) {
 				{
-				State = 46;
+				State = 54;
 				Match(EMPTY_LINE);
 				}
 			}
@@ -277,11 +282,11 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 49;
+			State = 57;
 			Match(TITLE_OPEN_SQUARE);
-			State = 50;
+			State = 58;
 			symbol_ref();
-			State = 51;
+			State = 59;
 			Match(CLOSE_SQUARE);
 			}
 		}
@@ -327,23 +332,23 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 53;
+			State = 61;
 			Match(TITLE_COLON);
-			State = 54;
+			State = 62;
 			Match(TITLE_ID);
-			State = 59;
+			State = 67;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==TITLE_COMMA) {
 				{
 				{
-				State = 55;
+				State = 63;
 				Match(TITLE_COMMA);
-				State = 56;
+				State = 64;
 				Match(TITLE_ID);
 				}
 				}
-				State = 61;
+				State = 69;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -392,28 +397,28 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 62;
+			State = 70;
 			symbol();
-			State = 67;
+			State = 75;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==TERMINAL_OPEN_SQUARE) {
 				{
-				State = 63;
+				State = 71;
 				Match(TERMINAL_OPEN_SQUARE);
-				State = 64;
+				State = 72;
 				symbol_ref();
-				State = 65;
+				State = 73;
 				Match(CLOSE_SQUARE);
 				}
 			}
 
-			State = 70;
+			State = 78;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==NEWLINE || _la==PIPE) {
 				{
-				State = 69;
+				State = 77;
 				_la = TokenStream.LA(1);
 				if ( !(_la==NEWLINE || _la==PIPE) ) {
 				ErrorHandler.RecoverInline(this);
@@ -473,7 +478,7 @@ public partial class BroncoParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 73;
+			State = 81;
 			ErrorHandler.Sync(this);
 			_alt = 1;
 			do {
@@ -481,7 +486,7 @@ public partial class BroncoParser : Parser {
 				case 1:
 					{
 					{
-					State = 72;
+					State = 80;
 					symbol_list_item();
 					}
 					}
@@ -489,21 +494,21 @@ public partial class BroncoParser : Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 75;
+				State = 83;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
-			State = 80;
+			State = 88;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==META_TAG || _la==META_WEIGHT) {
 				{
 				{
-				State = 77;
+				State = 85;
 				meta_data();
 				}
 				}
-				State = 82;
+				State = 90;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -543,20 +548,20 @@ public partial class BroncoParser : Parser {
 		Symbol_list_itemContext _localctx = new Symbol_list_itemContext(Context, State);
 		EnterRule(_localctx, 12, RULE_symbol_list_item);
 		try {
-			State = 85;
+			State = 93;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case TERMINAL:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 83;
+				State = 91;
 				Match(TERMINAL);
 				}
 				break;
 			case LT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 84;
+				State = 92;
 				symbol_insert();
 				}
 				break;
@@ -604,25 +609,25 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 87;
+			State = 95;
 			Match(LT);
-			State = 90;
+			State = 98;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
 			case 1:
 				{
-				State = 88;
+				State = 96;
 				symbol_ref();
 				}
 				break;
 			case 2:
 				{
-				State = 89;
+				State = 97;
 				symbol_call_inner();
 				}
 				break;
 			}
-			State = 92;
+			State = 100;
 			Match(GT);
 			}
 		}
@@ -667,34 +672,34 @@ public partial class BroncoParser : Parser {
 		Symbol_refContext _localctx = new Symbol_refContext(Context, State);
 		EnterRule(_localctx, 16, RULE_symbol_ref);
 		try {
-			State = 102;
+			State = 110;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case IDENTIFIER:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 94;
+				State = 102;
 				Match(IDENTIFIER);
 				}
 				break;
 			case OP:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 95;
+				State = 103;
 				symbol_call();
 				}
 				break;
 			case NUMBER:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 96;
+				State = 104;
 				Match(NUMBER);
 				}
 				break;
 			case BOOL_LITERAL:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 97;
+				State = 105;
 				Match(BOOL_LITERAL);
 				}
 				break;
@@ -702,11 +707,11 @@ public partial class BroncoParser : Parser {
 				EnterOuterAlt(_localctx, 5);
 				{
 				{
-				State = 98;
+				State = 106;
 				Match(START_QUOTE);
-				State = 99;
+				State = 107;
 				symbol();
-				State = 100;
+				State = 108;
 				Match(END_QUOTE);
 				}
 				}
@@ -752,11 +757,11 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 104;
+			State = 112;
 			Match(OP);
-			State = 105;
+			State = 113;
 			symbol_call_inner();
-			State = 106;
+			State = 114;
 			Match(CP);
 			}
 		}
@@ -775,6 +780,9 @@ public partial class BroncoParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IDENTIFIER() { return GetToken(BroncoParser.IDENTIFIER, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Symbol_call_argsContext symbol_call_args() {
 			return GetRuleContext<Symbol_call_argsContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Ss_rewriteContext ss_rewrite() {
+			return GetRuleContext<Ss_rewriteContext>(0);
 		}
 		public Symbol_call_innerContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -795,20 +803,33 @@ public partial class BroncoParser : Parser {
 		EnterRule(_localctx, 20, RULE_symbol_call_inner);
 		int _la;
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 108;
-			Match(IDENTIFIER);
-			State = 110;
+			State = 121;
 			ErrorHandler.Sync(this);
-			_la = TokenStream.LA(1);
-			if (_la==COLON) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
 				{
-				State = 109;
-				symbol_call_args();
+				State = 116;
+				Match(IDENTIFIER);
+				State = 118;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==COLON) {
+					{
+					State = 117;
+					symbol_call_args();
+					}
 				}
-			}
 
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 120;
+				ss_rewrite();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -855,23 +876,23 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 112;
+			State = 123;
 			Match(COLON);
-			State = 113;
+			State = 124;
 			symbol_ref();
-			State = 118;
+			State = 129;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				State = 114;
+				State = 125;
 				Match(COMMA);
-				State = 115;
+				State = 126;
 				symbol_ref();
 				}
 				}
-				State = 120;
+				State = 131;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -912,7 +933,7 @@ public partial class BroncoParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 121;
+			State = 132;
 			_la = TokenStream.LA(1);
 			if ( !(_la==META_TAG || _la==META_WEIGHT) ) {
 			ErrorHandler.RecoverInline(this);
@@ -934,44 +955,259 @@ public partial class BroncoParser : Parser {
 		return _localctx;
 	}
 
+	public partial class Ss_rewriteContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Ss_assignmentContext ss_assignment() {
+			return GetRuleContext<Ss_assignmentContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Ss_ternaryContext ss_ternary() {
+			return GetRuleContext<Ss_ternaryContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Ss_codeContext ss_code() {
+			return GetRuleContext<Ss_codeContext>(0);
+		}
+		public Ss_rewriteContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_ss_rewrite; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IBroncoParserVisitor<TResult> typedVisitor = visitor as IBroncoParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitSs_rewrite(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Ss_rewriteContext ss_rewrite() {
+		Ss_rewriteContext _localctx = new Ss_rewriteContext(Context, State);
+		EnterRule(_localctx, 26, RULE_ss_rewrite);
+		try {
+			State = 137;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,16,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 134;
+				ss_assignment();
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 135;
+				ss_ternary();
+				}
+				break;
+			case 3:
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 136;
+				ss_code();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Ss_assignmentContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext[] symbol_ref() {
+			return GetRuleContexts<Symbol_refContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext symbol_ref(int i) {
+			return GetRuleContext<Symbol_refContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(BroncoParser.EQUALS, 0); }
+		public Ss_assignmentContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_ss_assignment; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IBroncoParserVisitor<TResult> typedVisitor = visitor as IBroncoParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitSs_assignment(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Ss_assignmentContext ss_assignment() {
+		Ss_assignmentContext _localctx = new Ss_assignmentContext(Context, State);
+		EnterRule(_localctx, 28, RULE_ss_assignment);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 139;
+			symbol_ref();
+			State = 140;
+			Match(EQUALS);
+			State = 141;
+			symbol_ref();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Ss_ternaryContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext[] symbol_ref() {
+			return GetRuleContexts<Symbol_refContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext symbol_ref(int i) {
+			return GetRuleContext<Symbol_refContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode QUESTION_MARK() { return GetToken(BroncoParser.QUESTION_MARK, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMI_COLON() { return GetToken(BroncoParser.SEMI_COLON, 0); }
+		public Ss_ternaryContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_ss_ternary; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IBroncoParserVisitor<TResult> typedVisitor = visitor as IBroncoParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitSs_ternary(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Ss_ternaryContext ss_ternary() {
+		Ss_ternaryContext _localctx = new Ss_ternaryContext(Context, State);
+		EnterRule(_localctx, 30, RULE_ss_ternary);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 143;
+			symbol_ref();
+			State = 144;
+			Match(QUESTION_MARK);
+			State = 145;
+			symbol_ref();
+			State = 146;
+			Match(SEMI_COLON);
+			State = 147;
+			symbol_ref();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Ss_codeContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOLLAR() { return GetToken(BroncoParser.DOLLAR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Symbol_refContext symbol_ref() {
+			return GetRuleContext<Symbol_refContext>(0);
+		}
+		public Ss_codeContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_ss_code; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IBroncoParserVisitor<TResult> typedVisitor = visitor as IBroncoParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitSs_code(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Ss_codeContext ss_code() {
+		Ss_codeContext _localctx = new Ss_codeContext(Context, State);
+		EnterRule(_localctx, 32, RULE_ss_code);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 149;
+			Match(DOLLAR);
+			State = 150;
+			symbol_ref();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
 	private static int[] _serializedATN = {
-		4,1,28,124,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,1,0,4,0,28,8,0,11,0,
-		12,0,29,1,0,1,0,1,1,1,1,3,1,36,8,1,1,1,3,1,39,8,1,1,1,1,1,4,1,43,8,1,11,
-		1,12,1,44,1,1,3,1,48,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,5,3,58,8,3,10,
-		3,12,3,61,9,3,1,4,1,4,1,4,1,4,1,4,3,4,68,8,4,1,4,3,4,71,8,4,1,5,4,5,74,
-		8,5,11,5,12,5,75,1,5,5,5,79,8,5,10,5,12,5,82,9,5,1,6,1,6,3,6,86,8,6,1,
-		7,1,7,1,7,3,7,91,8,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,103,8,
-		8,1,9,1,9,1,9,1,9,1,10,1,10,3,10,111,8,10,1,11,1,11,1,11,1,11,5,11,117,
-		8,11,10,11,12,11,120,9,11,1,12,1,12,1,12,0,0,13,0,2,4,6,8,10,12,14,16,
-		18,20,22,24,0,2,1,0,26,27,1,0,21,22,128,0,27,1,0,0,0,2,33,1,0,0,0,4,49,
-		1,0,0,0,6,53,1,0,0,0,8,62,1,0,0,0,10,73,1,0,0,0,12,85,1,0,0,0,14,87,1,
-		0,0,0,16,102,1,0,0,0,18,104,1,0,0,0,20,108,1,0,0,0,22,112,1,0,0,0,24,121,
-		1,0,0,0,26,28,3,2,1,0,27,26,1,0,0,0,28,29,1,0,0,0,29,27,1,0,0,0,29,30,
-		1,0,0,0,30,31,1,0,0,0,31,32,5,0,0,1,32,1,1,0,0,0,33,35,5,1,0,0,34,36,3,
-		6,3,0,35,34,1,0,0,0,35,36,1,0,0,0,36,38,1,0,0,0,37,39,3,4,2,0,38,37,1,
-		0,0,0,38,39,1,0,0,0,39,40,1,0,0,0,40,42,5,19,0,0,41,43,3,8,4,0,42,41,1,
-		0,0,0,43,44,1,0,0,0,44,42,1,0,0,0,44,45,1,0,0,0,45,47,1,0,0,0,46,48,5,
-		25,0,0,47,46,1,0,0,0,47,48,1,0,0,0,48,3,1,0,0,0,49,50,5,18,0,0,50,51,3,
-		16,8,0,51,52,5,13,0,0,52,5,1,0,0,0,53,54,5,14,0,0,54,59,5,16,0,0,55,56,
-		5,15,0,0,56,58,5,16,0,0,57,55,1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,
-		1,0,0,0,60,7,1,0,0,0,61,59,1,0,0,0,62,67,3,10,5,0,63,64,5,28,0,0,64,65,
-		3,16,8,0,65,66,5,13,0,0,66,68,1,0,0,0,67,63,1,0,0,0,67,68,1,0,0,0,68,70,
-		1,0,0,0,69,71,7,0,0,0,70,69,1,0,0,0,70,71,1,0,0,0,71,9,1,0,0,0,72,74,3,
-		12,6,0,73,72,1,0,0,0,74,75,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,80,1,
-		0,0,0,77,79,3,24,12,0,78,77,1,0,0,0,79,82,1,0,0,0,80,78,1,0,0,0,80,81,
-		1,0,0,0,81,11,1,0,0,0,82,80,1,0,0,0,83,86,5,23,0,0,84,86,3,14,7,0,85,83,
-		1,0,0,0,85,84,1,0,0,0,86,13,1,0,0,0,87,90,5,20,0,0,88,91,3,16,8,0,89,91,
-		3,20,10,0,90,88,1,0,0,0,90,89,1,0,0,0,91,92,1,0,0,0,92,93,5,11,0,0,93,
-		15,1,0,0,0,94,103,5,3,0,0,95,103,3,18,9,0,96,103,5,4,0,0,97,103,5,2,0,
-		0,98,99,5,12,0,0,99,100,3,10,5,0,100,101,5,24,0,0,101,103,1,0,0,0,102,
-		94,1,0,0,0,102,95,1,0,0,0,102,96,1,0,0,0,102,97,1,0,0,0,102,98,1,0,0,0,
-		103,17,1,0,0,0,104,105,5,9,0,0,105,106,3,20,10,0,106,107,5,10,0,0,107,
-		19,1,0,0,0,108,110,5,3,0,0,109,111,3,22,11,0,110,109,1,0,0,0,110,111,1,
-		0,0,0,111,21,1,0,0,0,112,113,5,7,0,0,113,118,3,16,8,0,114,115,5,8,0,0,
-		115,117,3,16,8,0,116,114,1,0,0,0,117,120,1,0,0,0,118,116,1,0,0,0,118,119,
-		1,0,0,0,119,23,1,0,0,0,120,118,1,0,0,0,121,122,7,1,0,0,122,25,1,0,0,0,
-		15,29,35,38,44,47,59,67,70,75,80,85,90,102,110,118
+		4,1,32,153,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
+		2,15,7,15,2,16,7,16,1,0,4,0,36,8,0,11,0,12,0,37,1,0,1,0,1,1,1,1,3,1,44,
+		8,1,1,1,3,1,47,8,1,1,1,1,1,4,1,51,8,1,11,1,12,1,52,1,1,3,1,56,8,1,1,2,
+		1,2,1,2,1,2,1,3,1,3,1,3,1,3,5,3,66,8,3,10,3,12,3,69,9,3,1,4,1,4,1,4,1,
+		4,1,4,3,4,76,8,4,1,4,3,4,79,8,4,1,5,4,5,82,8,5,11,5,12,5,83,1,5,5,5,87,
+		8,5,10,5,12,5,90,9,5,1,6,1,6,3,6,94,8,6,1,7,1,7,1,7,3,7,99,8,7,1,7,1,7,
+		1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,111,8,8,1,9,1,9,1,9,1,9,1,10,1,10,
+		3,10,119,8,10,1,10,3,10,122,8,10,1,11,1,11,1,11,1,11,5,11,128,8,11,10,
+		11,12,11,131,9,11,1,12,1,12,1,13,1,13,1,13,3,13,138,8,13,1,14,1,14,1,14,
+		1,14,1,15,1,15,1,15,1,15,1,15,1,15,1,16,1,16,1,16,1,16,0,0,17,0,2,4,6,
+		8,10,12,14,16,18,20,22,24,26,28,30,32,0,2,1,0,30,31,1,0,25,26,156,0,35,
+		1,0,0,0,2,41,1,0,0,0,4,57,1,0,0,0,6,61,1,0,0,0,8,70,1,0,0,0,10,81,1,0,
+		0,0,12,93,1,0,0,0,14,95,1,0,0,0,16,110,1,0,0,0,18,112,1,0,0,0,20,121,1,
+		0,0,0,22,123,1,0,0,0,24,132,1,0,0,0,26,137,1,0,0,0,28,139,1,0,0,0,30,143,
+		1,0,0,0,32,149,1,0,0,0,34,36,3,2,1,0,35,34,1,0,0,0,36,37,1,0,0,0,37,35,
+		1,0,0,0,37,38,1,0,0,0,38,39,1,0,0,0,39,40,5,0,0,1,40,1,1,0,0,0,41,43,5,
+		1,0,0,42,44,3,6,3,0,43,42,1,0,0,0,43,44,1,0,0,0,44,46,1,0,0,0,45,47,3,
+		4,2,0,46,45,1,0,0,0,46,47,1,0,0,0,47,48,1,0,0,0,48,50,5,23,0,0,49,51,3,
+		8,4,0,50,49,1,0,0,0,51,52,1,0,0,0,52,50,1,0,0,0,52,53,1,0,0,0,53,55,1,
+		0,0,0,54,56,5,29,0,0,55,54,1,0,0,0,55,56,1,0,0,0,56,3,1,0,0,0,57,58,5,
+		22,0,0,58,59,3,16,8,0,59,60,5,13,0,0,60,5,1,0,0,0,61,62,5,18,0,0,62,67,
+		5,20,0,0,63,64,5,19,0,0,64,66,5,20,0,0,65,63,1,0,0,0,66,69,1,0,0,0,67,
+		65,1,0,0,0,67,68,1,0,0,0,68,7,1,0,0,0,69,67,1,0,0,0,70,75,3,10,5,0,71,
+		72,5,32,0,0,72,73,3,16,8,0,73,74,5,13,0,0,74,76,1,0,0,0,75,71,1,0,0,0,
+		75,76,1,0,0,0,76,78,1,0,0,0,77,79,7,0,0,0,78,77,1,0,0,0,78,79,1,0,0,0,
+		79,9,1,0,0,0,80,82,3,12,6,0,81,80,1,0,0,0,82,83,1,0,0,0,83,81,1,0,0,0,
+		83,84,1,0,0,0,84,88,1,0,0,0,85,87,3,24,12,0,86,85,1,0,0,0,87,90,1,0,0,
+		0,88,86,1,0,0,0,88,89,1,0,0,0,89,11,1,0,0,0,90,88,1,0,0,0,91,94,5,27,0,
+		0,92,94,3,14,7,0,93,91,1,0,0,0,93,92,1,0,0,0,94,13,1,0,0,0,95,98,5,24,
+		0,0,96,99,3,16,8,0,97,99,3,20,10,0,98,96,1,0,0,0,98,97,1,0,0,0,99,100,
+		1,0,0,0,100,101,5,11,0,0,101,15,1,0,0,0,102,111,5,3,0,0,103,111,3,18,9,
+		0,104,111,5,4,0,0,105,111,5,2,0,0,106,107,5,12,0,0,107,108,3,10,5,0,108,
+		109,5,28,0,0,109,111,1,0,0,0,110,102,1,0,0,0,110,103,1,0,0,0,110,104,1,
+		0,0,0,110,105,1,0,0,0,110,106,1,0,0,0,111,17,1,0,0,0,112,113,5,9,0,0,113,
+		114,3,20,10,0,114,115,5,10,0,0,115,19,1,0,0,0,116,118,5,3,0,0,117,119,
+		3,22,11,0,118,117,1,0,0,0,118,119,1,0,0,0,119,122,1,0,0,0,120,122,3,26,
+		13,0,121,116,1,0,0,0,121,120,1,0,0,0,122,21,1,0,0,0,123,124,5,7,0,0,124,
+		129,3,16,8,0,125,126,5,8,0,0,126,128,3,16,8,0,127,125,1,0,0,0,128,131,
+		1,0,0,0,129,127,1,0,0,0,129,130,1,0,0,0,130,23,1,0,0,0,131,129,1,0,0,0,
+		132,133,7,1,0,0,133,25,1,0,0,0,134,138,3,28,14,0,135,138,3,30,15,0,136,
+		138,3,32,16,0,137,134,1,0,0,0,137,135,1,0,0,0,137,136,1,0,0,0,138,27,1,
+		0,0,0,139,140,3,16,8,0,140,141,5,15,0,0,141,142,3,16,8,0,142,29,1,0,0,
+		0,143,144,3,16,8,0,144,145,5,16,0,0,145,146,3,16,8,0,146,147,5,17,0,0,
+		147,148,3,16,8,0,148,31,1,0,0,0,149,150,5,14,0,0,150,151,3,16,8,0,151,
+		33,1,0,0,0,17,37,43,46,52,55,67,75,78,83,88,93,98,110,118,121,129,137
 	};
 
 	public static readonly ATN _ATN =

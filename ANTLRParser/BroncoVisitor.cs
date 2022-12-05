@@ -267,6 +267,10 @@ namespace BroncoTextParser
 
         public override object VisitSymbol_call_inner([NotNull] BroncoParser.Symbol_call_innerContext context)
         {
+            var rewriteContext = context.ss_rewrite();
+
+            if(rewriteContext != null) return Visit(rewriteContext);
+
             ISymbol callee = GetReference(context.IDENTIFIER().GetText());
 
             var argsContext = context.symbol_call_args();
@@ -287,6 +291,47 @@ namespace BroncoTextParser
                 args.Add((ISymbol)Visit(arg));
 
             return args;
+        }
+
+        public override object VisitSs_rewrite([NotNull] BroncoParser.Ss_rewriteContext context)
+        {
+            //This is horrible ): why do you have to be this way Antlr?
+            var assignContext = context.ss_assignment();
+            if (assignContext != null) return Visit(assignContext);
+
+            var ternary_context = context.ss_ternary();
+            if (ternary_context != null) return Visit(ternary_context);
+
+            var code_context = context.ss_code();
+            if (code_context != null) return Visit(code_context);
+
+            return null;
+        }
+
+        public override object VisitSs_assignment([NotNull] BroncoParser.Ss_assignmentContext context)
+        {
+            var symbol_refContext = context.symbol_ref();
+            ISymbol assignee = (ISymbol) Visit(symbol_refContext[0]);
+            ISymbol assignment = (ISymbol) Visit(symbol_refContext[1]);
+            
+            return GetReference("set").Argue(new ISymbol[] { assignee, assignment });
+        }
+
+        public override object VisitSs_ternary([NotNull] BroncoParser.Ss_ternaryContext context)
+        {
+            var symbol_refContext = context.symbol_ref();
+            ISymbol condition = (ISymbol)Visit(symbol_refContext[0]);
+            ISymbol case1 = (ISymbol)Visit(symbol_refContext[1]);
+            ISymbol case2 = (ISymbol)Visit(symbol_refContext[2]);
+
+            return GetReference("if").Argue(new ISymbol[] { condition, case1, case2 });
+        }
+
+        public override object VisitSs_code([NotNull] BroncoParser.Ss_codeContext context)
+        {
+            ISymbol code = (ISymbol)Visit(context.symbol_ref());
+
+            return GetReference("do").Argue(new ISymbol[] { code });
         }
     }
 }

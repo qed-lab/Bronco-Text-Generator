@@ -24,6 +24,11 @@ GT: '>' -> mode(TERMINAL_MODE);
 START_QUOTE: '`' -> mode(TERMINAL_MODE);
 CLOSE_SQUARE: ']' -> popMode;
 
+DOLLAR: '$';
+EQUALS: '=';
+QUESTION_MARK: '?';
+SEMI_COLON: ';';
+
 mode TITLE_MODE;
 TITLE_COLON: COLON;
 TITLE_COMMA: COMMA;

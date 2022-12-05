@@ -1,8 +1,8 @@
 ﻿@start
-I pick <autoSet>! Once again, that is <picked>, <picked>, <picked>!
+My favorite color is <favColor = color>... ...like I said before, I like <favColor>
 
-@autoSet
-Orange<silent: (set: picked, item)>
-Red<silent: (set: picked, item)>
-Yellow<silent: (set: picked, item)>
-Blue<silent: (set: picked, item)>
+@color
+red
+green
+blue
+yellow

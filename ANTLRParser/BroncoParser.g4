@@ -19,7 +19,12 @@ symbol_insert: LT (symbol_ref | symbol_call_inner) GT;
 
 symbol_ref: IDENTIFIER | symbol_call | NUMBER | BOOL_LITERAL | (START_QUOTE symbol END_QUOTE);
 symbol_call: OP symbol_call_inner CP;
-symbol_call_inner: IDENTIFIER symbol_call_args?;
+symbol_call_inner: IDENTIFIER symbol_call_args? | ss_rewrite;
 symbol_call_args: COLON symbol_ref (COMMA symbol_ref)*;
 
 meta_data: META_TAG | META_WEIGHT;
+
+ss_rewrite: ss_assignment | ss_ternary | ss_code;
+ss_assignment: symbol_ref EQUALS symbol_ref;
+ss_ternary: symbol_ref QUESTION_MARK symbol_ref SEMI_COLON symbol_ref;
+ss_code: DOLLAR symbol_ref;
