@@ -37,8 +37,7 @@ dark <color>
 **Sample output** `I randomly choose the color dark red`
 
 ### Arguments
-When making a reference, you can include arguments which will effect the output. These are denoted with a colon after the reference, followed by a number of comma-separated arguments `<reference: argument1, arg2, otherArg>`. Similarly, it is possible add arguments to a bag, and to use that argument in the output. Arguments can either be, literals, references to other symbols, or nested arguments denoted with parentheses instead of triangle braces ``<bag: (otherBag: `argument`)>``.
-
+When making a reference, you can include arguments which will effect the output. These are denoted with a colon after the reference, followed by a number of comma-separated arguments `<reference: argument1, arg2, otherArg>`. Similarly, it is possible add arguments to a bag, and to use that argument in the output. Arguments can either be, literals, references to other symbols, or nested arguments ``<bag: otherBag: `argument`>``. Parenthesis can be added to symbol-calls to avoid ambiguity ``<bag: (otherBag: `argument`), `second argument for bag`>``
 ```
 @start
 <tell: `using arguments`,color>
@@ -54,13 +53,13 @@ blue
 **Sample output** `Tell me about using arguments and blue!`
 
 ### Built-In Symbols
-In addition to the bags you define, there are many pre-built symbols you can access. These typically perform operations or other concise functionality.
+In addition to the bags you define, there are many pre-built symbols you can access. These typically perform operations or other concise functionality. Although Bronco is made entirely of symbols under the hood, some of the pre-built symbols can be used with special syntax for ease of use.
 
-Of particular note is the *set* symbol, which let’s you define and change the value of variables. A full list of pre-built symbols is found at the end of the document.
+Of particular note is the *set* symbol (which can be written ``this = that``), which let’s you define and change the value of variables. A full list of pre-built symbols is found at the end of the document.
 
 ```
 @start
-I’ll remember the color <set: var, color>, later. Two plus two is: <add: 2, 2>. Four times two is <mult: 4, 2>. A random integer between 1 and 10: <randomI: 1, 10>. The color I picked earlier was <var>.
+I’ll remember the color <var = color>, later. Two plus two is: <add: 2, 2>. Four times two is <mult: 4, 2>. A random integer between 1 and 10: <randomI: 1, 10>. The color I picked earlier was <var>.
 
 @color
 red
@@ -68,6 +67,34 @@ green
 blue
 ```
 **Sample output** `I’ll remember the color blue, later. Two plus two is: 4. Four times two is 8. A random integer between 1 and 10: 8. The color I picked earlier was blue.`
+
+### Conditions
+For explicit, dynamic control over the probability of an item being picked, you may specify a condition. This is denoted with some symbol inside of square brackets after an item `item [ conditionSymbol ]`. Conditions must resolve to either a float, which is then multiplied with the base weight, or a a boolean, which is equivalent to either 1.0 or 0.0. 
+
+```
+@start
+This number is <num: 7>!
+
+@num: input
+greater than 5[ gt: input, 5 ]
+less than 5[ lt: input, 5 ]
+```
+**Sample output** `This number is greater than 5!`
+
+
+### Bag-Wide Conditions 
+Sometimes, you may want to apply one condition to every item in a bag. This can be specified with square brackets after the title and arguments of a bag ``@bag: arg1 [gt: item, arg1]``. This bag can then access arguments, and use the keyword ``item`` to reference the item in the bag being considered.
+
+```
+@start
+This number is <num: 7>!
+
+@num: input
+greater than 5[ gt: input, 5 ]
+less than 5[ lt: input, 5 ]
+```
+**Sample output** `This number is greater than 5!`
+
 
 ### Weights
 You can use weights to change the chances of an item being picked from a bag. This is denoted by a percent sign followed by a floating point number `%1.5`. The last example would make an item 50 percent more likely to be picked, where `%0.5` would half its chances.
@@ -100,19 +127,6 @@ purple#yellow
 orange#blue
 ```
 **Sample output** `The compliment of blue is orange`
-
-### Conditions
-For explicit, dynamic control over the probability of an item being picked, you may specify a condition. This is denoted with some symbol inside of pipes after an item `item | conditionSymbol |`. Conditions must resolve to either a float, which is then multiplied with the base weight, or a a boolean, which is equivalent to either 1.0 or 0.1. 
-
-```
-@start
-This number is <num: 7>!
-
-@num: input
-greater than 5| (gt: input, 5) |
-less than 5| (lt: input, 5) |
-```
-**Sample output** `This number is greater than 5!`
 
 ## Pre-built symbols
 What follows is a list of the symbols, and their functions, that come pre-defined in Bronco.
