@@ -81,21 +81,6 @@ less than 5[ lt: input, 5 ]
 ```
 **Sample output** `This number is greater than 5!`
 
-
-### Bag-Wide Conditions 
-Sometimes, you may want to apply one condition to every item in a bag. This can be specified with square brackets after the title and arguments of a bag ``@bag: arg1 [gt: item, arg1]``. This bag can then access arguments, and use the keyword ``item`` to reference the item in the bag being considered.
-
-```
-@start
-This number is <num: 7>!
-
-@num: input
-greater than 5[ gt: input, 5 ]
-less than 5[ lt: input, 5 ]
-```
-**Sample output** `This number is greater than 5!`
-
-
 ### Weights
 You can use weights to change the chances of an item being picked from a bag. This is denoted by a percent sign followed by a floating point number `%1.5`. The last example would make an item 50 percent more likely to be picked, where `%0.5` would half its chances.
 
@@ -109,8 +94,7 @@ Quite likely%1.72
 ### Tags
 For more complex control over probability, you can attach tags to items in a list. This is denoted with a pound sign followed by the name of the tag `#tag`. Tags themselves can also have weights `#tag:1.5` (not specifying a weight counts as a weight of 1.0)
 
-
-When a bag with tagged items and at least one argument is called, the following rule is applied to the probability of each item being picked: starting with the base weight, multiply together the weights of every tag the item and the argument have in common; 0.0 if there are no matches. 
+Tags have no inherent functionality whatsoever, which means their function needs to be manually specified. This is done through bag-wide-conditions, denoted with square brackets after the title and arguments of a bag `@bag: arg [tagOverlap: arg, item]`. These bag-wide-conditions can access arguments, and use the keyword `item` to reference the item in the bag being considered. The conditions can also be used to execute arbitrary functionality for every item, and don’t actually need to reference tags at all. 
 
 ```
 @start
@@ -121,7 +105,7 @@ red#red
 yellow#yellow
 blue#blue
 
-@complement: col
+@complement: col [tagOverlap: col, item]
 green#red
 purple#yellow
 orange#blue
@@ -129,19 +113,21 @@ orange#blue
 **Sample output** `The compliment of blue is orange`
 
 ## Pre-built symbols
-What follows is a list of the symbols, and their functions, that come pre-defined in Bronco.
+What follows is a list of the symbols and their functions (and shortcuts if they exist), that come pre-defined in Bronco.
 
-`<set: variable, value>`: Sets symbol held in `var` to the flatted `value`. Evaluates to the new value.
+`<set: variable, value>`: Sets symbol held in `var` to the flatted `value`. Evaluates to the new value. Equivalent to `<variable = value>`.
+
+`<do: symbol>`: Evaluates the given symbol without outputting anything. Evaluates to an empty symbol. Equivalent to `<$ symbol>`.
 
 `<addTag: to, from>`: Adds the tags from `from` to the tags in `to`. Evaluates to `from`.
 
-`<matchTag: tags1, tags2>`: Evaluates to a float with the following rule: starting with the base weight, multiply together the weights of every tag that `tags1` and `tags2` have in common; 0.0 if there are no matches. (This is the default condition for bags with at least one argument)
+`<removeTag: remove, removeFrom>`: Removes the tags from `remove` from the tags in `removeFrom`. Evaluates to `removeFrom`.
 
 `<choose: item1, item2, item3>`: Taking any number of arguments, evaluates to one item picked at random.
 
 `<setPointer: variable, value>`: Like `set`, except that it points `variable` to `value` without flattening it first. (i.e. if you point `variable` to a bag, it will continue evaluating a random item every time `variable` is references)
 
-`<if: condition, onTrue, onFalse>`: Taking a boolean input, evaluates to `onTrue` if `condition` is true, and `onFalse` otherwise.
+`<if: condition, onTrue, onFalse>`: Taking a boolean input, evaluates to `onTrue` if `condition` is true, and `onFalse` otherwise. Equivalent to `<condition? onTrue; onFalse>`.
 
 `<gt: num1, num2>`: Evaluates true if float `num1` is greater than float `num2`, false otherwise.
 
@@ -167,5 +153,32 @@ What follows is a list of the symbols, and their functions, that come pre-define
 
 `<not: bool>`: Evaluates true if `bool` is false, false otherwise.
 
-`<silent: symbol>`: Evaluates the given symbol. Evaluates to an empty symbol.
+`<doYield: symbol>`: Like `do`, except that it evaluates to the final argument given instead of the empty symbol.
+
+`<addToBag: addTo, item, condition>`: Adds `item` and the optional `condition` parameter, and adds them to the `addTo` bag. 
+
+`<tagMult: symbol1, symbol2>`: Tag filter. Evaluates to all the weights of the tags `symbol1` and `symbol2` have in common multiplied together.
+
+`<tagContains: symbol1, symbol2>`: Tag filter. Evaluates like `tagMult` if `symbol1` contains the entirety of `symbol2`, 0 otherwise.
+
+`<tagNoOverlap: symbol1, symbol2>`: Tag filter. Evaluates to 1 if `symbol1` and `symbol2` have no tags in common, 0 otherwise.
+
+`<tagOverlap: symbol1, symbol2>`: Tag filter. Evaluates like `tagMult` if `symbol1` and `symbol2` have at least 1 tag in common, 0 otherwise.
+
+`<cap: symbol>`: Evaluates to `symbol`, flattened and with its first letter capitalized.
+
+`<a: symbol>`: Evaluates to `symbol`, flattened and prepended with either `a` or `an` according to standard English rules. 
+
+`<s: symbol>`: Evaluates to `symbol`, flattened and pluralized according to standard English pluralization rules.
+
+`<ed: symbol>`: Evaluates to `symbol`, flattened and made passed-tense according to standard English rules for verbs.
+
+
+
+
+
+
+
+
+
 
