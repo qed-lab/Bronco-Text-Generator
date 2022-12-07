@@ -65,7 +65,7 @@ red#red
 yellow#yellow
 blue#blue
 
-@complement: col
+@complement: col [tagOverlap: col, item]
 green#red
 purple#yellow
 orange#blue
@@ -86,7 +86,7 @@ red#red
 green#green
 blue#blue
 
-@colors: values
+@colors: values [tagMult: col, item]
 chartreuse#red:2.23 #green:2.55 #blue:0
 seafoam green#red:1.59 #green:2.26 #blue:1.91
 mahogany#red:1.92 #green:0.64 #blue:0.0
@@ -103,8 +103,8 @@ salmon#red:2.5 #green:1.18 #blue:1.14
 This number is <num: 7>!
 
 @num: input
-greater than 5| (gt: input, 5) |
-less than 5| (lt: input, 5) |
+greater than 5[ gt: input, 5 ]
+less than 5[ lt: input, 5 ]
 ```
 **Sample output** `This number is greater than 5!`
 
@@ -117,37 +117,41 @@ less than 5| (lt: input, 5) |
 /*intro*/
 
 @heroIntro
-<silent: (set:heroHP, 50)><silent: (set:heroWeapon, weaponTypes)>You <heroWeaponIntro: heroWeapon>, and prepare to fight.
+<$ heroHP = 50><$ heroWeapon = weaponTypes>You <heroWeaponIntro: heroWeapon>, and prepare to fight.
 
-@heroWeaponIntro: weapon
+@heroWeaponIntro: weapon[tagOverlap: weapon, item]
 heft your <weapon>#axe #club
-draw your <weapon>#sword
+draw your <weapon>#sword #gun
 string your <weapon>#bow
 
 @enemyIntro
-A <enemyTypes> appears from the darkness.
+<$ enemyHP = 50><enemy = enemyTools> appears from the darkness.
 
-@enemyTypes
-<set: enemy, beastEnemies>
-<set: enemy, huminoidEnemies> with a <enemyWeapon>
-
-@huminoidEnemies
-goblin<silent: (set:enemyWeapon, weaponTypes)><silent: (set:enemyHP, 30)>
-orc<silent: (set:enemyWeapon, weaponTypes)><silent: (set:enemyHP, 50)>
-skeleton<silent: (set:enemyWeapon, weaponTypes)><silent: (set:enemyHP, 25)>
-troll<silent: (set:enemyWeapon, weaponTypes)><silent: (set:enemyHP, 80)>
-
-@beastEnemies
-viper<silent: (set:enemyWeapon, ` #bite`)><silent: (set:enemyHP, 20)>
-emu<silent: (set:enemyWeapon, ` #bite #claw`)><silent: (set:enemyHP, 40)>
-wolf<silent: (set:enemyWeapon, ` #bite #claw`)><silent: (set:enemyHP, 60)>
-wraith<silent: (set:enemyWeapon, ` #claw`)><silent: (set:enemyHP, 70)>
+@enemyTools
+Tracery<$ enemyWeapon = ` #easy #variables #javascript #contextfreegrammar`>%1.25
+Expressionist<$ enemyWeapon = ` #tags #customizability #attributegrammar`>%1.25
+Bronco<$ enemyWeapon = ` #tags #variables #functions #customizability #adaptivegrammar`><$ enemyHP = 100>%1.25
+Step<$ enemyWeapon = ` #tags #variables #functions #taskPlanning #logic`>%1.25
+Blabbeur<$ enemyWeapon = ` #variables #unity #functions #contextfreegrammar`>
+MKULTRA<$ enemyWeapon = ` #logic #definiteclausegrammar`>
+Improv<$ enemyWeapon = ` #javascript #filtering #contextfreegrammar`>
+SimpleNLG<$ enemyWeapon = ` #nlg #easy`>
+Dunyazad<$ enemyWeapon = ` #definiteclausegrammar`>
 
 @weaponTypes
-axe#axe
-sword#sword
-bow#bow
-club#club
+axe of <idn>#axe
+sword of <idn>#sword
+bow of <idn>#bow
+club of <idn>#club
+Chekhov's gun#gun
+
+@idn
+interactive narrative
+procedural storytelling
+social simulation
+education through IDN
+ludonarrative dissonance
+planning
 
 /*battle*/
 @battle
@@ -155,51 +159,61 @@ You take the first move! <heroTurn>
 The <enemy> takes the first move! <enemyTurn>
 
 @heroTurn
-<heroMove: heroWeapon> <enemyReaction>     <if: (gt: enemyHP, 0), enemyTurn, heroVictory>
+<heroMove: heroWeapon> <enemyReaction>     <(gt: enemyHP, 0)? enemyTurn; heroVictory>
 
 @enemyTurn
-<enemyMove: enemyWeapon> <heroReaction>     <if: (gt: heroHP, 0), heroTurn, enemyVictory>
+<enemyMove: enemyWeapon> <heroReaction>     <(gt: heroHP, 0)? heroTurn; enemyVictory>
 
-@heroMove: weapon
+@heroMove: weapon[tagOverlap: weapon, item]
 You take a slash with your <weapon>.#sword #axe
 You make a lunge with your <weapon>.#sword
 You bring your <weapon> down with a smash.#axe #club
 You swing your <weapon>.#sword #axe #club
 You fire an arrow from your <weapon>.#bow
 You let loose a volley of arrow from your <weapon>.#bow
+You fire <weapon>.#gun
+
 
 @heroReaction
-The attack lands hard! You take <set: dmg, (randomI:30, 60)> damage, leaving you <silent: (set: heroHP, (sub: heroHP, dmg))><damage: heroHP>
-The attack only grazes you. You take <set: dmg, (randomI:10, 20)> damage, leaving you <silent: (set: heroHP, (sub: heroHP, dmg))><damage: heroHP>
+The attack lands hard! You take <dmg = randomI:30, 60> damage, leaving you <$ heroHP = sub: heroHP, dmg><damage: heroHP>
+The attack only grazes you. You take <dmg = randomI:10, 20> damage, leaving you <$ heroHP = sub: heroHP, dmg><damage: heroHP>
 The attack misses leaving you unscathed. 
 
 @heroVictory
-Gravely wounded, you stagger over the corpse of the <enemy>, away from the hard won fight...|(lt: heroHP, 15)|
-With a few new scars, you walk over the corpse of the <enemy>, away from the battle.|(and: (gt: heroHP, 15), (lt: heroHP, 41)) |
-With a smile, you walk confidently over the corpse of the <enemy>, away from an easy victory.|(gt: heroHP, 40)|
+Gravely wounded, you stagger over the corpse of <enemy>, away from the hard won fight...[(lt: heroHP, 15)]
+With a few new scars, you walk over the corpse of <enemy>, away from the battle.[and: (gt: heroHP, 15), (lt: heroHP, 41)]
+With a smile, you walk confidently over the corpse of <enemy>, away from an easy victory.[gt: heroHP, 40]
 
-@enemyMove: weapon
-The <enemy> slashes at you with its claws.#claw
-The <enemy> claws at you.#claw
-The <enemy> leaps to take a bite.#bite 
-The <enemy> bites at you.#bite 
-The <enemy> swings at you with its <weapon>.#axe #club #sword
-The <enemy> brings its <weapon> down at your head.#axe #club #sword
-The <enemy> fires an arrow from its <weapon>.#bow
-The <enemy> looses a quick vollow of arrows from its <weapon>.#bow
+@enemyMove: weapon[tagOverlap: weapon, item]
+<enemy> unleashes a volley of tags.#tags
+<enemy> tags you.#tags
+<enemy> assigns variables at you.#variables
+<enemy> attacks with variables.#variables
+<enemy> attacks you using JavaScript.#javascript 
+<enemy> extends itself with custom functionality.#customizability 
+<enemy> attacks you with its imperative logic.#logic
+<enemy> uses its planning system for a highly strategic attack.#taskPlanning
+<enemy> attacks you with its context-free-grammar.#contextfreegrammar
+<enemy> attacks you with its imperative-adaptive-grammar.#adaptivegrammar
+<enemy> attacks you with its attribute-grammar.#attributegrammar
+<enemy> functionally attacks you.#functions
+<enemy> attacks you with its definite-clause-grammar.#definiteclausegrammar
+<enemy> sways you with its natural language.#nlg
+<enemy> sneakily attacks you with its ease of use.#easy
+
 
 @enemyReaction
-The attack hits the <enemy> hard! It takes <set: dmg, (randomI:30, 60)> damage, leaving it <silent: (set: enemyHP, (sub: enemyHP, dmg))><damage: enemyHP>
-The attack only grazes the <enemy>. It takes <set: dmg, (randomI:10, 20)> damage, leaving it <silent: (set: enemyHP, (sub: enemyHP, dmg))><damage: enemyHP>
-The attack misses, leaving the <enemy> unscathed.
+The attack hits <enemy> hard! It takes <dmg = randomI:30, 60> damage, leaving it <$enemyHP = sub: enemyHP, dmg><damage: enemyHP>
+The attack only grazes <enemy>. It takes <dmg = randomI:10, 20> damage, leaving it <$ enemyHP = sub: enemyHP, dmg><damage: enemyHP>
+The attack misses, leaving <enemy> unscathed.
 
 @enemyVictory
-Gravely wounded, the <enemy> staggers away from the bitter fight...|(lt: enemyHP, 15)|
-The <enemy> stoops over to devour your corpse! |(matchTag: ` #bite`, enemyWeapon)|
-The <enemy> seems pleased by the victory, takes your <heroWeapon> for its own! |(matchTag: ` #axe #club #sword #bow`, enemyWeapon)|
+Gravely wounded, <enemy> staggers away from a hard won fight...[lt: enemyHP, 15]
+With a few new scars, <enemy> walks over your corpse, away from the battle.[and: (gt: enemyHP, 15), (lt: enemyHP, 41)]
+With a smile, <enemy> walks confidently over your corpse, away from an easy victory.[gt: enemyHP, 40]
 
 @damage: hp
-with <hp> HP.|(gt: hp, 0)|
-dead!|(lt: hp, 1)|
+with <hp> HP.[gt: hp, 0]
+dead![lt: hp, 1]
 ```
-**Sample output** `A goblin with a sword appears from the darkness. You draw your sword, and prepare to fight. The goblin takes the first move! The goblin swings at you with its sword. The attack lands hard! You take 31 damage, leaving you with 19 HP.     You take a slash with your sword. The attack hits the goblin hard! It takes 51 damage, leaving it dead!     With a few new scars, you walk over the corpse of the goblin, away from the battle.`
+**Sample output** `Tracery appears from the darkness. You heft your axe of planning, and prepare to fight. You take the first move! You bring your axe of planning down with a smash. The attack misses, leaving Tracery unscathed.     Tracery assigns variables at you. The attack misses leaving you unscathed.      You bring your axe of planning down with a smash. The attack misses, leaving Tracery unscathed.     Tracery attacks you with its context-free-grammar. The attack lands hard! You take 42 damage, leaving you with 8 HP.     You bring your axe of planning down with a smash. The attack misses, leaving Tracery unscathed.     Tracery assigns variables at you. The attack only grazes you. You take 15 damage, leaving you dead!     With a smile, Tracery walks confidently over your corpse, away from an easy victory.`
